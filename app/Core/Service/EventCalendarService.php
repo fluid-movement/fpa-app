@@ -24,7 +24,7 @@ class EventCalendarService
     public static function getArchiveYears(): array
     {
         return DB::table('events')
-            ->selectRaw('YEAR(start_date) as year')
+            ->selectRaw('EXTRACT(YEAR FROM start_date) as year')
             ->distinct()
             ->where('start_date', '<', now())
             ->orderByDesc('year')
