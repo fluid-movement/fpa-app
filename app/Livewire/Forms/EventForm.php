@@ -7,9 +7,12 @@ use Flux\DateRange;
 use Illuminate\Support\Facades\Auth;
 use Livewire\Attributes\Validate;
 use Livewire\Form;
+use Livewire\WithFileUploads;
 
 class EventForm extends Form
 {
+    use WithFileUploads;
+
     public Event $event;
 
     public DateRange $dateRange;
@@ -29,10 +32,10 @@ class EventForm extends Form
     #[Validate('required|string')]
     public string $description = '';
 
-    #[Validate('nullable|string|max:255')]
+    #[Validate('image')]
     public string $banner = '';
 
-    #[Validate('nullable|string|max:255')]
+    #[Validate('image')]
     public string $icon = '';
 
     public function setEvent(Event $event): void
@@ -54,6 +57,14 @@ class EventForm extends Form
         $this->start_date = $this->dateRange->start->format('Y-m-d');
         $this->end_date = $this->dateRange->end->format('Y-m-d');
 
+        if ($this->banner) {
+            $this->banner = $this->banner->store('banners');
+        }
+
+        if ($this->icon) {
+            $this->icon = $this->icon->store('icons');
+        }
+
         return Auth::user()->events()->create($this->only([
             'name',
             'start_date',
@@ -69,6 +80,14 @@ class EventForm extends Form
     {
         $this->start_date = $this->dateRange->start;
         $this->end_date = $this->dateRange->end;
+
+        if ($this->banner) {
+            $this->banner = $this->banner->store('banners');
+        }
+
+        if ($this->icon) {
+            $this->icon = $this->icon->store('icons');
+        }
 
         $this->event->update($this->only([
             'name',
