@@ -36,7 +36,7 @@ new #[Title('Upcoming Events')] class extends Component {
                     <div class="flex gap-4 items-center my-8">
                         <flux:separator text="{{ $month }}"/>
                     </div>
-                    <div class="grid gap-4 grid-cols-1 md:grid-cols-2">
+                    <div class="grid gap-4 grid-cols-1 md:grid-cols-2 xl:grid-cols-3">
                         @foreach($events as $event)
                             <x-events.card
                                 :event="$event"

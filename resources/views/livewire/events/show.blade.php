@@ -17,13 +17,21 @@ new class extends Component {
 
     public function edit(): void
     {
-        $this->redirect(route('events.edit', ['event' => $this->event]));
+        if (auth()->user()->can('update', $this->event)) {
+            $this->redirect(route('events.edit', ['event' => $this->event]));
+        } else {
+            Flux::toast(text: 'You do not have permission to edit this event.', variant: 'warning');
+        }
     }
 
     public function delete(): void
     {
-        $this->event->delete();
-        $this->redirect(route('events.index'));
+        if (auth()->user()->can('delete', $this->event)) {
+            $this->event->delete();
+            $this->redirect(route('events.index'));
+        } else {
+            Flux::toast(text: 'You do not have permission to delete this event.', variant: 'warning');
+        }
     }
 
     public function updatedStatus(): void

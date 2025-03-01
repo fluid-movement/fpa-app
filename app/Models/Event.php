@@ -8,6 +8,7 @@ use App\Core\LocaleDateFormatter;
 use App\Core\Service\AssetManagerService;
 use App\Models\Scopes\OrderByStartAsc;
 use App\Observers\EventObserver;
+use Database\Factories\EventFactory;
 use Illuminate\Database\Eloquent\Attributes\ObservedBy;
 use Illuminate\Database\Eloquent\Attributes\ScopedBy;
 use Illuminate\Database\Eloquent\Casts\Attribute;
@@ -21,7 +22,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 #[ScopedBy(OrderByStartAsc::class)]
 class Event extends Model
 {
-    /** @use HasFactory<\Database\Factories\EventFactory> */
+    /** @use HasFactory<EventFactory> */
     use HasFactory, HasUlids;
 
     // add description manually so the rich text editor can save it

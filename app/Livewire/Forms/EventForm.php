@@ -2,17 +2,18 @@
 
 namespace App\Livewire\Forms;
 
+use App\Core\Enum\AssetType;
+use App\Core\Service\AssetManagerService;
 use App\Models\Event;
 use Flux\DateRange;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
 use Livewire\Attributes\Validate;
+use Livewire\Features\SupportFileUploads\TemporaryUploadedFile;
 use Livewire\Form;
-use Livewire\WithFileUploads;
 
 class EventForm extends Form
 {
-    use WithFileUploads;
-
     public Event $event;
 
     public DateRange $dateRange;
@@ -33,10 +34,12 @@ class EventForm extends Form
     public string $description = '';
 
     #[Validate('image')]
-    public string $banner = '';
+    public $bannerUpload;
+    public ?string $banner = '';
 
     #[Validate('image')]
-    public string $icon = '';
+    public $iconUpload;
+    public ?string $icon = '';
 
     public function setEvent(Event $event): void
     {
@@ -54,16 +57,8 @@ class EventForm extends Form
 
     public function store(): Event
     {
-        $this->start_date = $this->dateRange->start->format('Y-m-d');
-        $this->end_date = $this->dateRange->end->format('Y-m-d');
-
-        if ($this->banner) {
-            $this->banner = $this->banner->store('banners');
-        }
-
-        if ($this->icon) {
-            $this->icon = $this->icon->store('icons');
-        }
+        $this->setDatesFromRange();
+        $this->uploadImages();
 
         return Auth::user()->events()->create($this->only([
             'name',
@@ -78,16 +73,8 @@ class EventForm extends Form
 
     public function update(): void
     {
-        $this->start_date = $this->dateRange->start;
-        $this->end_date = $this->dateRange->end;
-
-        if ($this->banner) {
-            $this->banner = $this->banner->store('banners');
-        }
-
-        if ($this->icon) {
-            $this->icon = $this->icon->store('icons');
-        }
+        $this->setDatesFromRange();
+        $this->uploadImages();
 
         $this->event->update($this->only([
             'name',
@@ -98,5 +85,34 @@ class EventForm extends Form
             'banner',
             'icon',
         ]));
+    }
+
+
+    public function uploadImages(): void
+    {
+        if ($this->bannerUpload instanceof TemporaryUploadedFile) {
+            $path = AssetType::BANNER->getPath();
+            if ($newBanner = basename($this->bannerUpload->store($path, 'public'))) {
+                if ($this->banner) {
+                    Storage::disk('public')->delete($path.'/'.$this->banner);
+                }
+                $this->banner = $newBanner;
+            }
+        }
+        if ($this->iconUpload instanceof TemporaryUploadedFile) {
+            $path = AssetType::ICON->getPath();
+            if ($newIcon = basename($this->iconUpload->store($path, 'public'))) {
+                if ($this->icon) {
+                    Storage::disk('public')->delete($path.'/'.$this->icon);
+                }
+                $this->icon = $newIcon;
+            }
+        }
+    }
+
+    public function setDatesFromRange(): void
+    {
+        $this->start_date = $this->dateRange->start->format('Y-m-d');
+        $this->end_date = $this->dateRange->end->format('Y-m-d');
     }
 }

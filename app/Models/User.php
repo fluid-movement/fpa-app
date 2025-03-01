@@ -69,20 +69,6 @@ class User extends Authenticatable
         return $this->hasMany(Event::class);
     }
 
-    public function interestedEvents(): BelongsToMany
-    {
-        return $this->belongsToMany(Event::class)
-            ->wherePivotIn('status', [EventUserStatus::INTERESTED, EventUserStatus::ATTENDING])
-            ->where('events.user_id', '!=', $this->id);
-    }
-
-    public function attendingEvents(): BelongsToMany
-    {
-        return $this->belongsToMany(Event::class)
-            ->wherePivot('status', EventUserStatus::ATTENDING)
-            ->where('events.user_id', '!=', $this->id);
-    }
-
     public function isAdmin(): bool
     {
         return $this->role->isAdmin();

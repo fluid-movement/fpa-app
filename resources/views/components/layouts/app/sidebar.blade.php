@@ -149,7 +149,9 @@
 </flux:header>
 
 {{ $slot }}
-
+@persist('toast')
+<flux:toast position="top right" />
+@endpersist
 @fluxScripts
 </body>
 </html>

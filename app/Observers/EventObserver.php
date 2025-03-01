@@ -6,7 +6,7 @@ use App\Core\Enum\AssetType;
 use App\Core\Service\AssetManagerService;
 use App\Models\Event;
 
-class EventObserver
+readonly class EventObserver
 {
     public function __construct(private AssetManagerService $assetManagerService) {}
 
