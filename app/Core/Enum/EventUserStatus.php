@@ -6,5 +6,5 @@ enum EventUserStatus: string
 {
     case INTERESTED = 'interested';
     case ATTENDING = 'attending';
-    case RUNNING = 'running';
+    case ORGANIZING = 'organizing';
 }

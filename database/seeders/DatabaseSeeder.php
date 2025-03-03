@@ -34,12 +34,18 @@ class DatabaseSeeder extends Seeder
         // create "interested" and "attending" relationships
         $users = User::all();
         foreach (Event::all() as $event) {
+            $organizer = User::find($event->user_id);
+            $event->users()->attach($organizer, ['status' => EventUserStatus::ORGANIZING]);
+
+            $interestedUsers = $users->random(random_int(1, $userCount))->pluck('id')->toArray();
             $event->users()->attach(
-                $users->random(random_int(1, $userCount)),
+                array_filter($interestedUsers, fn($id) => $id !== $organizer->id),
                 ['status' => EventUserStatus::INTERESTED]
             );
+
+            $attendingUsers = $users->random(random_int(1, $userCount))->pluck('id')->toArray();
             $event->users()->attach(
-                $users->random(random_int(1, $userCount)),
+                array_filter($attendingUsers, fn($id) => $id !== $organizer->id),
                 ['status' => EventUserStatus::ATTENDING]
             );
         }

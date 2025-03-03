@@ -69,6 +69,32 @@ class User extends Authenticatable
         return $this->hasMany(Event::class);
     }
 
+    public function organizingEvents(): BelongsToMany
+    {
+        return $this->belongsToMany(Event::class)
+            ->wherePivot('status', EventUserStatus::ORGANIZING)
+            ->whereDate('events.end_date', '>=', now());
+    }
+    public function organizedEvents(): BelongsToMany
+    {
+        return $this->belongsToMany(Event::class)
+            ->wherePivot('status', EventUserStatus::ORGANIZING)
+            ->whereDate('events.end_date', '<', now());
+    }
+    public function interestedEvents(): BelongsToMany
+    {
+        return $this->belongsToMany(Event::class)
+            ->wherePivotIn('status', [EventUserStatus::INTERESTED, EventUserStatus::ATTENDING])
+            ->whereDate('events.end_date', '>=', now());
+    }
+
+    public function attendingEvents(): BelongsToMany
+    {
+        return $this->belongsToMany(Event::class)
+            ->wherePivot('status', EventUserStatus::ATTENDING)
+            ->whereDate('events.end_date', '>=', now());
+    }
+
     public function isAdmin(): bool
     {
         return $this->role->isAdmin();

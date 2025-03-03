@@ -17,6 +17,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 
 #[ObservedBy(EventObserver::class)]
 #[ScopedBy(OrderByStartAsc::class)]
@@ -36,13 +37,21 @@ class Event extends Model
         'icon',
     ];
 
+    public function casts(): array
+    {
+        return [
+            'start_date' => 'datetime:Y-m-d',
+            'end_date' => 'datetime:Y-m-d',
+        ];
+    }
+
     public function dateRange(): Attribute
     {
         $locale = request()->getPreferredLanguage();
 
         return Attribute::make(
-            get: fn (mixed $value, array $attributes) => LocaleDateFormatter::formatShort($locale, $attributes['start_date'])
-                .' - '.
+            get: fn(mixed $value, array $attributes) => LocaleDateFormatter::formatShort($locale, $attributes['start_date'])
+                . ' - ' .
                 LocaleDateFormatter::formatShort($locale, $attributes['end_date']),
         );
     }
@@ -52,8 +61,8 @@ class Event extends Model
         $locale = request()->getPreferredLanguage();
 
         return Attribute::make(
-            get: fn (mixed $value, array $attributes) => LocaleDateFormatter::format($locale, $attributes['start_date'])
-                .' - '.
+            get: fn(mixed $value, array $attributes) => LocaleDateFormatter::format($locale, $attributes['start_date'])
+                . ' - ' .
                 LocaleDateFormatter::format($locale, $attributes['end_date']),
         );
     }
@@ -61,19 +70,22 @@ class Event extends Model
     public function getBannerUrlAttribute(): ?string
     {
         return $this->banner
-            ? app(AssetManagerService::class)->url(AssetType::BANNER, $this->banner)
+            ? app(AssetManagerService::class)
+                ->url(AssetType::BANNER, $this->banner)
             : null;
     }
 
     public function getBannerWidthHeight(): array
     {
-        return app(AssetManagerService::class)->dimensions(AssetType::BANNER, $this->banner);
+        return app(AssetManagerService::class)
+            ->dimensions(AssetType::BANNER, $this->banner);
     }
 
     public function getIconUrlAttribute(): ?string
     {
         return $this->icon
-            ? app(AssetManagerService::class)->url(AssetType::ICON, $this->icon)
+            ? app(AssetManagerService::class)
+                ->url(AssetType::ICON, $this->icon)
             : null;
     }
 
@@ -97,20 +109,40 @@ class Event extends Model
         return $this->belongsTo(User::class);
     }
 
+    public function magicLink(): HasOne
+    {
+        return $this->hasOne(EventMagicLink::class);
+    }
+
     public function users(): BelongsToMany
     {
-        return $this->belongsToMany(User::class)->withPivot('status');
+        return $this->belongsToMany(User::class)
+            ->withPivot('status')
+            ->withTimestamps()
+            ->orderByDesc('event_user.updated_at');
     }
 
     public function interested(): BelongsToMany
     {
         return $this->belongsToMany(User::class)
-            ->wherePivot('status', EventUserStatus::INTERESTED);
+            ->wherePivot('status', EventUserStatus::INTERESTED)
+            ->withTimestamps()
+            ->orderByDesc('event_user.updated_at');
     }
 
     public function attending(): BelongsToMany
     {
         return $this->belongsToMany(User::class)
-            ->wherePivot('status', EventUserStatus::ATTENDING);
+            ->wherePivotIn('status', [EventUserStatus::ATTENDING, EventUserStatus::ORGANIZING])
+            ->withTimestamps()
+            ->orderByDesc('event_user.updated_at');
+    }
+
+    public function organizers(): BelongsToMany
+    {
+        return $this->belongsToMany(User::class)
+            ->wherePivot('status', EventUserStatus::ORGANIZING)
+            ->withTimestamps()
+            ->orderByDesc('event_user.updated_at');
     }
 }

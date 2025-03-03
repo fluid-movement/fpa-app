@@ -2,8 +2,20 @@
 <a href="{{route('events.show', ['event' => $event])}}">
     <flux:card class="relative">
         @if($badge)
-            <div class="absolute top-0 right-0 mt-2 mr-2">
-                <flux:badge color="green">{{ ucfirst($badge) }}</flux:badge>
+            <div class="absolute top-0 right-0 mt-4 mr-4">
+                @switch($badge)
+                    @case(\App\Core\Enum\EventUserStatus::ATTENDING->value)
+                        <flux:icon.heart variant="mini"/>
+                        @break
+                    @case(\App\Core\Enum\EventUserStatus::INTERESTED->value)
+                        <flux:icon.question-mark-circle variant="mini"/>
+                        @break
+                    @case(\App\Core\Enum\EventUserStatus::ORGANIZING->value)
+                        <flux:badge class="uppercase" color="blue">{{ $badge }}</flux:badge>
+                        @break
+                    @default
+                        <flux:badge class="uppercase" color="gray">{{ $badge }}</flux:badge>
+                @endswitch
             </div>
         @endif
         <div class="grid grid-cols-[0.4fr_1.6fr] grid-rows-[auto_auto] items-center gap-x-2 gap-y-2">

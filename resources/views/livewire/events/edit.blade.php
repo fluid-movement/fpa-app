@@ -32,6 +32,13 @@ new class extends Component {
     <flux:heading level="1" size="xl">Edit event</flux:heading>
     <form method="post" wire:submit="update">
         <x-events._form :form="$form"/>
-        <flux:button variant="primary" type="submit">Save</flux:button>
+        <div class="flex justify-between">
+            <flux:button variant="primary" type="submit">
+                Save
+            </flux:button>
+            <flux:button wire:navigate onclick="window.history.back()" variant="ghost">
+                Cancel
+            </flux:button>
+        </div>
     </form>
 </div>

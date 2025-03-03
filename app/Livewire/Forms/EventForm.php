@@ -60,7 +60,7 @@ class EventForm extends Form
         $this->setDatesFromRange();
         $this->uploadImages();
 
-        return Auth::user()->events()->create($this->only([
+        $event = Auth::user()->events()->create($this->only([
             'name',
             'start_date',
             'end_date',
@@ -69,6 +69,10 @@ class EventForm extends Form
             'banner',
             'icon',
         ]));
+
+        $event->users()->attach(Auth::id(), ['status' => 'organizing']);
+
+        return $event;
     }
 
     public function update(): void

@@ -7,11 +7,18 @@ use App\Models\User;
 
 class EventPolicy
 {
+    public function admin(User $user, Event $event): bool
+    {
+        // organizers can access the admin area
+        return in_array($user->id, $event->organizers->pluck('id')->toArray()) || $user->isAdmin();
+    }
+
     /**
      * Determine whether the user can create models.
      */
     public function create(User $user): bool
     {
+        // any authenticated user can create an event
         return true;
     }
 
@@ -20,7 +27,8 @@ class EventPolicy
      */
     public function update(User $user, Event $event): bool
     {
-        return $user->id === $event->user_id || $user->isAdmin();
+        // organizers can edit the event
+        return in_array($user->id, $event->organizers->pluck('id')->toArray()) || $user->isAdmin();
     }
 
     /**
@@ -28,6 +36,7 @@ class EventPolicy
      */
     public function delete(User $user, Event $event): bool
     {
+        // only the user who created the event can delete it
         return $user->id === $event->user_id || $user->isAdmin();
     }
 

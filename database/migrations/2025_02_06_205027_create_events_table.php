@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('events', function (Blueprint $table) {
             $table->ulid('id')->primary();
-            $table->foreignIdFor(\App\Models\User::class);
+            $table->foreignIdFor(\App\Models\User::class)->index('user_id');
             $table->string('name');
             $table->date('start_date');
             $table->date('end_date');
