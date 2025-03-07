@@ -1,49 +1,44 @@
 @props(['event', 'badge' => ''])
-<a href="{{route('events.show', ['event' => $event])}}">
-    <flux:card class="relative">
-        @if($badge)
-            <div class="absolute top-0 right-0 mt-4 mr-4">
-                @switch($badge)
-                    @case(\App\Core\Enum\EventUserStatus::ATTENDING->value)
-                        <flux:icon.heart variant="mini"/>
-                        @break
-                    @case(\App\Core\Enum\EventUserStatus::INTERESTED->value)
-                        <flux:icon.question-mark-circle variant="mini"/>
-                        @break
-                    @case(\App\Core\Enum\EventUserStatus::ORGANIZING->value)
-                        <flux:badge class="uppercase" color="blue">{{ $badge }}</flux:badge>
-                        @break
-                    @default
-                        <flux:badge class="uppercase" color="gray">{{ $badge }}</flux:badge>
-                @endswitch
-            </div>
-        @endif
-        <div class="grid grid-cols-[0.4fr_1.6fr] grid-rows-[auto_auto] items-center gap-x-2 gap-y-2">
-            <div class="row-span-2 flex flex-col gap-2 items-center">
-                <div class="text-5xl font-bold text-slate-700 dark:text-slate-300 leading-none">
-                    {{ $event->day }}
+
+<div
+    class="p-4 h-52 rounded-sm relative bg-white hover:bg-blue-50 dark:hover:bg-blue-200/10 dark:bg-white/10 border border-zinc-200 dark:border-white/10">
+    <a href="{{route('events.show', ['event' => $event])}}">
+        <div class="flex gap-4 h-full">
+            <div class="grow flex flex-col">
+                <flux:heading size="lg" class="h-1/2">{{ $event->name }}</flux:heading>
+                <div class="text-slate-500 dark:text-slate-300">
+                    <flux:text class="flex gap-2 items-center mb-1">
+                        <flux:icon variant="micro" name="calendar-days"/>{{ $event->date_range }}
+                    </flux:text>
+                    <flux:text class="flex gap-2 items-center mb-1">
+                        <flux:icon variant="micro" name="map-pin"/>{{ $event->location }}
+                    </flux:text>
+                    @switch($badge)
+                        @case(\App\Core\Enum\EventUserStatus::ATTENDING->value)
+                            <flux:badge inset="left" size="sm" color="green">
+                                {{__(ucfirst(\App\Core\Enum\EventUserStatus::ATTENDING->value))}}
+                            </flux:badge>
+                            @break
+                        @case(\App\Core\Enum\EventUserStatus::INTERESTED->value)
+                            <flux:badge inset="left" size="sm" color="amber">
+                                {{__(ucfirst(\App\Core\Enum\EventUserStatus::INTERESTED->value))}}
+                            </flux:badge>
+                            @break
+                        @case(\App\Core\Enum\EventUserStatus::ORGANIZING->value)
+                            <flux:badge inset="left" size="sm" color="blue">{{ucfirst($badge)}}</flux:badge>
+                            @break
+                    @endswitch
                 </div>
-                @if($event->icon)
+            </div>
+            @if($event->icon)
+                <div class="h-44">
                     <img
                         src="{{ $event->icon_url }}"
                         alt="{{ $event->name }}"
-                        class="rounded-lg h-16 w-16 object-contain"
+                        class="rounded-sm h-full object-contain"
                     />
-                @endif
-            </div>
-
-            <flux:heading size="lg" class="self-end">
-                {{ $event->name }}
-            </flux:heading>
-
-            <div class="space-y-1 text-slate-500 dark:text-slate-300 self-center">
-                <p class="flex gap-2 items-center">
-                    <flux:icon name="calendar-days"/>{{ $event->date_range }}
-                </p>
-                <p class="flex gap-2 items-center">
-                    <flux:icon name="map-pin"/>{{ $event->location }}
-                </p>
-            </div>
+                </div>
+            @endif
         </div>
-    </flux:card>
-</a>
+    </a>
+</div>

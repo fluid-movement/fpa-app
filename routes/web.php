@@ -18,6 +18,7 @@ Route::middleware(['auth'])->group(function () {
     Volt::route('events/{event}/schedule/edit', 'events.schedule.edit')
         ->name('events.schedule.edit');
 });
+
 Volt::route('events', 'events.index')
     ->name('events.index');
 Volt::route('events/{event}', 'events.show')
@@ -25,6 +26,11 @@ Volt::route('events/{event}', 'events.show')
 Volt::route('archive/{year?}/', 'events.archive.index')
     ->name('events.archive.index');
 
+Volt::route('geocoding', 'geocoding-test')
+    ->name('geocoding');
+
+Volt::route('maps-integration', 'maps-integration')
+    ->name('maps-integration');
 // User pages
 Route::middleware(['auth'])->group(function () {
     Volt::route('user/attending', 'user.attending')->name('user.attending');

@@ -2,6 +2,7 @@
 
 use App\Core\Enum\EventUserStatus;
 use App\Core\Service\EventStatusService;
+use Illuminate\Support\Collection;
 use Livewire\Volt\Component;
 use App\Models\Event;
 use Illuminate\View\View;
@@ -46,24 +47,17 @@ new class extends Component {
         @endif
     </x-slot>
     <flux:heading size="xl" class="mb-4">{{ $event->name }}</flux:heading>
-    <div class="flex flex-col gap-1 justify-between mb-4 text-sm">
-        <p class="flex gap-2 items-center text-slate-500 dark:text-white">
-            <flux:icon name="calendar-days"/>{{ $event->date_range_full }}
-        </p>
-        <p class="flex gap-2 items-center text-slate-500 dark:text-white">
-            <flux:icon name="map-pin"/>{{ $event->location }}
-        </p>
-        <p class="flex gap-2 items-center text-slate-500 dark:text-white">
-            <flux:icon name="user-group"/>{{ $event->attending->count() }} attending
-        </p>
-        <p class="flex gap-2 items-center text-slate-500 dark:text-white">
-            <flux:icon name="question-mark-circle"/>{{ $event->interested->count() }} interested
-        </p>
-    </div>
+    <x-events.infos :event="$event"/>
     @if(\Illuminate\Support\Facades\Auth::user() && $status !== EventUserStatus::ORGANIZING->value)
-        <flux:radio.group wire:model.live="status" variant="cards" :indicator="false" class="max-sm:flex-col mb-4">
-            <flux:radio value="{{EventUserStatus::ATTENDING->value}}" icon="heart" label="Attending"/>
-            <flux:radio value="{{EventUserStatus::INTERESTED->value}}" icon="question-mark-circle"
+        <flux:radio.group wire:model.live="status"
+                          variant="cards"
+                          :indicator="false" 
+                          class="max-sm:flex-col mb-4">
+            <flux:radio value="{{EventUserStatus::ATTENDING->value}}"
+                        icon="heart"
+                        label="Attending"/>
+            <flux:radio value="{{EventUserStatus::INTERESTED->value}}"
+                        icon="bookmark"
                         label="Interested"/>
             <flux:radio value="" label="Not interested"/>
         </flux:radio.group>
@@ -73,7 +67,12 @@ new class extends Component {
             <flux:tab name="description">Description</flux:tab>
             <flux:tab name="schedule">Schedule</flux:tab>
         </flux:tabs>
-        <flux:tab.panel class="prose dark:prose-invert" name="description">{!! $event->description !!}</flux:tab.panel>
-        <flux:tab.panel name="schedule"><p>Schedule goes here...</p></flux:tab.panel>
+        <flux:tab.panel class="prose dark:prose-invert" name="description">
+            {!! $event->description !!}
+        </flux:tab.panel>
+        <flux:tab.panel name="schedule">
+            <livewire:events.schedule.list :event="$event"/>
+        </flux:tab.panel>
     </flux:tab.group>
 </div>
+

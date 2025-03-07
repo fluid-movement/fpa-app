@@ -14,7 +14,9 @@
         "laravel/tinker": "^2.10.1",
         "livewire/flux": "^2.0",
         "livewire/flux-pro": "^2.0",
-        "livewire/volt": "^1.6.7"
+        "livewire/volt": "^1.6.7",
+        "spatie/geocoder": "^3.16",
+        "ext-intl": "*"
     },
     "require-dev": {
         "barryvdh/laravel-debugbar": "^3.15",

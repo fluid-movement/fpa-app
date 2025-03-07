@@ -109,10 +109,10 @@ new class extends Component {
             </flux:table>
         </flux:tab.panel>
         <flux:tab.panel name="schedule">
-            Schedule goes here
-            <flux:button class="mt-4" href="{{route('events.schedule.edit', $event)}}">
+            <flux:button class="mb-8" href="{{route('events.schedule.edit', $event)}}">
                 Edit Schedule
             </flux:button>
+            <livewire:events.schedule.list :event="$event"/>
         </flux:tab.panel>
         <flux:tab.panel name="divisions">
             Divisions go here

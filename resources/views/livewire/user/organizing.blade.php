@@ -38,23 +38,8 @@ new class extends Component {
         @foreach($events as $event)
             <flux:card wire:key="{{$event->id}}">
                 <div class="flex flex-wrap gap-8">
-                    <div class="grow flex flex-col gap-1 justify-between mb-4 text-sm">
-                        <flux:heading class="mb-4" size="lg">{{$event->name}}</flux:heading>
-                        <p class="flex gap-2 items-center text-slate-500 dark:text-white">
-                            <flux:icon name="calendar-days"/>{{ $event->date_range_full }}
-                        </p>
-                        <p class="flex gap-2 items-center text-slate-500 dark:text-white">
-                            <flux:icon name="map-pin"/>{{ $event->location }}
-                        </p>
-                        <p class="flex gap-2 items-center text-slate-500 dark:text-white">
-                            <flux:icon
-                                name="user-group"/>{{ __(':count attending', ['count' => $event->attending->count()]) }}
-                        </p>
-                        <p class="flex gap-2 items-center text-slate-500 dark:text-white">
-                            <flux:icon
-                                name="question-mark-circle"/>{{ __(':count interested', ['count' => $event->interested->count()]) }}
-                        </p>
-                    </div>
+                    <flux:heading class="mb-4 w-full md:w-1/4" size="lg">{{$event->name}}</flux:heading>
+                    <x-events.infos :event="$event"/>
                     <div class="flex flex-col flex-wrap gap-4">
                         <flux:button icon="magnifying-glass" wire:navigate
                                      href="{{ route('events.show', $event) }}">
@@ -86,21 +71,7 @@ new class extends Component {
         @foreach($pastEvents as $event)
             <flux:card wire:key="{{$event->id}}">
                 <div class="flex flex-wrap gap-8">
-                    <div class="grow flex flex-col gap-1 justify-between mb-4 text-sm">
-                        <flux:heading class="mb-4" size="lg">{{$event->name}}</flux:heading>
-                        <p class="flex gap-2 items-center text-slate-500 dark:text-white">
-                            <flux:icon name="calendar-days"/>{{ $event->date_range_full }}
-                        </p>
-                        <p class="flex gap-2 items-center text-slate-500 dark:text-white">
-                            <flux:icon name="map-pin"/>{{ $event->location }}
-                        </p>
-                        <p class="flex gap-2 items-center text-slate-500 dark:text-white">
-                            <flux:icon name="user-group"/>{{ $event->attending->count() }} attending
-                        </p>
-                        <p class="flex gap-2 items-center text-slate-500 dark:text-white">
-                            <flux:icon name="question-mark-circle"/>{{ $event->interested->count() }} interested
-                        </p>
-                    </div>
+                    <x-events.infos :event="$event"/>
                     <div class="flex flex-col flex-wrap gap-4">
                         <flux:button icon="magnifying-glass" wire:navigate
                                      href="{{ route('events.show', $event) }}">

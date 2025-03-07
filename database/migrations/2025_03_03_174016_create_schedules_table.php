@@ -19,6 +19,8 @@ return new class extends Migration
             $table->dateTime('end_date');
             $table->text('description')->nullable();
             $table->text('location')->nullable();
+            $table->float('longitude')->nullable();
+            $table->float('latitude')->nullable();
             $table->timestamps();
         });
     }
