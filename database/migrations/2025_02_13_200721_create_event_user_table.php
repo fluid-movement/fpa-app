@@ -18,9 +18,9 @@ return new class extends Migration
             $table->foreignIdFor(User::class);
             $table->string('status');
             $table->timestamps();
-            $table->index(['user_id', 'status', 'event_id'], 'user_status');
-            $table->index(['event_id', 'user_id', 'updated_at'], 'event_user');
-            $table->index(['event_id', 'status', 'updated_at'], 'event_status');
+            $table->index(['user_id', 'status', 'event_id'], 'user_status_index');
+            $table->index(['event_id', 'user_id', 'updated_at'], 'event_user_index');
+            $table->index(['event_id', 'status', 'updated_at'], 'event_status_index');
         });
     }
 
