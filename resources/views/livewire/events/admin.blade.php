@@ -10,6 +10,11 @@ new class extends Component {
     public Event $event;
     public ?EventMagicLink $magicLink;
 
+    public function rendering(Illuminate\View\View $view): void
+    {
+        $view->title('Admin | '.$this->event->name);
+    }
+
     public function mount(Event $event): void
     {
         Gate::authorize('admin', $event);

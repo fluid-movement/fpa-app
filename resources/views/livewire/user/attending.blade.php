@@ -3,7 +3,7 @@
 use Illuminate\Support\Collection;
 use Livewire\Volt\Component;
 
-new class extends Component {
+new #[\Livewire\Attributes\Title('Attending Events')] class extends Component {
     public Collection $events;
 
     public function mount()

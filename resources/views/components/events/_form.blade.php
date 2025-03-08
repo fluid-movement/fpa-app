@@ -1,4 +1,4 @@
-<div class="flex flex-col gap-8 my-8">
+<div class="flex flex-col gap-8 mb-8">
     <flux:input
         label="Event name"
         wire:model.blur="form.name"

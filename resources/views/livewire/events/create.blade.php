@@ -4,7 +4,7 @@ use App\Livewire\Forms\EventForm;
 use Livewire\Volt\Component;
 use Livewire\WithFileUploads;
 
-new class extends Component {
+new #[\Livewire\Attributes\Title('Create a new event')] class extends Component {
     use WithFileUploads;
 
     public EventForm $form;
@@ -16,10 +16,7 @@ new class extends Component {
     }
 }; ?>
 
-<div>
-    <flux:heading level="1" size="xl">Create a new event</flux:heading>
-    <form method="post" wire:submit="store">
-        <x-events._form :form="$form"/>
-        <flux:button variant="primary" type="submit">Create</flux:button>
-    </form>
-</div>
+<form method="post" wire:submit="store">
+    <x-events._form :form="$form"/>
+    <flux:button variant="primary" type="submit">Create</flux:button>
+</form>

@@ -11,6 +11,11 @@ new class extends Component {
     public Event $event;
     public Collection $days;
 
+    public function rendering(Illuminate\View\View $view): void
+    {
+        $view->title('Edit Schedule | '.$this->event->name);
+    }
+
     public function mount(Event $event): void
     {
         $this->event = $event;

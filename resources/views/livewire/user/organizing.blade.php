@@ -3,7 +3,7 @@
 use Illuminate\Support\Collection;
 use Livewire\Volt\Component;
 
-new class extends Component {
+new #[\Livewire\Attributes\Title('Event Organizer')] class extends Component {
     public Collection $events;
     public Collection $pastEvents;
 
@@ -30,10 +30,6 @@ new class extends Component {
             <flux:button class="self-center w-1/2" icon="plus" href="{{ route('events.create') }}">
                 {{ __('Create Event') }}
             </flux:button>
-        @else
-            <flux:heading size="xl">
-                {{ __('Events You Are Organizing') }}
-            </flux:heading>
         @endif
         @foreach($events as $event)
             <flux:card wire:key="{{$event->id}}">
@@ -63,10 +59,6 @@ new class extends Component {
                     {{ __('No past events.') }}
                 </flux:heading>
             </div>
-        @else
-            <flux:heading size="xl">
-                {{ __('Events You Have Organized') }}
-            </flux:heading>
         @endif
         @foreach($pastEvents as $event)
             <flux:card wire:key="{{$event->id}}">

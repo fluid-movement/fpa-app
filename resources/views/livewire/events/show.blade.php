@@ -5,11 +5,15 @@ use App\Core\Service\EventStatusService;
 use Illuminate\Support\Collection;
 use Livewire\Volt\Component;
 use App\Models\Event;
-use Illuminate\View\View;
 
 new class extends Component {
     public Event $event;
     public string $status = '';
+
+    public function rendering(Illuminate\View\View $view): void
+    {
+        $view->title($this->event->name);
+    }
 
     public function mount(Event $event, EventStatusService $eventStatusService): void
     {
@@ -32,6 +36,10 @@ new class extends Component {
     }
 }; ?>
 
+<x-slot name="breadcrumbs">
+    {{ Breadcrumbs::render('events.show', $event) }}
+</x-slot>
+
 <div>
     <x-slot name="banner">
         @if($event->banner)
@@ -43,15 +51,14 @@ new class extends Component {
                 alt="{{ $event->name }}"
                 width="{{ $width }}"
                 height="{{ $height }}"
-                class="w-full object-cover">
+                class="w-full object-cover mb-8">
         @endif
     </x-slot>
-    <flux:heading size="xl" class="mb-4">{{ $event->name }}</flux:heading>
     <x-events.infos :event="$event"/>
     @if(\Illuminate\Support\Facades\Auth::user() && $status !== EventUserStatus::ORGANIZING->value)
         <flux:radio.group wire:model.live="status"
                           variant="cards"
-                          :indicator="false" 
+                          :indicator="false"
                           class="max-sm:flex-col mb-4">
             <flux:radio value="{{EventUserStatus::ATTENDING->value}}"
                         icon="heart"
