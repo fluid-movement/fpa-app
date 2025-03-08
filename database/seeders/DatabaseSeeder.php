@@ -39,13 +39,13 @@ class DatabaseSeeder extends Seeder
 
             $interestedUsers = $users->random(random_int(1, $userCount))->pluck('id')->toArray();
             $event->users()->attach(
-                array_filter($interestedUsers, fn($id) => $id !== $organizer->id),
+                array_filter($interestedUsers, fn ($id) => $id !== $organizer->id),
                 ['status' => EventUserStatus::INTERESTED]
             );
 
             $attendingUsers = $users->random(random_int(1, $userCount))->pluck('id')->toArray();
             $event->users()->attach(
-                array_filter($attendingUsers, fn($id) => $id !== $organizer->id),
+                array_filter($attendingUsers, fn ($id) => $id !== $organizer->id),
                 ['status' => EventUserStatus::ATTENDING]
             );
         }

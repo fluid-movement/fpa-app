@@ -51,8 +51,8 @@ class Event extends Model
         $locale = request()->getPreferredLanguage();
 
         return Attribute::make(
-            get: fn(mixed $value, array $attributes) => LocaleDateFormatter::formatShort($locale, $attributes['start_date'])
-                . ' - ' .
+            get: fn (mixed $value, array $attributes) => LocaleDateFormatter::formatShort($locale, $attributes['start_date'])
+                .' - '.
                 LocaleDateFormatter::formatShort($locale, $attributes['end_date']),
         );
     }
@@ -62,8 +62,8 @@ class Event extends Model
         $locale = request()->getPreferredLanguage();
 
         return Attribute::make(
-            get: fn(mixed $value, array $attributes) => LocaleDateFormatter::format($locale, $attributes['start_date'])
-                . ' - ' .
+            get: fn (mixed $value, array $attributes) => LocaleDateFormatter::format($locale, $attributes['start_date'])
+                .' - '.
                 LocaleDateFormatter::format($locale, $attributes['end_date']),
         );
     }

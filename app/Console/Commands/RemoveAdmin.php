@@ -30,7 +30,7 @@ class RemoveAdmin extends Command
         $email = $this->argument('email');
         try {
             $user = User::firstWhere('email', $email);
-            if (!$user->isAdmin()) {
+            if (! $user->isAdmin()) {
                 $this->info("'{$email}' is already a user");
 
                 return;
