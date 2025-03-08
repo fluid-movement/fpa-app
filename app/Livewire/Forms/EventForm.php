@@ -3,7 +3,6 @@
 namespace App\Livewire\Forms;
 
 use App\Core\Enum\AssetType;
-use App\Core\Service\AssetManagerService;
 use App\Models\Event;
 use Flux\DateRange;
 use Illuminate\Support\Facades\Auth;
@@ -35,10 +34,12 @@ class EventForm extends Form
 
     #[Validate('image')]
     public $bannerUpload;
+
     public ?string $banner = '';
 
     #[Validate('image')]
     public $iconUpload;
+
     public ?string $icon = '';
 
     public function setEvent(Event $event): void
@@ -90,7 +91,6 @@ class EventForm extends Form
             'icon',
         ]));
     }
-
 
     public function uploadImages(): void
     {

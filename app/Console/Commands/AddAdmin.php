@@ -32,12 +32,14 @@ class AddAdmin extends Command
             $user = User::firstWhere('email', $email);
             if ($user->isAdmin()) {
                 $this->info("'{$email}' is already an admin");
+
                 return;
             }
             $user->role = UserRole::ADMIN;
             $user->save();
         } catch (\Exception) {
             $this->error("'{$email}' not found");
+
             return;
         }
 

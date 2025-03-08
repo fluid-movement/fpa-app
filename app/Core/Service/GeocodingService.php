@@ -9,15 +9,17 @@ use Spatie\Geocoder\Geocoder;
 class GeocodingService
 {
     private Geocoder $geocoder;
+
     public function __construct()
     {
-        $this->geocoder = new Geocoder(new Client());
+        $this->geocoder = new Geocoder(new Client);
         $this->geocoder->setApiKey(config('geocoder.key'));
     }
 
     public function getCoordinates(string $address): array
     {
         $data = $this->geocoder->getCoordinatesForAddress($address);
+
         return [$data['lat'] ?? 0, $data['lng'] ?? 0];
     }
 
@@ -33,6 +35,7 @@ class GeocodingService
             if (isset($data[0]['accuracy']) && $data[0]['accuracy'] === 'result_not_found') {
                 return [];
             }
+
             return $data;
         } catch (CouldNotGeocode $exception) {
             return [];

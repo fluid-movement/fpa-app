@@ -21,10 +21,10 @@ Route::middleware(['auth'])->group(function () {
 
 Volt::route('events', 'events.index')
     ->name('events.index');
+Volt::route('events/past/{year?}', 'events.index')
+    ->name('events.index.past');
 Volt::route('events/{event}', 'events.show')
     ->name('events.show');
-Volt::route('archive/{year?}/', 'events.archive.index')
-    ->name('events.archive.index');
 
 Volt::route('geocoding', 'geocoding-test')
     ->name('geocoding');

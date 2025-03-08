@@ -32,12 +32,14 @@ class RemoveAdmin extends Command
             $user = User::firstWhere('email', $email);
             if (!$user->isAdmin()) {
                 $this->info("'{$email}' is already a user");
+
                 return;
             }
             $user->role = UserRole::USER;
             $user->save();
         } catch (\Exception $e) {
             $this->error('User not found');
+
             return;
         }
 

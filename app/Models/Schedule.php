@@ -7,7 +7,6 @@ use Illuminate\Database\Eloquent\Attributes\ScopedBy;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
-
 #[ScopedBy(OrderByStartAsc::class)]
 class Schedule extends Model
 {

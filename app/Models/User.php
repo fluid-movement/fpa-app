@@ -75,12 +75,14 @@ class User extends Authenticatable
             ->wherePivot('status', EventUserStatus::ORGANIZING)
             ->whereDate('events.end_date', '>=', now());
     }
+
     public function organizedEvents(): BelongsToMany
     {
         return $this->belongsToMany(Event::class)
             ->wherePivot('status', EventUserStatus::ORGANIZING)
             ->whereDate('events.end_date', '<', now());
     }
+
     public function interestedEvents(): BelongsToMany
     {
         return $this->belongsToMany(Event::class)

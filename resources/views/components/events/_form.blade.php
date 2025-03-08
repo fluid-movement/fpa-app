@@ -1,18 +1,21 @@
 <div class="flex flex-col gap-8 mb-8">
-    <flux:input
-        label="Event name"
-        wire:model.blur="form.name"
-    />
-    <div class="flex gap-8 flex-wrap">
+    <div class="flex flex-col gap-8 md:w-1/2">
         <flux:input
-            label="Location"
-            wire:model="form.location"
+            label="Event name"
+            wire:model.blur="form.name"
         />
-        <flux:date-picker
-            label="Date"
-            mode="range"
-            wire:model="form.dateRange"
-        />
+        <div class="flex gap-8 flex-wrap md:flex-nowrap">
+            <flux:input
+                label="Location"
+                wire:model="form.location"
+            />
+            <flux:date-picker
+                with-confirmation="true"
+                label="Date"
+                mode="range"
+                wire:model="form.dateRange"
+            />
+        </div>
     </div>
     <flux:editor
         label="Description"
