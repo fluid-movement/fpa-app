@@ -12,15 +12,19 @@
     <flux:navlist variant="outline">
         <flux:navlist.group heading="Events" class="grid">
             <flux:navlist.item
+                icon="fire" :href="route('home')" :current="request()->routeIs('home')"
+                wire:navigate>{{ __('Home') }}
+            </flux:navlist.item>
+            <flux:navlist.item
                 icon="calendar-date-range" :href="route('events.index')" :current="request()->routeIs('events.index')"
                 wire:navigate>{{ __('Event Calendar') }}
             </flux:navlist.item>
         </flux:navlist.group>
         <flux:navlist.group heading="User" class="grid">
             <flux:navlist.item
-                icon="building-storefront" :href="route('user.organizing')"
+                icon="bell" :href="route('user.organizing')"
                 :current="request()->routeIs('user.organizing')"
-                wire:navigate>{{ __('Organizing') }}
+                wire:navigate>{{ __('Event Organizer') }}
             </flux:navlist.item>
             <flux:navlist.item
                 icon="heart" :href="route('user.attending')" :current="request()->routeIs('user.attending')"
@@ -35,11 +39,17 @@
     sticky
     class="hidden lg:flex z-20 gap-4 bg-zinc-50 dark:bg-zinc-800 border-b border-l border-zinc-200 dark:border-zinc-700">
     @isset($title)
-        <flux:heading size="lg">{{$title}}</flux:heading>
+        <flux:heading class="cursor-default" size="lg">{{$title}}</flux:heading>
     @endisset
     <flux:spacer/>
-        <flux:button variant="ghost" icon="plus" href="{{ route('events.create') }}"
-                     wire:navigate>{{ __('Create Event') }}</flux:button>
+    <flux:button
+        class="!text-blue-500"
+        variant="ghost"
+        icon="plus"
+        href="{{ route('events.create') }}"
+        wire:navigate>
+        {{ __('Create Event') }}
+    </flux:button>
     @auth
         <!-- Desktop User Menu -->
         <flux:dropdown position="bottom" align="start">
@@ -74,8 +84,8 @@
         </flux:dropdown>
     @endauth
     @guest
-            <flux:button variant="ghost" icon="user" href="{{ route('login') }}"
-                         wire:navigate>{{ __('Log in') }}</flux:button>
+        <flux:button variant="ghost" icon="user" href="{{ route('login') }}"
+                     wire:navigate>{{ __('Log in') }}</flux:button>
     @endguest
 </flux:header>
 

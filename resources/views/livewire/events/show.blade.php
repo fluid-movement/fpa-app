@@ -2,13 +2,16 @@
 
 use App\Core\Enum\EventUserStatus;
 use App\Core\Service\EventStatusService;
-use Illuminate\Support\Collection;
-use Livewire\Volt\Component;
 use App\Models\Event;
+use Livewire\Volt\Component;
 
-new class extends Component {
+new class extends Component
+{
     public Event $event;
+
     public string $status = '';
+
+    public bool $showButtons = false;
 
     public function rendering(Illuminate\View\View $view): void
     {
@@ -19,12 +22,14 @@ new class extends Component {
     {
         $this->event = $event;
         $this->status = auth()->user() ? $eventStatusService->getStatus($event, auth()->user()) : '';
+        $this->showButtons = auth()->user() && $this->status !== EventUserStatus::ORGANIZING->value && $this->event->end_date->isFuture();
     }
 
     public function updatedStatus(): void
     {
-        if (!in_array($this->status, [EventUserStatus::ATTENDING->value, EventUserStatus::INTERESTED->value, ''])) {
+        if (! in_array($this->status, [EventUserStatus::ATTENDING->value, EventUserStatus::INTERESTED->value, ''])) {
             $this->status = '';
+
             return;
         }
 
@@ -55,7 +60,7 @@ new class extends Component {
         @endif
     </x-slot>
     <x-events.infos :event="$event"/>
-    @if(\Illuminate\Support\Facades\Auth::user() && $status !== EventUserStatus::ORGANIZING->value)
+    @if($showButtons)
         <flux:radio.group wire:model.live="status"
                           variant="cards"
                           :indicator="false"

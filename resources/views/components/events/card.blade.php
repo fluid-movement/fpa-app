@@ -1,44 +1,39 @@
-@props(['event', 'badge' => ''])
+@props(['event', 'badges' => []])
 
-<div
-    class="p-4 h-48 rounded-sm relative bg-white hover:bg-blue-50 dark:hover:bg-blue-200/10 dark:bg-white/10 border border-zinc-200 dark:border-white/10">
-    <a href="{{route('events.show', ['event' => $event])}}">
-        <div class="flex gap-4 h-full">
-            <div class="grow flex flex-col p-4">
-                <flux:heading size="lg" class="h-1/2">{{ Str::limit($event->name, 20) }}</flux:heading>
+<a class="size-full" href="{{route('events.show', ['event' => $event])}}">
+    <div
+        class="size-full p-4 rounded-sm flex flex-col justify-between
+        bg-white hover:bg-blue-50 dark:hover:bg-blue-200/10 dark:bg-white/10 border border-zinc-200 dark:border-white/10">
+        <div class="flex mb-4">
+            <flux:heading size="lg">{{ $event->name }}</flux:heading>
+        </div>
+        <div class="flex h-24">
+            <div class="grow flex flex-col gap-4">
+                @if($event->end_date->isFuture())
+                    <div>
+                        @foreach($badges as $badge)
+                            <x-events.badge :badge="$badge"/>
+                        @endforeach
+                    </div>
+                @endif
+                <flux:spacer/>
                 <div class="text-slate-500 dark:text-slate-300">
-                    <flux:text class="flex gap-2 items-center mb-1">
+                    <flux:text variant="strong" class="flex gap-2 items-center mb-1">
                         <flux:icon variant="micro" name="calendar-days"/>{{ $event->date_range }}
                     </flux:text>
                     <flux:text class="flex gap-2 items-center mb-1">
                         <flux:icon variant="micro" name="map-pin"/>{{ $event->location }}
                     </flux:text>
-                    @switch($badge)
-                        @case(\App\Core\Enum\EventUserStatus::ATTENDING->value)
-                            <flux:badge inset="left" size="sm" color="green">
-                                {{__(ucfirst(\App\Core\Enum\EventUserStatus::ATTENDING->value))}}
-                            </flux:badge>
-                            @break
-                        @case(\App\Core\Enum\EventUserStatus::INTERESTED->value)
-                            <flux:badge inset="left" size="sm" color="amber">
-                                {{__(ucfirst(\App\Core\Enum\EventUserStatus::INTERESTED->value))}}
-                            </flux:badge>
-                            @break
-                        @case(\App\Core\Enum\EventUserStatus::ORGANIZING->value)
-                            <flux:badge inset="left" size="sm" color="blue">{{ucfirst($badge)}}</flux:badge>
-                            @break
-                    @endswitch
+
                 </div>
             </div>
             @if($event->icon)
-                <div class="h-40 w-40">
-                    <img
-                        src="{{ $event->icon_url }}"
-                        alt="{{ $event->name }}"
-                        class="rounded-sm h-full object-contain"
-                    />
-                </div>
+                <img
+                    src="{{ $event->icon_url }}"
+                    alt="{{ $event->name }}"
+                    class="object-contain rounded-sm"
+                />
             @endif
         </div>
-    </a>
-</div>
+    </div>
+</a>

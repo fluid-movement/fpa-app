@@ -1,11 +1,9 @@
 <?php
 
-use JetBrains\PhpStorm\NoReturn;
-use Livewire\Attributes\Title;
-use Livewire\Volt\Component;
-use App\Models\Event;
 use App\Core\Service\EventCalendarService;
+use App\Models\Event;
 use Illuminate\Support\Carbon;
+use Livewire\Volt\Component;
 
 enum EventListType: string
 {
@@ -13,22 +11,35 @@ enum EventListType: string
     case Past = 'past';
 }
 
-new #[Title('Event Calendar')] class extends Component {
+new class extends Component
+{
     public array $calendarData = [];
 
     // badges for upcoming events
-    public array $userAttending = [];
+    public array $badges = [];
 
     // switch between upcoming and past events
-    public EventListType $showEventsType = EventListType::Upcoming;
+    public EventListType $eventListType = EventListType::Upcoming;
 
     // archive properties
     public array $radioYears = [];
+
     public array $dropdownYears = [];
+
     public int $year = 0;
+
     public int $dropdownAfter = 3;
 
-    public function mount(string $year = null): void
+    public function rendering(Illuminate\View\View $view): void
+    {
+        $title = match ($this->eventListType) {
+            EventListType::Upcoming => 'Upcoming Events',
+            EventListType::Past => 'Past Events in '.$this->year,
+        };
+        $view->title($title);
+    }
+
+    public function mount(?string $year = null): void
     {
         $years = EventCalendarService::getArchiveYears();
         $this->radioYears = array_slice($years, 0, $this->dropdownAfter);
@@ -37,7 +48,7 @@ new #[Title('Event Calendar')] class extends Component {
         $this->year = $year ?? $years[0] ?? Carbon::now()->year;
 
         if ($year) {
-            $this->showEventsType = EventListType::Past;
+            $this->eventListType = EventListType::Past;
             $this->updateCalendarData();
         } else {
             $this->calendarData = EventCalendarService::getFormattedCalendar(
@@ -50,21 +61,19 @@ new #[Title('Event Calendar')] class extends Component {
                 ->where('user_id', \Illuminate\Support\Facades\Auth::user()->id)
                 ->get()
                 ->each(function ($eventUser) {
-                    $this->userAttending[$eventUser->event_id] = $eventUser->status;
+                    $this->badges[$eventUser->event_id][] = $eventUser->status;
                 })->toArray();
         }
     }
 
-    public function updatedShowEventsType(): void
+    public function updatedEventListType(): void
     {
-        if ($this->showEventsType === EventListType::Past) {
+        if ($this->eventListType === EventListType::Past) {
             $this->updateCalendarData();
-            $this->js('setUrl', route('events.index.past', ['year' => $this->year]));
         } else {
             $this->calendarData = EventCalendarService::getFormattedCalendar(
                 Event::whereFuture('end_date')->get()
             );
-            $this->js('setUrl', route('events.index'));
         }
 
     }
@@ -72,7 +81,6 @@ new #[Title('Event Calendar')] class extends Component {
     public function updatedYear(): void
     {
         $this->updateCalendarData();
-        $this->js('setUrl', route('events.index.past', ['year' => $this->year]));
     }
 
     private function updateCalendarData(): void
@@ -89,19 +97,32 @@ new #[Title('Event Calendar')] class extends Component {
 </x-slot>
 
 <div class="flex flex-col gap-8">
-    <flux:radio.group wire:model.live="showEventsType" variant="segmented">
-        <flux:radio class="cursor-pointer" value="upcoming" label="Upcoming Events"/>
-        <flux:radio class="cursor-pointer" value="past" label="Past Events"/>
-    </flux:radio.group>
+    <div class="p-2 w-full flex gap-2 justify-stretch border border-zinc-200 dark:border-zinc-700 rounded-md">
+        <flux:button
+            class="w-full"
+            href="{{route('events.index')}}"
+            variant="{{$eventListType === EventListType::Upcoming ? 'filled' : 'ghost'}}">
+            Upcoming Events
+        </flux:button>
+        <flux:button
+            class="w-full"
+            href="{{route('events.index.past', ['year' => $year])}}"
+            variant="{{$eventListType === EventListType::Past ? 'filled' : 'ghost'}}"
+        >
+            Past Events
+        </flux:button>
+    </div>
 
     <!-- radio buttons for past year selection -->
-    @if($showEventsType === EventListType::Past)
+    @if($eventListType === EventListType::Past)
         <div class="flex gap-2 mb-8">
+            <flux:spacer />
             @if(count($radioYears))
                 @foreach($radioYears as $radioYear)
                     <flux:button
                         class="cursor-pointer"
-                        wire:click="$set('year', {{ $radioYear }})"
+                        href="{{route('events.index.past', ['year' => $radioYear])}}"
+                        wire:navigate
                         variant="{{ $radioYear == $year ? 'filled' : 'ghost' }}">
                         {{ $radioYear }}
                     </flux:button>
@@ -113,7 +134,9 @@ new #[Title('Event Calendar')] class extends Component {
                             @foreach($dropdownYears as $dropdownYear)
                                 <flux:navmenu.item
                                     class="cursor-pointer"
-                                    wire:click="$set('year', {{ $dropdownYear }})">
+                                    href="{{route('events.index.past', ['year' => $dropdownYear])}}"
+                                    wire:navigate
+                                    >
                                     {{$dropdownYear}}
                                 </flux:navmenu.item>
                             @endforeach
@@ -123,17 +146,5 @@ new #[Title('Event Calendar')] class extends Component {
             @endif
         </div>
     @endif
-    @if($showEventsType === EventListType::Past)
-        <x-events._list :calendarData="$calendarData"/>
-    @else
-        <x-events._list :calendarData="$calendarData" :userAttending="$userAttending"/>
-    @endif
+    <x-events._list :calendarData="$calendarData" :badges="$badges"/>
 </div>
-
-@script
-<script>
-    $js('setUrl', (url) => {
-        window.history.pushState({}, '', url);
-    })
-</script>
-@endscript
