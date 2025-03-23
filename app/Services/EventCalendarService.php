@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Core\Service;
+namespace App\Services;
 
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Collection;

@@ -3,8 +3,8 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
-use App\Core\Enum\EventUserStatus;
-use App\Core\Enum\UserRole;
+use App\Enums\EventUserStatus;
+use App\Enums\UserRole;
 use Illuminate\Database\Eloquent\Concerns\HasUlids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
@@ -81,13 +81,6 @@ class User extends Authenticatable
         return $this->belongsToMany(Event::class)
             ->wherePivot('status', EventUserStatus::ORGANIZING)
             ->whereDate('events.end_date', '<', now());
-    }
-
-    public function interestedEvents(): BelongsToMany
-    {
-        return $this->belongsToMany(Event::class)
-            ->wherePivotIn('status', [EventUserStatus::INTERESTED, EventUserStatus::ATTENDING])
-            ->whereDate('events.end_date', '>=', now());
     }
 
     public function attendingEvents(): BelongsToMany

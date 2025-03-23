@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Core\Service;
+namespace App\Services;
 
-use App\Core\Enum\AssetType;
+use App\Enums\AssetType;
 use Illuminate\Support\Facades\Storage;
 
 class AssetManagerService

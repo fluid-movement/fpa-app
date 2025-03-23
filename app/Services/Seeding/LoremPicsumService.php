@@ -1,8 +1,9 @@
 <?php
 
-namespace App\Core\Service;
+namespace App\Services\Seeding;
 
-use App\Core\Enum\AssetType;
+use App\Enums\AssetType;
+use App\Services\AssetManagerService;
 use Exception;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Str;

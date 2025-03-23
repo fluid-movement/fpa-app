@@ -2,9 +2,9 @@
 
 namespace App\Observers;
 
-use App\Core\Enum\AssetType;
-use App\Core\Service\AssetManagerService;
+use App\Enums\AssetType;
 use App\Models\Event;
+use App\Services\AssetManagerService;
 
 readonly class EventObserver
 {

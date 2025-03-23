@@ -10,8 +10,8 @@ todo: add a description
 - Event Archive
     - List all past events, grouped by year
 - Event Detail
-    - Logged-in Users can select "Interested" or "Attending"
-    - Information about the event (Date, Location, Count of users interested/attending)
+    - Logged-in Users can select "Attending"
+    - Information about the event (Date, Location, Count of users attending)
     - Tab for Event Description
     - Tab for Event Schedule
 - Event Configuration

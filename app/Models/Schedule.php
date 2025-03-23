@@ -4,12 +4,15 @@ namespace App\Models;
 
 use App\Models\Scopes\OrderByStartAsc;
 use Illuminate\Database\Eloquent\Attributes\ScopedBy;
+use Illuminate\Database\Eloquent\Concerns\HasUlids;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 #[ScopedBy(OrderByStartAsc::class)]
 class Schedule extends Model
 {
+    use HasUlids;
+
     protected $fillable = [
         'name',
         'start_date',

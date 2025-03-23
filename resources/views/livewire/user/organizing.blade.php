@@ -3,8 +3,10 @@
 use Illuminate\Support\Collection;
 use Livewire\Volt\Component;
 
-new #[\Livewire\Attributes\Title('Event Organizer')] class extends Component {
+new #[\Livewire\Attributes\Title('Event Organizer')] class extends Component
+{
     public Collection $events;
+
     public Collection $pastEvents;
 
     public function mount(): void
@@ -16,7 +18,7 @@ new #[\Livewire\Attributes\Title('Event Organizer')] class extends Component {
 
 
 <flux:tab.group>
-    <flux:tabs wire:model="tab">
+    <flux:tabs>
         <flux:tab name="upcoming">Upcoming Events</flux:tab>
         <flux:tab name="past">Past Events</flux:tab>
     </flux:tabs>
@@ -41,11 +43,8 @@ new #[\Livewire\Attributes\Title('Event Organizer')] class extends Component {
                                      href="{{ route('events.show', $event) }}">
                             {{ __('View Event') }}
                         </flux:button>
-                        <flux:button icon="pencil-square" wire:navigate href="{{ route('events.edit', $event) }}">
-                            {{ __('Edit Event Details') }}
-                        </flux:button>
-                        <flux:button icon="book-open" wire:navigate href="{{ route('events.admin', $event) }}">
-                            {{ __('Organize Event') }}
+                        <flux:button icon="cog-8-tooth" wire:navigate href="{{ route('events.admin', $event) }}">
+                            {{ __('Admin Area') }}
                         </flux:button>
                     </div>
                 </div>

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Core\Service;
+namespace App\Services;
 
 use GuzzleHttp\Client;
 use Spatie\Geocoder\Exceptions\CouldNotGeocode;

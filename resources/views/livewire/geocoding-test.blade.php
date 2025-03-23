@@ -3,17 +3,22 @@
 use Livewire\Attributes\On;
 use Livewire\Volt\Component;
 
-new class extends Component {
+new class extends Component
+{
     public float $latitude = 0;
+
     public float $longitude = 0;
+
     public string $address = '';
+
     public string $selectedAddress = '';
+
     public array $options = [];
 
     public function updatedAddress()
     {
         if ($this->address && strlen($this->address) > 3) {
-            $geocoder = new \App\Core\Service\GeocodingService();
+            $geocoder = new \App\Services\GeocodingService;
             $this->options = $geocoder->getList($this->address);
         }
     }
@@ -21,7 +26,7 @@ new class extends Component {
     public function updatedSelectedAddress()
     {
         if ($this->selectedAddress) {
-            $geocoder = new \App\Core\Service\GeocodingService();
+            $geocoder = new \App\Services\GeocodingService;
             $data = $geocoder->getData($this->selectedAddress);
             [$this->latitude, $this->longitude] = [$data['lat'], $data['lng']];
             $this->dispatch('coordinatesChanged', $data);

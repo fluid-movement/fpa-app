@@ -1,14 +1,15 @@
 <?php
 
-use Illuminate\Support\Collection;
-use Livewire\Volt\Component;
 use App\Models\Event;
-use App\Models\Schedule;
 use Carbon\Carbon;
 use Carbon\CarbonPeriod;
+use Illuminate\Support\Collection;
+use Livewire\Volt\Component;
 
-new class extends Component {
+new class extends Component
+{
     public Event $event;
+
     public Collection $days;
 
     public function rendering(Illuminate\View\View $view): void
@@ -27,16 +28,10 @@ new class extends Component {
             )->toArray()
         );
     }
-
 }; ?>
 
 <div>
-    <flux:button
-        icon="chevron-left"
-        href="{{ route('events.show', $event) }}"
-        class="mb-8">
-        Back to Event
-    </flux:button>
+    <x-back-button href="{{ route('events.admin', [$event, \App\Enums\AdminTabs::SCHEDULE]) }}"/>
     @foreach($days as $day)
         <flux:heading class="mb-4">{{ $day->format('l, F j') }}</flux:heading>
         <livewire:events.schedule.form :event="$event" :day="$day"/>

@@ -2,16 +2,14 @@
 
 namespace App\Models;
 
-use App\Core\Enum\AssetType;
-use App\Core\Enum\EventUserStatus;
-use App\Core\LocaleDateFormatter;
-use App\Core\Service\AssetManagerService;
+use App\Enums\AssetType;
+use App\Enums\EventUserStatus;
 use App\Models\Scopes\OrderByStartAsc;
 use App\Observers\EventObserver;
+use App\Services\AssetManagerService;
 use Database\Factories\EventFactory;
 use Illuminate\Database\Eloquent\Attributes\ObservedBy;
 use Illuminate\Database\Eloquent\Attributes\ScopedBy;
-use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Concerns\HasUlids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -44,28 +42,6 @@ class Event extends Model
             'start_date' => 'datetime:Y-m-d',
             'end_date' => 'datetime:Y-m-d',
         ];
-    }
-
-    public function dateRange(): Attribute
-    {
-        $locale = request()->getPreferredLanguage();
-
-        return Attribute::make(
-            get: fn (mixed $value, array $attributes) => LocaleDateFormatter::formatShort($locale, $attributes['start_date'])
-                .' - '.
-                LocaleDateFormatter::formatShort($locale, $attributes['end_date']),
-        );
-    }
-
-    public function dateRangeFull(): Attribute
-    {
-        $locale = request()->getPreferredLanguage();
-
-        return Attribute::make(
-            get: fn (mixed $value, array $attributes) => LocaleDateFormatter::format($locale, $attributes['start_date'])
-                .' - '.
-                LocaleDateFormatter::format($locale, $attributes['end_date']),
-        );
     }
 
     public function getBannerUrlAttribute(): ?string
@@ -120,18 +96,15 @@ class Event extends Model
         return $this->hasMany(Schedule::class);
     }
 
+    public function divisions(): HasMany
+    {
+        return $this->hasMany(Division::class);
+    }
+
     public function users(): BelongsToMany
     {
         return $this->belongsToMany(User::class)
             ->withPivot('status')
-            ->withTimestamps()
-            ->orderByDesc('event_user.updated_at');
-    }
-
-    public function interested(): BelongsToMany
-    {
-        return $this->belongsToMany(User::class)
-            ->wherePivot('status', EventUserStatus::INTERESTED)
             ->withTimestamps()
             ->orderByDesc('event_user.updated_at');
     }

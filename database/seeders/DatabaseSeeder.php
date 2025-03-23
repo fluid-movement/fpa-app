@@ -2,11 +2,12 @@
 
 namespace Database\Seeders;
 
-use App\Core\Enum\AssetType;
-use App\Core\Enum\EventUserStatus;
-use App\Core\Service\AssetManagerService;
+use App\Enums\AssetType;
+use App\Enums\EventUserStatus;
 use App\Models\Event;
+use App\Models\Player;
 use App\Models\User;
+use App\Services\AssetManagerService;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
@@ -30,18 +31,23 @@ class DatabaseSeeder extends Seeder
         $userCount = 40;
         User::factory($userCount)->create();
         Event::factory(80)->create();
+        Player::factory(100)->create();
 
-        // create "interested" and "attending" relationships
+        foreach (Player::all() as $player) {
+            // create ActiveYears
+            $years = range(2015, 2025);
+            foreach ($years as $year) {
+                if (round(rand(0, 1))) {
+                    $player->activeYears()->create(['year' => $year]);
+                }
+            }
+        }
+
+        // create "attending" relationships
         $users = User::all();
         foreach (Event::all() as $event) {
             $organizer = User::find($event->user_id);
             $event->users()->attach($organizer, ['status' => EventUserStatus::ORGANIZING]);
-
-            $interestedUsers = $users->random(random_int(1, $userCount))->pluck('id')->toArray();
-            $event->users()->attach(
-                array_filter($interestedUsers, fn ($id) => $id !== $organizer->id),
-                ['status' => EventUserStatus::INTERESTED]
-            );
 
             $attendingUsers = $users->random(random_int(1, $userCount))->pluck('id')->toArray();
             $event->users()->attach(

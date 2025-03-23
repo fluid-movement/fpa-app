@@ -1,20 +1,15 @@
 @props([
-    /** @var \mixed */
+    /** @var \App\Enums\EventUserStatus */
     'badge'
 ])
 
 @switch($badge)
-    @case(\App\Core\Enum\EventUserStatus::ATTENDING->value)
+    @case(\App\Enums\EventUserStatus::ATTENDING->value)
         <flux:badge inset="left" size="sm" color="green">
-            {{__(ucfirst(\App\Core\Enum\EventUserStatus::ATTENDING->value))}}
+            {{__(ucfirst(\App\Enums\EventUserStatus::ATTENDING->value))}}
         </flux:badge>
         @break
-    @case(\App\Core\Enum\EventUserStatus::INTERESTED->value)
-        <flux:badge inset="left" size="sm">
-            {{__(ucfirst(\App\Core\Enum\EventUserStatus::INTERESTED->value))}}
-        </flux:badge>
-        @break
-    @case(\App\Core\Enum\EventUserStatus::ORGANIZING->value)
+    @case(\App\Enums\EventUserStatus::ORGANIZING->value)
         <flux:badge inset="left" size="sm" color="blue">{{ucfirst($badge)}}</flux:badge>
         @break
 @endswitch

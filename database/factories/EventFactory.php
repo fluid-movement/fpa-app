@@ -2,7 +2,7 @@
 
 namespace Database\Factories;
 
-use App\Core\Service\LoremPicsumService;
+use App\Services\Seeding\LoremPicsumService;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -27,6 +27,11 @@ class EventFactory extends Factory
 
         $users = \App\Models\User::all();
 
+        // $banner = app(LoremPicsumService::class)->getBanner();
+        // $icon = app(LoremPicsumService::class)->getIcon();
+        $banner = '';
+        $icon = '';
+
         return [
             'name' => $name,
             'user_id' => $users->random()->id,
@@ -34,8 +39,8 @@ class EventFactory extends Factory
             'start_date' => $startDate->format('Y-m-d'),
             'end_date' => $endDate->format('Y-m-d'),
             'location' => fake()->city(),
-            'banner' => app(LoremPicsumService::class)->getBanner(),
-            'icon' => app(LoremPicsumService::class)->getIcon(),
+            'banner' => $banner,
+            'icon' => $icon,
         ];
     }
 }

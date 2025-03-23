@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Core\Enum;
+namespace App\Enums;
 
 enum AssetType: string
 {

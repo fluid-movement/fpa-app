@@ -9,21 +9,25 @@
     <a href="{{ route('home') }}" class="flex items-center space-x-2" wire:navigate>
         <x-app-logo/>
     </a>
-    <flux:navlist variant="outline">
+    <flux:navlist variant="outline" class="flex flex-col">
         <flux:navlist.group heading="Events" class="grid">
             <flux:navlist.item
                 icon="fire" :href="route('home')" :current="request()->routeIs('home')"
                 wire:navigate>{{ __('Home') }}
             </flux:navlist.item>
             <flux:navlist.item
-                icon="calendar-date-range" :href="route('events.index')" :current="request()->routeIs('events.index')"
+                icon="calendar-date-range" :href="route('events.index')" :current="request()->routeIs('events.index', 'events.show')"
                 wire:navigate>{{ __('Event Calendar') }}
             </flux:navlist.item>
         </flux:navlist.group>
         <flux:navlist.group heading="User" class="grid">
             <flux:navlist.item
+                icon="user" :href="route('user.profile')" :current="request()->routeIs('user.profile', 'settings.profile')"
+                wire:navigate>{{ __('Profile') }}
+            </flux:navlist.item>
+            <flux:navlist.item
                 icon="bell" :href="route('user.organizing')"
-                :current="request()->routeIs('user.organizing')"
+                :current="request()->routeIs('user.organizing', 'events.create', 'events.edit', 'events.admin', 'events.schedule.edit')"
                 wire:navigate>{{ __('Event Organizer') }}
             </flux:navlist.item>
             <flux:navlist.item
@@ -31,8 +35,21 @@
                 wire:navigate>{{ __('Attending') }}
             </flux:navlist.item>
         </flux:navlist.group>
+        <flux:navlist.group heading="Admin" class="grid">
+            <flux:navlist.item
+                icon="chart-pie" :href="route('admin.dashboard')"
+                :current="request()->routeIs('admin.dashboard')"
+                wire:navigate>{{ __('Dashboard') }}
+            </flux:navlist.item>
+            <flux:navlist.item
+                icon="bars-3-bottom-left" :href="route('admin.index')"
+                :current="request()->routeIs('admin.index')"
+                wire:navigate>{{ __('FPA Members') }}
+            </flux:navlist.item>
+        </flux:navlist.group>
     </flux:navlist>
     <flux:spacer/>
+    <flux:link href="{{route('imprint')}}" class="text-xs text-gray-500 dark:text-gray-400">Imprint</flux:link>
 </flux:sidebar>
 <!-- Desktop Header -->
 <flux:header

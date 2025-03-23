@@ -2,7 +2,7 @@
 
 namespace App\Livewire\Forms;
 
-use App\Core\Enum\AssetType;
+use App\Enums\AssetType;
 use App\Models\Event;
 use Flux\DateRange;
 use Illuminate\Support\Facades\Auth;

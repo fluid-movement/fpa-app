@@ -1,21 +1,24 @@
 <?php
 
-use App\Models\EventMagicLink;
+use App\Enums\EventUserStatus;
 use App\Models\Event;
-use App\Core\Enum\EventUserStatus;
-
+use App\Models\EventMagicLink;
 use Livewire\Volt\Component;
 
-new class extends Component {
+new class extends Component
+{
     public Event $event;
+
     public EventMagicLink $magicLink;
+
     public string $status;
 
     public function mount(string $id): void
     {
         $magicLink = EventMagicLink::find($id);
-        if (!$magicLink) {
+        if (! $magicLink) {
             $this->status = 'invalid';
+
             return;
         }
         $this->event = $magicLink->event;
@@ -39,8 +42,8 @@ new class extends Component {
 }; ?>
 
 <div class="flex flex-col gap-4 items-center h-[30vh]">
-    <flux:spacer />
-    <flux:heading size="xl" >
+    <flux:spacer/>
+    <flux:heading size="xl">
         @if($status === 'added')
             {{ __('You are now an organizer of :name', ['name' => $event->name]) }}
         @elseif($status === 'already')

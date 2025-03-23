@@ -1,10 +1,9 @@
 <?php
 
-namespace App\Core\Enum;
+namespace App\Enums;
 
 enum EventUserStatus: string
 {
-    case INTERESTED = 'interested';
     case ATTENDING = 'attending';
     case ORGANIZING = 'organizing';
 }

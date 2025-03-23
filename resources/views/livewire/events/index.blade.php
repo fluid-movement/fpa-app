@@ -1,7 +1,7 @@
 <?php
 
-use App\Core\Service\EventCalendarService;
 use App\Models\Event;
+use App\Services\EventCalendarService;
 use Illuminate\Support\Carbon;
 use Livewire\Volt\Component;
 
@@ -116,7 +116,7 @@ new class extends Component
     <!-- radio buttons for past year selection -->
     @if($eventListType === EventListType::Past)
         <div class="flex gap-2 mb-8">
-            <flux:spacer />
+            <flux:spacer/>
             @if(count($radioYears))
                 @foreach($radioYears as $radioYear)
                     <flux:button
@@ -136,7 +136,7 @@ new class extends Component
                                     class="cursor-pointer"
                                     href="{{route('events.index.past', ['year' => $dropdownYear])}}"
                                     wire:navigate
-                                    >
+                                >
                                     {{$dropdownYear}}
                                 </flux:navmenu.item>
                             @endforeach

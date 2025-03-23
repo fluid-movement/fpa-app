@@ -1,7 +1,6 @@
 <?php
 
-use App\Core\Enum\EventUserStatus;
-use App\Core\Service\EventStatusService;
+use App\Enums\EventUserStatus;
 use App\Models\Event;
 use Livewire\Volt\Component;
 
@@ -18,16 +17,19 @@ new class extends Component
         $view->title($this->event->name);
     }
 
-    public function mount(Event $event, EventStatusService $eventStatusService): void
+    public function mount(Event $event): void
     {
         $this->event = $event;
-        $this->status = auth()->user() ? $eventStatusService->getStatus($event, auth()->user()) : '';
+        $this->status =
+            auth()->user()
+                ? $event->users()->where('user_id', auth()->user()->id)->first()?->pivot->status ?? ''
+                : '';
         $this->showButtons = auth()->user() && $this->status !== EventUserStatus::ORGANIZING->value && $this->event->end_date->isFuture();
     }
 
     public function updatedStatus(): void
     {
-        if (! in_array($this->status, [EventUserStatus::ATTENDING->value, EventUserStatus::INTERESTED->value, ''])) {
+        if (! in_array($this->status, [EventUserStatus::ATTENDING->value, ''])) {
             $this->status = '';
 
             return;
@@ -68,9 +70,6 @@ new class extends Component
             <flux:radio value="{{EventUserStatus::ATTENDING->value}}"
                         icon="heart"
                         label="Attending"/>
-            <flux:radio value="{{EventUserStatus::INTERESTED->value}}"
-                        icon="bookmark"
-                        label="Interested"/>
             <flux:radio value="" label="Not interested"/>
         </flux:radio.group>
     @endif
