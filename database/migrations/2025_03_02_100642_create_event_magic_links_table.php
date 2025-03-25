@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('event_magic_links', function (Blueprint $table) {
             $table->ulid('id');
-            $table->foreignIdFor(\App\Models\Event::class);
+            $table->foreignIdFor(\App\Models\Event::class)->constrained()->cascadeOnDelete();
             $table->dateTime('expires_at');
             $table->timestamps();
             $table->index('event_id');

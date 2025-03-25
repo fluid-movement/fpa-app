@@ -13,8 +13,8 @@ return new class extends Migration
     {
         Schema::create('pool_team', function (Blueprint $table) {
             $table->id();
-            $table->foreignIdFor(\App\Models\Pool::class);
-            $table->foreignIdFor(\App\Models\Team::class);
+            $table->foreignIdFor(\App\Models\Pool::class)->constrained()->cascadeOnDelete();
+            $table->foreignIdFor(\App\Models\Team::class)->constrained()->cascadeOnDelete();
             $table->integer('sorting')->default(0);
             $table->timestamps();
         });

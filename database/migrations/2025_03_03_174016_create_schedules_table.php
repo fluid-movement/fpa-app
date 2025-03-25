@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('schedules', function (Blueprint $table) {
             $table->ulid('id')->primary();
-            $table->foreignIdFor(\App\Models\Event::class);
+            $table->foreignIdFor(\App\Models\Event::class)->constrained()->cascadeOnDelete();
             $table->string('name');
             $table->dateTime('start_date');
             $table->dateTime('end_date');

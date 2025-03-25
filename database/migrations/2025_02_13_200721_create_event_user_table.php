@@ -14,8 +14,8 @@ return new class extends Migration
     {
         Schema::create('event_user', function (Blueprint $table) {
             $table->id();
-            $table->foreignIdFor(\App\Models\Event::class);
-            $table->foreignIdFor(User::class);
+            $table->foreignIdFor(\App\Models\Event::class)->constrained()->cascadeOnDelete();
+            $table->foreignIdFor(User::class)->constrained()->cascadeOnDelete();
             $table->string('status');
             $table->timestamps();
             $table->index(['user_id', 'status', 'event_id'], 'user_status_index');

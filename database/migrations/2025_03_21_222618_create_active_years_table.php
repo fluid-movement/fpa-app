@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('active_years', function (Blueprint $table) {
             $table->id();
-            $table->foreignIdFor(\App\Models\Player::class);
+            $table->foreignIdFor(\App\Models\Player::class)->constrained()->cascadeOnDelete();
             $table->unsignedSmallInteger('year');
             $table->string('membership_type');
             $table->timestamps();
