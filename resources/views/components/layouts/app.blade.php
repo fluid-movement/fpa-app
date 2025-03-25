@@ -43,7 +43,7 @@
             </flux:navlist.item>
             <flux:navlist.item
                 icon="bars-3-bottom-left" :href="route('admin.index')"
-                :current="request()->routeIs('admin.index')"
+                :current="request()->routeIs('admin.index', 'admin.members.edit')"
                 wire:navigate>{{ __('FPA Members') }}
             </flux:navlist.item>
         </flux:navlist.group>

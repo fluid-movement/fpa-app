@@ -28,6 +28,7 @@ use Illuminate\Support\Carbon;
  * @property string $notes
  * @property-read Team[] $teams
  * @property-read ActiveYear[] $activeYears
+ * @property-read bool $is_active
  * @property Carbon $created_at
  * @property Carbon $updated_at
  */
@@ -45,5 +46,10 @@ class Player extends Model
     public function activeYears(): hasMany
     {
         return $this->hasMany(ActiveYear::class);
+    }
+
+    public function getIsActiveAttribute(): bool
+    {
+        return $this->activeYears->where('year', date('Y'))->count() > 0;
     }
 }

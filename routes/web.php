@@ -34,6 +34,8 @@ Route::middleware(['auth'])->group(function () {
     // Admin
     Volt::route('admin/members', 'admin.index')
         ->name('admin.index');
+    Volt::route('admin/members/{player}', 'admin.members.edit')
+        ->name('admin.members.edit');
     Volt::route('admin/dashboard', 'admin.dashboard')
         ->name('admin.dashboard');
 });

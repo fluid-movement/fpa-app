@@ -4,10 +4,10 @@ use Livewire\Attributes\Computed;
 use Livewire\Attributes\Title;
 use Livewire\Volt\Component;
 
-new #[Title('Admin | Dashboard')] class extends Component
+new #[Title('Dashboard')] class extends Component
 {
     #[Computed]
-    public function members(): \Illuminate\Database\Eloquent\Collection
+    public function players(): \Illuminate\Database\Eloquent\Collection
     {
         return \App\Models\Player::with('activeYears')->get();
     }
@@ -19,7 +19,7 @@ new #[Title('Admin | Dashboard')] class extends Component
             ->map(fn ($type) => $type->name)
             ->toArray();
 
-        return $this->members
+        return $this->players
             ->flatMap(fn ($member) => $member->activeYears->map(fn ($year) => [
                 'year' => $year->year,
                 'type' => $year->membership_type->name,
@@ -39,7 +39,7 @@ new #[Title('Admin | Dashboard')] class extends Component
 
                 return array_merge([
                     'year' => $year,
-                    'members' => $totalMembers,
+                    'players' => $totalMembers,
                 ], $membershipCounts);
             })
             ->sortKeys()
@@ -60,8 +60,8 @@ new #[Title('Admin | Dashboard')] class extends Component
 }; ?>
 <div class="flex flex-col gap-8">
     <div class="flex gap-4 w-full">
-        <x-facts-card number="{{ $this->currentMembers['members'] ?? 0 }}" text="Active members"/>
-        <x-facts-card number="{{ $this->members->count() }}" text="Total members"/>
+        <x-facts-card number="{{ $this->currentMembers['players'] ?? 0 }}" text="Active players"/>
+        <x-facts-card number="{{ $this->players->count() }}" text="Total members"/>
     </div>
     <flux:separator />
     <flux:heading>Memberships this year</flux:heading>
@@ -74,7 +74,7 @@ new #[Title('Admin | Dashboard')] class extends Component
     <flux:heading>Memberships over the years</flux:heading>
     <flux:chart :value="$this->years" class="aspect-3/1">
         <flux:chart.svg>
-            <flux:chart.line field="members" class="text-blue-500 dark:text-blue-400"/>
+            <flux:chart.line field="players" class="text-blue-500 dark:text-blue-400"/>
             @foreach(\App\Enums\MembershipType::cases() as $type)
                 <flux:chart.line field="{{$type->name}}" class="text-blue-500 dark:text-blue-400"/>
             @endforeach
@@ -91,7 +91,7 @@ new #[Title('Admin | Dashboard')] class extends Component
 
         <flux:chart.tooltip>
             <flux:chart.tooltip.heading field="year" :format=" ['useGrouping' => false] "/>
-            <flux:chart.tooltip.value field="members" label="Members"/>
+            <flux:chart.tooltip.value field="players" label="Members"/>
             @foreach(\App\Enums\MembershipType::cases() as $type)
                 <flux:chart.tooltip.value field="{{$type->name}}" label="{{$type->getDisplayName()}}"/>
             @endforeach
