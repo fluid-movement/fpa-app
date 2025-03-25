@@ -4,11 +4,11 @@ namespace App\Enums;
 
 enum UserRole: string
 {
-    case ADMIN = 'admin';
-    case USER = 'user';
+    case Admin = 'admin';
+    case User = 'user';
 
     public function isAdmin(): bool
     {
-        return $this === self::ADMIN;
+        return $this === self::Admin;
     }
 }

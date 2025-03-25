@@ -18,18 +18,18 @@ class LoremPicsumService
 
     public function getBanner(): string
     {
-        return self::process(AssetType::BANNER);
+        return self::process(AssetType::Banner);
     }
 
     public function getIcon(): string
     {
-        return self::process(AssetType::ICON);
+        return self::process(AssetType::Icon);
     }
 
     private function process(AssetType $type): string
     {
         $fileName = Str::random(40).'.jpg';
-        $size = $type === AssetType::BANNER ? '1920/600' : '200';
+        $size = $type === AssetType::Banner ? '1920/600' : '200';
         $url = self::URL.$size;
         if (! $image = self::getImage($url)) {
             return '';

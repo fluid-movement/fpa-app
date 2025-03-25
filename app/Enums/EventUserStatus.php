@@ -4,6 +4,6 @@ namespace App\Enums;
 
 enum EventUserStatus: string
 {
-    case ATTENDING = 'attending';
-    case ORGANIZING = 'organizing';
+    case Attending = 'attending';
+    case Organizing = 'organizing';
 }

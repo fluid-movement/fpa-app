@@ -7,6 +7,16 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
+/**
+ * Pool model
+ *
+ * @property string $id
+ * @property string $round_id
+ * @property-read Round $round
+ * @property string $name
+ * @property-read Team[] $teams
+ * @property-read Event $event
+ */
 class Pool extends Model
 {
     use HasUlids;

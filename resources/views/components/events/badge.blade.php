@@ -4,12 +4,12 @@
 ])
 
 @switch($badge)
-    @case(\App\Enums\EventUserStatus::ATTENDING->value)
+    @case(\App\Enums\EventUserStatus::Attending->value)
         <flux:badge inset="left" size="sm" color="green">
-            {{__(ucfirst(\App\Enums\EventUserStatus::ATTENDING->value))}}
+            {{__(ucfirst(\App\Enums\EventUserStatus::Attending->value))}}
         </flux:badge>
         @break
-    @case(\App\Enums\EventUserStatus::ORGANIZING->value)
+    @case(\App\Enums\EventUserStatus::Organizing->value)
         <flux:badge inset="left" size="sm" color="blue">{{ucfirst($badge)}}</flux:badge>
         @break
 @endswitch

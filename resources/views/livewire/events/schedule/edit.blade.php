@@ -31,7 +31,7 @@ new class extends Component
 }; ?>
 
 <div>
-    <x-back-button href="{{ route('events.admin', [$event, \App\Enums\AdminTabs::SCHEDULE]) }}"/>
+    <x-back-button href="{{ route('events.admin', [$event, \App\Enums\AdminTabs::Schedule]) }}"/>
     @foreach($days as $day)
         <flux:heading class="mb-4">{{ $day->format('l, F j') }}</flux:heading>
         <livewire:events.schedule.form :event="$event" :day="$day"/>

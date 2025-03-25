@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->foreignIdFor(\App\Models\Player::class);
             $table->unsignedSmallInteger('year');
+            $table->string('membership_type');
             $table->timestamps();
         });
     }

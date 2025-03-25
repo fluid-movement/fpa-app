@@ -7,6 +7,15 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
+/**
+ * Team model
+ *
+ * @property string $id
+ * @property string $division_id
+ * @property-read Division $division
+ * @property-read Player[] $players
+ * @property-read Event $event
+ */
 class Team extends Model
 {
     use HasUlids;

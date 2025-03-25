@@ -15,7 +15,7 @@ new class extends Component
         $view->title('Admin | '.$this->event->name);
     }
 
-    public function mount(Event $event, AdminTabs $tab = AdminTabs::ATTENDING): void
+    public function mount(Event $event, AdminTabs $tab = AdminTabs::Attending): void
     {
         Gate::authorize('admin', $event);
         $this->event = $event;

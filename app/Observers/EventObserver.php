@@ -14,10 +14,10 @@ readonly class EventObserver
     {
         // Delete the event's banner and icon
         if ($event->banner) {
-            $this->assetManagerService->delete(AssetType::BANNER, $event->banner);
+            $this->assetManagerService->delete(AssetType::Banner, $event->banner);
         }
         if ($event->icon) {
-            $this->assetManagerService->delete(AssetType::ICON, $event->icon);
+            $this->assetManagerService->delete(AssetType::Icon, $event->icon);
         }
     }
 }

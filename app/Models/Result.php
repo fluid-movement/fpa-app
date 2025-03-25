@@ -8,7 +8,23 @@ use App\Services\Division\JudgingStrategyInterface;
 use Illuminate\Database\Eloquent\Concerns\HasUlids;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Support\Carbon;
 
+/**
+ * Result model
+ *
+ * @property string $id
+ * @property string $pool_id
+ * @property string $user_id
+ * @property string $team_id
+ * @property-read Pool $pool
+ * @property-read User $user
+ * @property-read Team $team
+ * @property JudgingSystemType $judging_type
+ * @property array $data
+ * @property Carbon $created_at
+ * @property Carbon $updated_at
+ */
 class Result extends Model
 {
     use hasUlids;

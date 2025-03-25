@@ -24,12 +24,12 @@ new class extends Component
             auth()->user()
                 ? $event->users()->where('user_id', auth()->user()->id)->first()?->pivot->status ?? ''
                 : '';
-        $this->showButtons = auth()->user() && $this->status !== EventUserStatus::ORGANIZING->value && $this->event->end_date->isFuture();
+        $this->showButtons = auth()->user() && $this->status !== EventUserStatus::Organizing->value && $this->event->end_date->isFuture();
     }
 
     public function updatedStatus(): void
     {
-        if (! in_array($this->status, [EventUserStatus::ATTENDING->value, ''])) {
+        if (! in_array($this->status, [EventUserStatus::Attending->value, ''])) {
             $this->status = '';
 
             return;
@@ -67,7 +67,7 @@ new class extends Component
                           variant="cards"
                           :indicator="false"
                           class="max-sm:flex-col mb-4">
-            <flux:radio value="{{EventUserStatus::ATTENDING->value}}"
+            <flux:radio value="{{EventUserStatus::Attending->value}}"
                         icon="heart"
                         label="Attending"/>
             <flux:radio value="" label="Not interested"/>

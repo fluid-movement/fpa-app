@@ -26,10 +26,10 @@ new class extends Component
         if ($magicLink->isActive()
             && $this->event->id === $magicLink->event_id
         ) {
-            if ($currentStatus !== EventUserStatus::ORGANIZING->value) {
+            if ($currentStatus !== EventUserStatus::Organizing->value) {
                 $this->event->users()
                     ->syncWithoutDetaching(
-                        [auth()->id() => ['status' => EventUserStatus::ORGANIZING]]
+                        [auth()->id() => ['status' => EventUserStatus::Organizing]]
                     );
                 $this->status = 'added';
             } else {

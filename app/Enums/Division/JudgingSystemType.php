@@ -4,7 +4,7 @@ namespace App\Enums\Division;
 
 enum JudgingSystemType: string
 {
-    case SIMPLE = 'simple'; // scores from 1-9
-    case CUSTOM_FIELDS = 'custom_fields'; // arbitrary fields
-    case VIBES = 'vibes'; // thumbs up or down
+    case Simple = 'simple'; // scores from 1-9
+    case CustomFields = 'custom_fields'; // arbitrary fields
+    case Vibes = 'vibes'; // thumbs up or down
 }

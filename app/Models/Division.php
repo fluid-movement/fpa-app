@@ -7,12 +7,31 @@ use Illuminate\Database\Eloquent\Concerns\HasUlids;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Support\Carbon;
 
+/**
+ * Division model
+ *
+ * @property string $id
+ * @property string $event_id
+ * @property-read Event $event
+ * @property DivisionType $type
+ * @property int $teams_per_pool
+ * @property int $advance_per_pool
+ * @property-read Round[] $rounds
+ * @property-read Team[] $teams
+ * @property Carbon $created_at
+ * @property Carbon $updated_at
+ */
 class Division extends Model
 {
     use HasUlids;
 
     protected $guarded = ['id'];
+
+    protected $casts = [
+        'type' => DivisionType::class,
+    ];
 
     public function event(): belongsTo
     {
@@ -27,12 +46,5 @@ class Division extends Model
     public function teams(): hasMany
     {
         return $this->hasMany(Team::class);
-    }
-
-    protected function casts(): array
-    {
-        return [
-            'type' => DivisionType::class,
-        ];
     }
 }

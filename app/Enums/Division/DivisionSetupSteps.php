@@ -4,8 +4,8 @@ namespace App\Enums\Division;
 
 enum DivisionSetupSteps: string
 {
-    case TEAMS = 'teams';
-    case ROUNDS_AND_POOLS = 'rounds';
+    case Teams = 'teams';
+    case Rounds = 'rounds';
 
     public function getComponent(): string
     {
@@ -15,16 +15,16 @@ enum DivisionSetupSteps: string
     public function getTitle(): string
     {
         return match ($this) {
-            DivisionSetupSteps::TEAMS => '1) Teams',
-            DivisionSetupSteps::ROUNDS_AND_POOLS => '2) Create first round',
+            DivisionSetupSteps::Teams => '1) Teams',
+            DivisionSetupSteps::Rounds => '2) Create first round',
         };
     }
 
     public function getDescription(): string
     {
         return match ($this) {
-            DivisionSetupSteps::TEAMS => 'Add teams to the division',
-            DivisionSetupSteps::ROUNDS_AND_POOLS => 'Set up rounds and pools',
+            DivisionSetupSteps::Teams => 'Add teams to the division',
+            DivisionSetupSteps::Rounds => 'Set up rounds and pools',
         };
     }
 }

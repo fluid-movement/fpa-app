@@ -15,7 +15,7 @@ new class extends Component
         $view->title('Edit Division | '.$this->division->type->getDisplayName());
     }
 
-    public function mount(Division $division, DivisionSetupSteps $step = DivisionSetupSteps::TEAMS): void
+    public function mount(Division $division, DivisionSetupSteps $step = DivisionSetupSteps::Teams): void
     {
         $this->division = $division;
         $this->step = $step;
@@ -23,7 +23,7 @@ new class extends Component
 }; ?>
 
 <div>
-    <x-back-button href="{{route('events.admin', [$division->event, \App\Enums\AdminTabs::DIVISIONS])}}"/>
+    <x-back-button href="{{route('events.admin', [$division->event, \App\Enums\AdminTabs::Divisions])}}"/>
     <flux:radio.group wire:model.live="step" label="Steps" variant="cards" :indicator="false" class="max-sm:flex-col">
         @foreach(DivisionSetupSteps::cases() as $case)
             <flux:radio

@@ -24,7 +24,6 @@ return new class extends Migration
             $table->integer('freestyling_since')->nullable();
             $table->integer('first_competition')->nullable();
             $table->integer('member_number')->nullable()->default(null)->unique();
-            $table->boolean('is_active')->default(false);
             $table->text('notes')->nullable();
             $table->timestamps();
         });

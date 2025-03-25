@@ -5,10 +5,10 @@ namespace App\Enums;
 enum AdminTabs: string
 {
     // The order of cases here will determine the order of tabs in the UI
-    case ATTENDING = 'attending';
-    case SCHEDULE = 'schedule';
-    case DIVISIONS = 'divisions';
-    case ORGANIZERS = 'organizers';
+    case Attending = 'attending';
+    case Schedule = 'schedule';
+    case Divisions = 'divisions';
+    case Organizers = 'organizers';
 
     public static function getTabs(): array
     {
@@ -17,7 +17,7 @@ enum AdminTabs: string
 
     public function getTitle(): string
     {
-        return ucfirst($this->value);
+        return $this->name;
     }
 
     public function getComponent(): string

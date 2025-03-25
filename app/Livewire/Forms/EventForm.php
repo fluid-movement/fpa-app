@@ -95,7 +95,7 @@ class EventForm extends Form
     public function uploadImages(): void
     {
         if ($this->bannerUpload instanceof TemporaryUploadedFile) {
-            $path = AssetType::BANNER->getPath();
+            $path = AssetType::Banner->getPath();
             if ($newBanner = basename($this->bannerUpload->store($path, 'public'))) {
                 if ($this->banner) {
                     Storage::disk('public')->delete($path.'/'.$this->banner);
@@ -104,7 +104,7 @@ class EventForm extends Form
             }
         }
         if ($this->iconUpload instanceof TemporaryUploadedFile) {
-            $path = AssetType::ICON->getPath();
+            $path = AssetType::Icon->getPath();
             if ($newIcon = basename($this->iconUpload->store($path, 'public'))) {
                 if ($this->icon) {
                     Storage::disk('public')->delete($path.'/'.$this->icon);

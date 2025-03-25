@@ -6,13 +6,6 @@ use Livewire\Volt\Component;
 
 new #[Title('Admin | Dashboard')] class extends Component
 {
-    public array $data = [];
-
-    public function mount()
-    {
-        $this->data = $this->years;
-    }
-
     #[Computed]
     public function members(): \Illuminate\Database\Eloquent\Collection
     {
@@ -22,45 +15,86 @@ new #[Title('Admin | Dashboard')] class extends Component
     #[Computed]
     public function years(): array
     {
+        $allMembershipTypes = collect(\App\Enums\MembershipType::cases())
+            ->map(fn ($type) => $type->name)
+            ->toArray();
+
         return $this->members
-            ->flatMap(fn ($member) => $member->activeYears->map(fn ($year) => $year->year))
-            ->countBy()
+            ->flatMap(fn ($member) => $member->activeYears->map(fn ($year) => [
+                'year' => $year->year,
+                'type' => $year->membership_type->name,
+            ]))
+            ->groupBy('year')
+            ->map(function ($entries, $year) use ($allMembershipTypes) {
+                $totalMembers = $entries->count();
+
+                // Count each membership type for the year
+                $membershipCounts = $entries
+                    ->groupBy('type')
+                    ->map(fn ($group) => $group->count())
+                    ->toArray();
+
+                // Ensure all membership types are present with a count of 0 if not found
+                $membershipCounts = array_merge(array_fill_keys($allMembershipTypes, 0), $membershipCounts);
+
+                return array_merge([
+                    'year' => $year,
+                    'members' => $totalMembers,
+                ], $membershipCounts);
+            })
             ->sortKeys()
-            ->map(fn ($count, $year) => [
-                'year' => $year,
-                'members' => $count,
-            ])
             ->values()
             ->toArray();
     }
+
+    #[Computed]
+    public function currentMembers(): array
+    {
+        $current = array_filter(
+            $this->years,
+            fn ($entry) => $entry['year'] === now()->year
+        ) ?? [];
+
+        return reset($current); // return first element
+    }
 }; ?>
-<div>
-    <flux:text>
-        Count of members: {{ $this->members->count() }}
-    </flux:text>
-    <flux:text>
-        Active members: {{ $this->members->where('is_active', true)->count() }}
-    </flux:text>
+<div class="flex flex-col gap-8">
+    <div class="flex gap-4 w-full">
+        <x-facts-card number="{{ $this->currentMembers['members'] ?? 0 }}" text="Active members"/>
+        <x-facts-card number="{{ $this->members->count() }}" text="Total members"/>
+    </div>
+    <flux:separator />
+    <flux:heading>Memberships this year</flux:heading>
+    <div class="flex gap-4 w-full">
+        @foreach(\App\Enums\MembershipType::cases() as $type)
+            <x-facts-card variant="sm" number="{{ $this->currentMembers[$type->name] ?? 0 }}" text="{{$type->getDisplayName()}}"/>
+        @endforeach
+    </div>
+    <flux:separator />
+    <flux:heading>Memberships over the years</flux:heading>
     <flux:chart :value="$this->years" class="aspect-3/1">
         <flux:chart.svg>
-            <flux:chart.line field="members" class="text-blue-500 dark:text-blue-400" />
-
+            <flux:chart.line field="members" class="text-blue-500 dark:text-blue-400"/>
+            @foreach(\App\Enums\MembershipType::cases() as $type)
+                <flux:chart.line field="{{$type->name}}" class="text-blue-500 dark:text-blue-400"/>
+            @endforeach
             <flux:chart.axis axis="x" field="year">
-                <flux:chart.axis.line />
-                <flux:chart.axis.tick />
+                <flux:chart.axis.line/>
+                <flux:chart.axis.tick/>
             </flux:chart.axis>
-
             <flux:chart.axis axis="y">
-                <flux:chart.axis.grid />
-                <flux:chart.axis.tick />
+                <flux:chart.axis.grid/>
+                <flux:chart.axis.tick/>
             </flux:chart.axis>
-
-            <flux:chart.cursor />
+            <flux:chart.cursor/>
         </flux:chart.svg>
 
         <flux:chart.tooltip>
-            <flux:chart.tooltip.heading field="year" :format="['year' => 'date']" />
-            <flux:chart.tooltip.value field="members" label="Members" />
+            <flux:chart.tooltip.heading field="year" :format=" ['useGrouping' => false] "/>
+            <flux:chart.tooltip.value field="members" label="Members"/>
+            @foreach(\App\Enums\MembershipType::cases() as $type)
+                <flux:chart.tooltip.value field="{{$type->name}}" label="{{$type->getDisplayName()}}"/>
+            @endforeach
         </flux:chart.tooltip>
     </flux:chart>
 </div>

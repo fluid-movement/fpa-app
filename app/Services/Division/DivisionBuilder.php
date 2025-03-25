@@ -22,11 +22,23 @@ class DivisionBuilder
     {
         $this->clearDivision();
         $teams = $this->division->teams()->get();
-        $currentRound = RoundName::getRoundCount($teams->count(), $poolSize, $advanceCount);
+        $currentRound = $this->getRoundCount($teams->count(), $poolSize, $advanceCount);
         $this->generateRound(RoundName::getRound($currentRound), $teams, $poolSize);
     }
 
-    protected function generateRound(RoundName $roundName, Collection $teams, int $poolSize): Round
+    private function getRoundCount(int $playerCount, int $poolSize, int $advanceCount): int
+    {
+        $rounds = 0;
+        while ($playerCount > $poolSize) {
+            $rounds++;
+            $pools = (int) ceil($playerCount / $poolSize);
+            $playerCount = $pools * $advanceCount;
+        }
+
+        return $rounds + 1; // Including the final round
+    }
+
+    private function generateRound(RoundName $roundName, Collection $teams, int $poolSize): Round
     {
         $round = $this->division->rounds()->create(['name' => $roundName->getName()]);
         $numberTeams = $teams->count();

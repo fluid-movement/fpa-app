@@ -8,7 +8,7 @@ new class extends Component
 }; ?>
 
 <div>
-    <x-back-button href="{{route('events.admin', [$division->event, \App\Enums\AdminTabs::DIVISIONS])}}"/>
+    <x-back-button href="{{route('events.admin', [$division->event, \App\Enums\AdminTabs::Divisions])}}"/>
     <flux:heading size="xl" class="mb-8">{{ $division->type }}</flux:heading>
     @foreach($division->rounds()->get() as $round)
         <flux:heading size="lg" class="mb-4">Round {{ $round->name }}</flux:heading>

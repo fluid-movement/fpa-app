@@ -13,6 +13,22 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Str;
 
+/**
+ * User model
+ *
+ * @property string $id
+ * @property string $name
+ * @property string $email
+ * @property string $password
+ * @property UserRole $role
+ * @property string|null $email_verified_at
+ * @property string|null $remember_token
+ * @property-read Event[] $events
+ * @property-read Event[] $organizingEvents
+ * @property-read Event[] $organizedEvents
+ * @property-read Event[] $attendingEvents
+ * @property-read string $initials
+ */
 class User extends Authenticatable
 {
     /** @use HasFactory<\Database\Factories\UserFactory> */
@@ -72,21 +88,21 @@ class User extends Authenticatable
     public function organizingEvents(): BelongsToMany
     {
         return $this->belongsToMany(Event::class)
-            ->wherePivot('status', EventUserStatus::ORGANIZING)
+            ->wherePivot('status', EventUserStatus::Organizing)
             ->whereDate('events.end_date', '>=', now());
     }
 
     public function organizedEvents(): BelongsToMany
     {
         return $this->belongsToMany(Event::class)
-            ->wherePivot('status', EventUserStatus::ORGANIZING)
+            ->wherePivot('status', EventUserStatus::Organizing)
             ->whereDate('events.end_date', '<', now());
     }
 
     public function attendingEvents(): BelongsToMany
     {
         return $this->belongsToMany(Event::class)
-            ->wherePivot('status', EventUserStatus::ATTENDING)
+            ->wherePivot('status', EventUserStatus::Attending)
             ->whereDate('events.end_date', '>=', now());
     }
 
