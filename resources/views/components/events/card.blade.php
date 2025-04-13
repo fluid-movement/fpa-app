@@ -1,9 +1,7 @@
 @props(['event', 'badges' => []])
 
 <a class="size-full" href="{{route('events.show', ['event' => $event])}}">
-    <div
-        class="size-full p-4 rounded-sm flex flex-col justify-between
-        bg-white/10 hover:bg-blue-200/10 border border-white/10">
+    <x-ui.card>
         <div class="flex mb-4">
             <flux:heading size="lg">{{ $event->name }}</flux:heading>
         </div>
@@ -40,5 +38,5 @@
                 />
             @endif
         </div>
-    </div>
+    </x-ui.card>
 </a>

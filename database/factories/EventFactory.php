@@ -27,10 +27,10 @@ class EventFactory extends Factory
 
         $users = \App\Models\User::all();
 
-        // $banner = app(LoremPicsumService::class)->getBanner();
-        // $icon = app(LoremPicsumService::class)->getIcon();
-        $banner = '';
-        $icon = '';
+        $banner = app(LoremPicsumService::class)->getBanner();
+        $icon = app(LoremPicsumService::class)->getIcon();
+        // $banner = '';
+        // $icon = '';
 
         return [
             'name' => $name,

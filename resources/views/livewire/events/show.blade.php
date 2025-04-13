@@ -78,8 +78,11 @@ new class extends Component
             <flux:tab name="description">Description</flux:tab>
             <flux:tab name="schedule">Schedule</flux:tab>
         </flux:tabs>
-        <flux:tab.panel class="prose-invert" name="description">
+        <flux:tab.panel name="description">
+            <flux:text>
             {!! $event->description !!}
+
+            </flux:text>
         </flux:tab.panel>
         <flux:tab.panel name="schedule">
             <livewire:events.schedule.list :$event/>
