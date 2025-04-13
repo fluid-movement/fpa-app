@@ -28,7 +28,9 @@ new class extends Component
     @if(Auth::user()->id === $event->user_id)
         <flux:heading class="mb-4">Invite other Organizers</flux:heading>
         @if($magicLink)
-            <flux:input class="mb-4" icon="key" value="{{ $magicLink->link }}" readonly="true" copyable="true"/>
+            <flux:input class="mb-4" icon="key" value="{{ route('events.admin.magic-link', $magicLink) }}"
+                        readonly="true"
+                        copyable="true"/>
             <flux:text>Link valid till {{$magicLink->expires_at->diffForHumans()}}</flux:text>
         @else
             <flux:button class="mb-4" wire:click="generateMagicLink">Generate Magic Link</flux:button>

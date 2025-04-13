@@ -68,6 +68,9 @@ new #[\Livewire\Attributes\Title('Event Organizer')] class extends Component
                                      href="{{ route('events.show', $event) }}">
                             {{ __('View Event') }}
                         </flux:button>
+                        <flux:button icon="cog-8-tooth" wire:navigate href="{{ route('events.admin', $event) }}">
+                            {{ __('Admin Area') }}
+                        </flux:button>
                     </div>
                 </div>
             </flux:card>

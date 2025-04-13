@@ -38,7 +38,7 @@ new class extends Component
 <div>
     <x-history-back-button/>
     <form method="post" wire:submit="update">
-        <x-events._form :form="$form"/>
+        <x-events._form :$form/>
         <div class="flex justify-between">
             <flux:button variant="primary" type="submit">
                 Save

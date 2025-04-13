@@ -40,11 +40,4 @@ class EventMagicLink extends Model
     {
         return $this->expires_at > now();
     }
-
-    public function getLinkAttribute(): string
-    {
-        return route(
-            'events.admin.magic-link', ['id' => $this->id]
-        );
-    }
 }

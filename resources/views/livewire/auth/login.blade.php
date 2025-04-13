@@ -10,7 +10,8 @@ use Livewire\Attributes\Layout;
 use Livewire\Attributes\Validate;
 use Livewire\Volt\Component;
 
-new #[Layout('components.layouts.app')] class extends Component {
+new #[Layout('components.layouts.app')] class extends Component
+{
     #[Validate('required|string|email')]
     public string $email = '';
 
@@ -118,7 +119,7 @@ new #[Layout('components.layouts.app')] class extends Component {
         </div>
     </form>
 
-    <div class="space-x-1 text-center text-sm text-zinc-600 dark:text-zinc-400">
+    <div class="space-x-1 text-center text-sm text-zinc-400">
         Don't have an account?
         <flux:link href="{{ route('register') }}" wire:navigate>Sign up</flux:link>
     </div>

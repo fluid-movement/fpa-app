@@ -102,7 +102,7 @@ class User extends Authenticatable
     public function attendingEvents(): BelongsToMany
     {
         return $this->belongsToMany(Event::class)
-            ->wherePivot('status', EventUserStatus::Attending)
+            ->wherePivotIn('status', [EventUserStatus::Attending, EventUserStatus::Organizing])
             ->whereDate('events.end_date', '>=', now());
     }
 

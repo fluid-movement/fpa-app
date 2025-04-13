@@ -97,7 +97,7 @@ new class extends Component
 </x-slot>
 
 <div class="flex flex-col gap-8">
-    <div class="p-2 w-full flex gap-2 justify-stretch border border-zinc-200 dark:border-zinc-700 rounded-md">
+    <div class="p-2 w-full flex gap-2 justify-stretch border border-zinc-700 rounded-md">
         <flux:button
             class="w-full"
             href="{{route('events.index')}}"
@@ -146,5 +146,5 @@ new class extends Component
             @endif
         </div>
     @endif
-    <x-events._list :calendarData="$calendarData" :badges="$badges"/>
+    <x-events._list :$calendarData :$badges/>
 </div>

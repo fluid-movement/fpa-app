@@ -31,15 +31,7 @@ class Schedule extends Model
 {
     use HasUlids;
 
-    protected $fillable = [
-        'name',
-        'start_date',
-        'end_date',
-        'description',
-        'location',
-        'longitude',
-        'latitude',
-    ];
+    protected $guarded = ['id'];
 
     protected $casts = [
         'start_date' => 'datetime:Y-m-d H:i',

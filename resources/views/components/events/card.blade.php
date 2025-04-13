@@ -3,7 +3,7 @@
 <a class="size-full" href="{{route('events.show', ['event' => $event])}}">
     <div
         class="size-full p-4 rounded-sm flex flex-col justify-between
-        bg-white hover:bg-blue-50 dark:hover:bg-blue-200/10 dark:bg-white/10 border border-zinc-200 dark:border-white/10">
+        bg-white/10 hover:bg-blue-200/10 border border-white/10">
         <div class="flex mb-4">
             <flux:heading size="lg">{{ $event->name }}</flux:heading>
         </div>
@@ -17,7 +17,7 @@
                     </div>
                 @endif
                 <flux:spacer/>
-                <div class="text-slate-500 dark:text-slate-300">
+                <div class="text-slate-300">
                     <flux:text variant="strong" class="flex gap-2 items-center mb-1">
                         <flux:icon variant="micro" name="calendar-days"/>
                         @if($event->start_date->format('m') == $event->end_date->format('m'))

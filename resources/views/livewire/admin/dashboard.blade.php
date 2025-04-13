@@ -74,9 +74,9 @@ new #[Title('Dashboard')] class extends Component
     <flux:heading>Memberships over the years</flux:heading>
     <flux:chart :value="$this->years" class="aspect-3/1">
         <flux:chart.svg>
-            <flux:chart.line field="players" class="text-blue-500 dark:text-blue-400"/>
+            <flux:chart.line field="players" class="text-blue-400"/>
             @foreach(\App\Enums\MembershipType::cases() as $type)
-                <flux:chart.line field="{{$type->name}}" class="text-blue-500 dark:text-blue-400"/>
+                <flux:chart.line field="{{$type->name}}" class="text-blue-400"/>
             @endforeach
             <flux:chart.axis axis="x" field="year">
                 <flux:chart.axis.line/>

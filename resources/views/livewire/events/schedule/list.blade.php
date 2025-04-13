@@ -2,7 +2,8 @@
 
 use Livewire\Volt\Component;
 
-new class extends Component {
+new class extends Component
+{
     public array $schedule = [];
 
     public function mount(\App\Models\Event $event)
@@ -19,7 +20,7 @@ new class extends Component {
             <flux:heading size="lg" class="mb-4">{{$day}}</flux:heading>
             <div class="flex flex-col gap-4 ml-2 lg:ml-8">
                 @foreach($items as $item)
-                    <x-events.schedule-item :item="$item"/>
+                    <x-events.schedule-item :$item/>
                 @endforeach
             </div>
         </flux:card>

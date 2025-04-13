@@ -3,8 +3,8 @@
 <head>
     @include('partials.head')
 </head>
-<body class="min-h-screen bg-white dark:bg-zinc-800">
-<flux:sidebar sticky stashable class="bg-zinc-50 dark:bg-zinc-900">
+<body class="min-h-screen bg-[url(../images/background.png)] bg-fixed bg-cover bg-center bg-no-repeat">
+<flux:sidebar sticky stashable class="bg-zinc-700">
     <flux:sidebar.toggle class="lg:hidden" icon="x-mark"/>
     <a href="{{ route('home') }}" class="flex items-center space-x-2" wire:navigate>
         <x-app-logo/>
@@ -12,12 +12,16 @@
     <flux:navlist variant="outline" class="flex flex-col">
         <flux:navlist.group heading="Events" class="grid">
             <flux:navlist.item
-                icon="fire" :href="route('home')" :current="request()->routeIs('home')"
+                icon="home" :href="route('home')" :current="request()->routeIs('home')"
                 wire:navigate>{{ __('Home') }}
             </flux:navlist.item>
             <flux:navlist.item
                 icon="calendar-date-range" :href="route('events.index')" :current="request()->routeIs('events.index', 'events.show')"
                 wire:navigate>{{ __('Event Calendar') }}
+            </flux:navlist.item>
+            <flux:navlist.item
+                icon="fire" :href="route('rankings')" :current="request()->routeIs('rankings')"
+                wire:navigate>{{ __('Rankings') }}
             </flux:navlist.item>
         </flux:navlist.group>
         <flux:navlist.group heading="User" class="grid">
@@ -49,12 +53,15 @@
         </flux:navlist.group>
     </flux:navlist>
     <flux:spacer/>
-    <flux:link href="{{route('imprint')}}" class="text-xs text-gray-500 dark:text-gray-400">Imprint</flux:link>
+    <div class="flex justify-between">
+        <flux:link href="{{route('imprint')}}" class="text-xs text-gray-400">Imprint</flux:link>
+        <flux:link href="{{route('contact')}}" class="text-xs text-gray-400">Contact</flux:link>
+    </div>
 </flux:sidebar>
 <!-- Desktop Header -->
 <flux:header
     sticky
-    class="hidden lg:flex z-20 gap-4 bg-zinc-50 dark:bg-zinc-800 border-b border-l border-zinc-200 dark:border-zinc-700">
+    class="hidden lg:flex z-20 gap-4 bg-zinc-800/70 border-b border-l border-zinc-700">
     @isset($title)
         <flux:heading class="cursor-default" size="lg">{{$title}}</flux:heading>
     @endisset
@@ -107,7 +114,7 @@
 </flux:header>
 
 <!-- Mobile User Menu -->
-<flux:header sticky class="lg:hidden z-20 bg-white dark:bg-zinc-900 border-b border-zinc-200 dark:border-zinc-700">
+<flux:header sticky class="lg:hidden z-20 bg-zinc-900/70 border-b border-zinc-700">
     <flux:sidebar.toggle class="lg:hidden" icon="bars-3" inset="left"/>
     @isset($title)
         <flux:heading class="ml-4">{{$title}}</flux:heading>
@@ -155,7 +162,7 @@
     @endguest
 </flux:header>
 
-<flux:main class="border-l border-zinc-200 dark:border-zinc-700">
+<flux:main class="border-l border-zinc-700">
     @isset($banner)
         {{ $banner }}
     @endisset

@@ -54,16 +54,7 @@ class Event extends Model
     /** @use HasFactory<EventFactory> */
     use HasFactory, HasUlids;
 
-    // add description manually so the rich text editor can save it
-    protected $fillable = [
-        'name',
-        'start_date',
-        'end_date',
-        'location',
-        'description',
-        'banner',
-        'icon',
-    ];
+    protected $guarded = ['id'];
 
     protected $casts = [
         'start_date' => 'datetime:Y-m-d',

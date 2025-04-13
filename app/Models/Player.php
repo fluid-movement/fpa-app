@@ -47,9 +47,4 @@ class Player extends Model
     {
         return $this->hasMany(ActiveYear::class);
     }
-
-    public function getIsActiveAttribute(): bool
-    {
-        return $this->activeYears->where('year', date('Y'))->count() > 0;
-    }
 }

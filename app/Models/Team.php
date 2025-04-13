@@ -22,7 +22,7 @@ class Team extends Model
 
     protected $guarded = ['id'];
 
-    protected $with = ['players'];
+    protected $with = ['players']; // we will never use teams without players
 
     public function division(): BelongsTo
     {
