@@ -15,13 +15,17 @@ new class extends Component {
             ->limit(5)
             ->get();
 
-        $this->heroEvent = $events->shift();
-        $this->events = $events;
+        if ($events->count()) {
+            $this->heroEvent = $events->shift();
+            $this->events = $events;
+        }
     }
 }; ?>
 
 <div>
-    <x-events.hero-card :event="$heroEvent"/>
+    @if($heroEvent)
+        <x-events.hero-card :event="$heroEvent"/>
+    @endif
     <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4 mt-8">
         @foreach($events as $event)
             <x-events.card :event="$event"/>
