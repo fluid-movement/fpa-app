@@ -3,7 +3,7 @@
 <head>
     @include('partials.head')
 </head>
-<body class="min-h-screen bg-[url(../images/background.png)] bg-fixed bg-cover bg-center bg-no-repeat">
+<body class="max-w-7xl mx-auto min-h-screen bg-[url(../images/background.jpg)] bg-no-repeat bg-right-bottom bg-fixed bg-cover">
 <flux:sidebar sticky stashable class="bg-zinc-700/80 backdrop-blur-lg md:bg-zinc-700/70 md:backdrop-blur-xs">
     <flux:sidebar.toggle class="lg:hidden" icon="x-mark"/>
     <a href="{{ route('home') }}" class="flex items-center space-x-2" wire:navigate>
@@ -61,9 +61,9 @@
 <!-- Desktop Header -->
 <flux:header
     sticky
-    class="hidden lg:flex z-20 gap-4 bg-zinc-800/70 backdrop-blur-xs border-b border-l border-zinc-700">
+    class="hidden lg:flex z-20 gap-4 backdrop-blur-xs ">
     @isset($title)
-        <flux:heading class="cursor-default" size="lg">{{$title}}</flux:heading>
+        <!-- <flux:heading class="cursor-default" size="lg">{{$title}}</flux:heading> -->
     @endisset
     <flux:spacer/>
     <flux:button
