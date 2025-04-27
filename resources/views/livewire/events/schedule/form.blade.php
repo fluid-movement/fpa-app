@@ -7,7 +7,7 @@ use Illuminate\Support\Collection;
 
 new class extends Component {
     // Set to the schedule item's id when editing; null when creating a new item
-    public ?int $editingScheduleItemId = null;
+    public ?string $editingScheduleItemId = null;
 
     public array $scheduleEntry = [
         'start_time' => '',
@@ -76,7 +76,7 @@ new class extends Component {
         $this->resetScheduleEntry();
     }
 
-    public function deleteScheduleItem($id): void
+    public function deleteScheduleItem(string $id): void
     {
         $this->event->schedule()->find($id)->delete();
         $this->schedule = $this->schedule->filter(function ($item) use ($id) {
@@ -84,7 +84,7 @@ new class extends Component {
         });
     }
 
-    public function editScheduleItem($id): void
+    public function editScheduleItem(string $id): void
     {
         $item = $this->event->schedule()->find($id);
         if ($item) {
@@ -113,7 +113,7 @@ new class extends Component {
 
 <div>
     <form wire:submit.prevent="addOrUpdateScheduleItem('{{ $day->format('Y-m-d') }}')">
-        <flux:card class="flex flex-col gap-4 mb-8" wire:key="{{ $day->format('Y-m-d') }}">
+        <flux:card class="flex flex-col gap-4 mb-8" wire:key="{{ md5($day->format('Y-m-d')) }}">
             <div class="flex gap-4">
                 <flux:input
                     label="{{ __('Start Time') }}"
@@ -158,14 +158,14 @@ new class extends Component {
             <flux:button :disabled="$editingScheduleItemId === $item->id"
                          icon="pencil-square"
                          size="sm"
-                         wire:click="editScheduleItem({{ $item->id }})"
+                         wire:click="editScheduleItem('{{ $item->id }}')"
                          class="mr-4">
                 Edit
             </flux:button>
             <flux:button :disabled="$editingScheduleItemId === $item->id"
                          icon="trash"
                          size="sm"
-                         wire:click="deleteScheduleItem({{ $item->id }})"
+                         wire:click="deleteScheduleItem('{{ $item->id }}')"
                          class="mt-4">
                 Delete
             </flux:button>

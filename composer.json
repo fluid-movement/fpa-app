@@ -11,7 +11,6 @@
     "require": {
         "php": "^8.2",
         "ext-intl": "*",
-        "diglactic/laravel-breadcrumbs": "^10.0",
         "endroid/qr-code": "^6.0",
         "laravel/framework": "12.1.1.0",
         "laravel/tinker": "^2.10.1",

@@ -92,10 +92,6 @@ new class extends Component
     }
 }; ?>
 
-<x-slot name="breadcrumbs">
-    {{ Breadcrumbs::render('events.index') }}
-</x-slot>
-
 <div class="flex flex-col gap-8">
     <div class="p-2 w-full flex gap-2 justify-stretch border border-white/10 backdrop-blur-lg rounded-md">
         <flux:button

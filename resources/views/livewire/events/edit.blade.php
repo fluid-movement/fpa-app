@@ -5,15 +5,14 @@ use App\Models\Event;
 use Livewire\Volt\Component;
 use Livewire\WithFileUploads;
 
-new class extends Component
-{
+new class extends Component {
     use WithFileUploads;
 
     public EventForm $form;
 
     public function rendering(Illuminate\View\View $view): void
     {
-        $view->title('Edit | '.$this->form->event->name);
+        $view->title('Edit | ' . $this->form->event->name);
     }
 
     public function mount(Event $event): void

@@ -4,8 +4,7 @@ use App\Enums\EventUserStatus;
 use App\Models\Event;
 use Livewire\Volt\Component;
 
-new class extends Component
-{
+new class extends Component {
     public Event $event;
 
     public string $status = '';
@@ -29,7 +28,7 @@ new class extends Component
 
     public function updatedStatus(): void
     {
-        if (! in_array($this->status, [EventUserStatus::Attending->value, ''])) {
+        if (!in_array($this->status, [EventUserStatus::Attending->value, ''])) {
             $this->status = '';
 
             return;
@@ -43,50 +42,66 @@ new class extends Component
     }
 }; ?>
 
-<x-slot name="breadcrumbs">
-    {{ Breadcrumbs::render('events.show', $event) }}
-</x-slot>
-
-<div>
-    <x-slot name="banner">
-        @if($event->banner)
-            @php
-                [$width, $height] = $event->getBannerWidthHeight();
-            @endphp
-            <img
-                src="{{ $event->banner_url }}"
-                alt="{{ $event->name }}"
-                width="{{ $width }}"
-                height="{{ $height }}"
-                class="w-full object-cover mb-8">
+<div class="grid grid-cols-2 gap-4">
+    <div class="prose prose-invert">
+        <h1>{{$event->name}}</h1>
+        <p class="flex gap-2 items-center ">
+            <flux:icon name="calendar-days"/>
+            @if($event->start_date->format('m') == $event->end_date->format('m'))
+                {{ $event->start_date->format('d') }} - {{ $event->end_date->format('d F Y') }}
+            @else
+                {{ $event->start_date->format('d F') }} - {{ $event->end_date->format('d F Y') }}
+            @endif
+        </p>
+        <p class="flex gap-2 items-center ">
+            <flux:icon name="map-pin"/>{{ $event->location }}
+        </p>
+        <p class="flex gap-2 items-center ">
+            <flux:icon name="heart"/>{{ $event->attending->count() }} attending
+        </p>
+        <flux:spacer/>
+        @if($showButtons)
+            <flux:radio.group wire:model.live="status"
+                              variant="cards"
+                              :indicator="false"
+                              class="max-sm:flex-col mb-4">
+                <flux:radio value="{{EventUserStatus::Attending->value}}"
+                            icon="heart"
+                            label="Attending"/>
+                <flux:radio value="" label="Not interested"/>
+            </flux:radio.group>
         @endif
-    </x-slot>
-    <x-events.infos :event="$event"/>
-    @if($showButtons)
-        <flux:radio.group wire:model.live="status"
-                          variant="cards"
-                          :indicator="false"
-                          class="max-sm:flex-col mb-4">
-            <flux:radio value="{{EventUserStatus::Attending->value}}"
-                        icon="heart"
-                        label="Attending"/>
-            <flux:radio value="" label="Not interested"/>
-        </flux:radio.group>
+    </div>
+    @if($event->banner)
+        @php
+            [$width, $height] = $event->getBannerWidthHeight();
+        @endphp
+        <img
+            src="{{ $event->banner_url }}"
+            alt="{{ $event->name }}"
+            width="{{ $width }}"
+            height="{{ $height }}"
+            class="hidden md:block w-full object-cover mb-8">
     @endif
-    <flux:tab.group>
-        <flux:tabs>
-            <flux:tab name="description">Description</flux:tab>
-            <flux:tab name="schedule">Schedule</flux:tab>
-        </flux:tabs>
-        <flux:tab.panel name="description">
-            <flux:text>
-            {!! $event->description !!}
-
-            </flux:text>
-        </flux:tab.panel>
-        <flux:tab.panel name="schedule">
-            <livewire:events.schedule.list :$event/>
-        </flux:tab.panel>
-    </flux:tab.group>
+    <div class="col-span-2 md:hidden">
+        <flux:tab.group>
+            <flux:tabs>
+                <flux:tab name="description">Description</flux:tab>
+                <flux:tab name="schedule">Schedule</flux:tab>
+            </flux:tabs>
+            <flux:tab.panel name="description">
+                <flux:text class="prose prose-invert">{!! $event->description !!}</flux:text>
+            </flux:tab.panel>
+            <flux:tab.panel name="schedule">
+                <livewire:events.schedule.list :$event/>
+            </flux:tab.panel>
+        </flux:tab.group>
+    </div>
+    <flux:text class="hidden md:block prose prose-invert">
+        {!! $event->description !!}
+    </flux:text>
+    <div class="hidden md:block">
+        <livewire:events.schedule.list :$event/>
+    </div>
 </div>
 

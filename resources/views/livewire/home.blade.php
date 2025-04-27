@@ -20,10 +20,6 @@ new class extends Component {
     }
 }; ?>
 
-<x-slot name="breadcrumbs">
-    {{ Breadcrumbs::render('home') }}
-</x-slot>
-
 <div>
     <x-events.hero-card :event="$heroEvent"/>
     <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4 mt-8">

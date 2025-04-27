@@ -2,14 +2,14 @@
 
 use Livewire\Volt\Component;
 
-new class extends Component
-{
+new class extends Component {
     public array $schedule = [];
 
-    public function mount(\App\Models\Event $event)
+    public function mount(\App\Models\Event $event): void
     {
         foreach ($event->schedule as $schedule) {
-            $this->schedule[$schedule->start_date->format('l, F j')][] = $schedule;
+            $day = strtoupper($schedule->start_date->format('l')) . ', ' . $schedule->start_date->format('F j');
+            $this->schedule[$day][] = $schedule;
         }
     }
 }; ?>
@@ -18,7 +18,7 @@ new class extends Component
     @foreach($schedule as $day => $items)
         <flux:card>
             <flux:heading size="lg" class="mb-4">{{$day}}</flux:heading>
-            <div class="flex flex-col gap-4 ml-2 lg:ml-8">
+            <div class="flex flex-col gap-4">
                 @foreach($items as $item)
                     <x-events.schedule-item :$item/>
                 @endforeach

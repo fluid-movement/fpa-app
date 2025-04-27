@@ -1,7 +1,15 @@
 <!DOCTYPE html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}" class="dark">
 <head>
-    @include('partials.head')
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>{{ $title ?? 'FPA Event Calendar' }}</title>
+
+    <link rel="preconnect" href="https://fonts.bunny.net">
+    <link href="https://fonts.bunny.net/css?family=work-sans:400,500,600&display=swap" rel="stylesheet"/>
+
+    @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
 <body class="max-w-7xl mx-auto min-h-screen bg-[url(../images/background.jpg)] bg-no-repeat bg-right-bottom bg-fixed bg-cover">
 <flux:sidebar sticky stashable class="bg-zinc-700/80 backdrop-blur-lg md:bg-zinc-700/70 md:backdrop-blur-xs">
@@ -163,9 +171,6 @@
 </flux:header>
 
 <flux:main class="border-l border-zinc-700">
-    @isset($banner)
-        {{ $banner }}
-    @endisset
     {{ $slot }}
 </flux:main>
 @persist('toast')
