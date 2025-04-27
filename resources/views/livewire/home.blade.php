@@ -17,8 +17,9 @@ new class extends Component {
 
         if ($events->count()) {
             $this->heroEvent = $events->shift();
-            $this->events = $events;
         }
+
+        $this->events = $events;
     }
 }; ?>
 
