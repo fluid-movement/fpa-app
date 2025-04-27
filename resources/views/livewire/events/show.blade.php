@@ -43,9 +43,9 @@ new class extends Component {
 }; ?>
 
 <div class="grid grid-cols-2 gap-4">
-    <div class="prose prose-invert">
+    <div class="prose prose-invert {{ !$event->banner ? 'col-span-2' : '' }}">
         <h1>{{$event->name}}</h1>
-        <p class="flex gap-2 items-center ">
+        <p class="flex gap-2 items-center">
             <flux:icon name="calendar-days"/>
             @if($event->start_date->format('m') == $event->end_date->format('m'))
                 {{ $event->start_date->format('d') }} - {{ $event->end_date->format('d F Y') }}
