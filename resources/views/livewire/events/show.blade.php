@@ -43,7 +43,7 @@ new class extends Component {
 }; ?>
 
 <div class="grid grid-cols-2 gap-4">
-    <div class="prose prose-invert {{ !$event->banner ? 'col-span-2' : '' }}">
+    <div class="prose prose-invert {{ !$event->picture ? 'col-span-2' : '' }}">
         <h1>{{$event->name}}</h1>
         <p class="flex gap-2 items-center">
             <flux:icon name="calendar-days"/>
@@ -72,12 +72,12 @@ new class extends Component {
             </flux:radio.group>
         @endif
     </div>
-    @if($event->banner)
+    @if($event->picture)
         @php
-            [$width, $height] = $event->getBannerWidthHeight();
+            [$width, $height] = $event->getPictureWidthHeight();
         @endphp
         <img
-            src="{{ $event->banner_url }}"
+            src="{{ $event->picture_url }}"
             alt="{{ $event->name }}"
             width="{{ $width }}"
             height="{{ $height }}"

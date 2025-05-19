@@ -4,8 +4,7 @@ namespace App\Enums;
 
 enum AssetType: string
 {
-    case Banner = 'banners';
-    case Icon = 'icons';
+    case Picture = 'pictures';
 
     public function getPath(): string
     {

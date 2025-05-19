@@ -33,14 +33,9 @@ class EventForm extends Form
     public string $description = '';
 
     #[Validate('image')]
-    public $bannerUpload;
+    public $pictureUpload;
 
-    public ?string $banner = '';
-
-    #[Validate('image')]
-    public $iconUpload;
-
-    public ?string $icon = '';
+    public ?string $picture = '';
 
     public function setEvent(Event $event): void
     {
@@ -52,8 +47,7 @@ class EventForm extends Form
 
         $this->location = $event->location;
         $this->description = $event->description;
-        $this->banner = $event->banner;
-        $this->icon = $event->icon;
+        $this->picture = $event->picture;
     }
 
     public function store(): Event
@@ -67,8 +61,7 @@ class EventForm extends Form
             'end_date',
             'location',
             'description',
-            'banner',
-            'icon',
+            'picture',
         ]));
 
         $event->users()->attach(Auth::id(), ['status' => 'organizing']);
@@ -87,29 +80,19 @@ class EventForm extends Form
             'end_date',
             'location',
             'description',
-            'banner',
-            'icon',
+            'picture',
         ]));
     }
 
     public function uploadImages(): void
     {
-        if ($this->bannerUpload instanceof TemporaryUploadedFile) {
-            $path = AssetType::Banner->getPath();
-            if ($newBanner = basename($this->bannerUpload->store($path, 'public'))) {
-                if ($this->banner) {
-                    Storage::disk('public')->delete($path.'/'.$this->banner);
+        if ($this->pictureUpload instanceof TemporaryUploadedFile) {
+            $path = AssetType::Picture->getPath();
+            if ($newPicture = basename($this->pictureUpload->store($path, 'public'))) {
+                if ($this->picture) {
+                    Storage::disk('public')->delete($path.'/'.$this->picture);
                 }
-                $this->banner = $newBanner;
-            }
-        }
-        if ($this->iconUpload instanceof TemporaryUploadedFile) {
-            $path = AssetType::Icon->getPath();
-            if ($newIcon = basename($this->iconUpload->store($path, 'public'))) {
-                if ($this->icon) {
-                    Storage::disk('public')->delete($path.'/'.$this->icon);
-                }
-                $this->icon = $newIcon;
+                $this->picture = $newPicture;
             }
         }
     }

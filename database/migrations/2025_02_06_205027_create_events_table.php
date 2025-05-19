@@ -19,8 +19,7 @@ return new class extends Migration
             $table->date('end_date');
             $table->string('location');
             $table->text('description');
-            $table->string('banner')->nullable();
-            $table->string('icon')->nullable();
+            $table->string('picture')->nullable();
             $table->timestamps();
         });
     }

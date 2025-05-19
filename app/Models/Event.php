@@ -30,11 +30,9 @@ use Illuminate\Support\Carbon;
  * @property string $end_date
  * @property string $location
  * @property string $description
- * @property string $banner
- * @property string $icon
- * @property-read string $banner_url
- * @property-read array $banner_width_height
- * @property-read string $icon_url
+ * @property string $picture
+ * @property-read string $picture_url
+ * @property-read array $picture_width_height
  * @property-read string $day
  * @property-read string $month
  * @property-read string $year
@@ -61,26 +59,18 @@ class Event extends Model
         'end_date' => 'datetime:Y-m-d',
     ];
 
-    public function getBannerUrlAttribute(): ?string
+    public function getPictureUrlAttribute(): ?string
     {
-        return $this->banner
+        return $this->picture
             ? app(AssetManagerService::class)
-                ->url(AssetType::Banner, $this->banner)
+                ->url(AssetType::Picture, $this->picture)
             : null;
     }
 
-    public function getBannerWidthHeight(): array
+    public function getPictureWidthHeight(): array
     {
         return app(AssetManagerService::class)
-            ->dimensions(AssetType::Banner, $this->banner);
-    }
-
-    public function getIconUrlAttribute(): ?string
-    {
-        return $this->icon
-            ? app(AssetManagerService::class)
-                ->url(AssetType::Icon, $this->icon)
-            : null;
+            ->dimensions(AssetType::Picture, $this->picture);
     }
 
     public function getDayAttribute(): string

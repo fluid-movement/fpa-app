@@ -21,8 +21,7 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        $this->assetManagerService->deleteAll(AssetType::Banner);
-        $this->assetManagerService->deleteAll(AssetType::Icon);
+        $this->assetManagerService->deleteAll(AssetType::Picture);
 
         User::factory()->create([
             'name' => 'Test User',

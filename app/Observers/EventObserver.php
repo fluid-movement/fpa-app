@@ -12,12 +12,9 @@ readonly class EventObserver
 
     public function deleted(Event $event): void
     {
-        // Delete the event's banner and icon
-        if ($event->banner) {
-            $this->assetManagerService->delete(AssetType::Banner, $event->banner);
-        }
-        if ($event->icon) {
-            $this->assetManagerService->delete(AssetType::Icon, $event->icon);
+        // Delete the event's picture
+        if ($event->picture) {
+            $this->assetManagerService->delete(AssetType::Picture, $event->picture);
         }
     }
 }

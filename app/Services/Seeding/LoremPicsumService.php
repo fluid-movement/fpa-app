@@ -16,20 +16,15 @@ class LoremPicsumService
         private readonly AssetManagerService $assetManagerService
     ) {}
 
-    public function getBanner(): string
+    public function getPicture(): string
     {
-        return self::process(AssetType::Banner);
-    }
-
-    public function getIcon(): string
-    {
-        return self::process(AssetType::Icon);
+        return self::process(AssetType::Picture);
     }
 
     private function process(AssetType $type): string
     {
         $fileName = Str::random(40).'.jpg';
-        $size = $type === AssetType::Banner ? '1920/600' : '200';
+        $size = $type === AssetType::Picture ? '1920/600' : '200';
         $url = self::URL.$size;
         if (! $image = self::getImage($url)) {
             return '';

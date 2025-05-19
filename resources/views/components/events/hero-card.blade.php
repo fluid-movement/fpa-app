@@ -1,10 +1,11 @@
 @props(['event', 'badges' => []])
 
 <a class="size-full" href="{{route('events.show', ['event' => $event])}}">
-    <x-ui.card class="flex flex-col md:flex-row">
+    <x-ui.card class="p-6 flex gap-6 flex-col md:flex-row">
         <div class="grow">
-            <div>
-                <div>Next Event</div>
+            <div class="flex items-baseline gap-6 mb-2">
+                <span class="text-xl text-slate-800 font-medium whitespace-nowrap">Next Event</span>
+                <div class="flex-grow h-px bg-slate-800"></div>
             </div>
             <header class="flex flex-col gap-2">
                 <h1 class="text-white text-3xl font-bold">{{$event->name}}</h1>
@@ -22,7 +23,7 @@
             </header>
         </div>
         <img
-            src="{{ $event->banner_url }}"
+            src="{{ $event->picture_url }}"
             alt="{{ $event->name }}"
             class="md:max-w-1/2 object-contain rounded-sm"
         />

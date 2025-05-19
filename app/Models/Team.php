@@ -34,8 +34,8 @@ class Team extends Model
         return $this->belongsToMany(Player::class);
     }
 
-    public function event(): BelongsTo
+    public function event()
     {
-        return $this->division()->belongsTo(Event::class);
+        return $this->division->event;
     }
 }

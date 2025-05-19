@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}" class="dark">
 <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 
     <title>{{ $title ?? 'FPA Event Calendar' }}</title>
 
@@ -106,76 +106,77 @@
                 </flux:menu.radio.group>
                 <flux:menu.separator/>
 
-                <form method="POST" action="{{ route('logout') }}" class="w-full">
-                    @csrf
-                    <flux:menu.item as="button" type="submit" icon="arrow-right-start-on-rectangle" class="w-full">
-                        {{ __('Log Out') }}
-                    </flux:menu.item>
-                </form>
-            </flux:menu>
-        </flux:dropdown>
-    @endauth
-    @guest
-        <flux:button variant="ghost" icon="user" href="{{ route('login') }}"
-                     wire:navigate>{{ __('Log in') }}</flux:button>
-    @endguest
-</flux:header>
+                    <form method="POST" action="{{ route('logout') }}" class="w-full">
+                        @csrf
+                        <flux:menu.item as="button" type="submit" icon="arrow-right-start-on-rectangle" class="w-full">
+                            {{ __('Log Out') }}
+                        </flux:menu.item>
+                    </form>
+                </flux:menu>
+            </flux:dropdown>
+        @endauth
+        @guest
+            <flux:button variant="ghost" icon="user" href="{{ route('login') }}"
+                         wire:navigate>{{ __('Log in') }}</flux:button>
+        @endguest
+    </flux:header>
 
-<!-- Mobile User Menu -->
-<flux:header sticky class="lg:hidden z-20 bg-zinc-900/70 backdrop-blur-sm border-b border-zinc-700">
-    <flux:sidebar.toggle class="lg:hidden" icon="bars-3" inset="left"/>
-    @isset($title)
-        <flux:heading class="ml-4">{{$title}}</flux:heading>
-    @endisset
-    <flux:spacer/>
+    <!-- Mobile User Menu -->
+    <flux:header sticky class="lg:hidden z-20 bg-zinc-900/70 backdrop-blur-sm border-b border-zinc-700">
+        <flux:sidebar.toggle class="lg:hidden" icon="bars-3" inset="left"/>
+        @isset($title)
+            <flux:heading class="ml-4">{{$title}}</flux:heading>
+        @endisset
+        <flux:spacer/>
 
-    @auth
-        <flux:dropdown position="top" align="end">
-            <flux:profile
-                :initials="auth()->user()->initials()"
-                icon-trailing="chevron-down"
-            />
+        @auth
+            <flux:dropdown position="top" align="end">
+                <flux:profile
+                    :initials="auth()->user()->initials()"
+                    icon-trailing="chevron-down"
+                />
 
-            <flux:menu>
-                <flux:menu.radio.group>
-                    <div class="p-0 text-sm font-normal">
-                        <div class="flex items-center gap-2 px-1 py-1.5 text-left text-sm">
-                            <div class="grid flex-1 text-left text-sm leading-tight">
-                                <span class="truncate font-semibold">{{ auth()->user()->name }}</span>
-                                <span class="truncate text-xs">{{ auth()->user()->email }}</span>
+                <flux:menu>
+                    <flux:menu.radio.group>
+                        <div class="p-0 text-sm font-normal">
+                            <div class="flex items-center gap-2 px-1 py-1.5 text-left text-sm">
+                                <div class="grid flex-1 text-left text-sm leading-tight">
+                                    <span class="truncate font-semibold">{{ auth()->user()->name }}</span>
+                                    <span class="truncate text-xs">{{ auth()->user()->email }}</span>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                </flux:menu.radio.group>
+                    </flux:menu.radio.group>
 
-                <flux:menu.separator/>
+                    <flux:menu.separator/>
 
-                <flux:menu.radio.group>
-                    <flux:menu.item href="/settings/profile" icon="cog" wire:navigate>Settings</flux:menu.item>
-                </flux:menu.radio.group>
+                    <flux:menu.radio.group>
+                        <flux:menu.item href="/settings/profile" icon="cog" wire:navigate>Settings</flux:menu.item>
+                    </flux:menu.radio.group>
 
-                <flux:menu.separator/>
+                    <flux:menu.separator/>
 
-                <form method="POST" action="{{ route('logout') }}" class="w-full">
-                    @csrf
-                    <flux:menu.item as="button" type="submit" icon="arrow-right-start-on-rectangle" class="w-full">
-                        {{ __('Log Out') }}
-                    </flux:menu.item>
-                </form>
-            </flux:menu>
-        </flux:dropdown>
-    @endauth
-    @guest
-        <flux:link href="{{ route('login') }}" class="whitespace-nowrap">{{ __('Log in') }}</flux:link>
-    @endguest
-</flux:header>
+                    <form method="POST" action="{{ route('logout') }}" class="w-full">
+                        @csrf
+                        <flux:menu.item as="button" type="submit" icon="arrow-right-start-on-rectangle" class="w-full">
+                            {{ __('Log Out') }}
+                        </flux:menu.item>
+                    </form>
+                </flux:menu>
+            </flux:dropdown>
+        @endauth
+        @guest
+            <flux:link href="{{ route('login') }}" class="whitespace-nowrap">{{ __('Log in') }}</flux:link>
+        @endguest
+    </flux:header>
 
-<flux:main class="border-l border-zinc-700">
-    {{ $slot }}
-</flux:main>
-@persist('toast')
-<flux:toast position="top right"/>
-@endpersist
-@fluxScripts
+    <flux:main class="border-l border-zinc-700">
+        {{ $slot }}
+    </flux:main>
+    @persist('toast')
+    <flux:toast position="top right"/>
+    @endpersist
+    @fluxScripts
+</div>
 </body>
 </html>

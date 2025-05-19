@@ -36,8 +36,8 @@ class Round extends Model
         return $this->hasMany(Pool::class);
     }
 
-    public function event(): BelongsTo
+    public function event()
     {
-        return $this->division()->belongsTo(Event::class);
+        return $this->division->event;
     }
 }

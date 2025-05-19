@@ -27,7 +27,7 @@ new class extends Component {
     @if($heroEvent)
         <x-events.hero-card :event="$heroEvent"/>
     @endif
-    <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4 mt-8">
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mt-8">
         @foreach($events as $event)
             <x-events.card :event="$event"/>
         @endforeach

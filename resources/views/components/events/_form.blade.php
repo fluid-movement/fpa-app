@@ -20,27 +20,14 @@
     <div class="flex gap-8 flex-wrap">
         <flux:input
             type="file"
-            wire:model="form.bannerUpload"
-            label="Banner"
-            description="Will be shown on your event page"
+            wire:model="form.pictureUpload"
+            label="Picture"
+            description="Will be shown on your event page (on larger screens)"
         />
-        @if($form->bannerUpload)
-            <img src="{{$form->bannerUpload->temporaryUrl()}}"
-                 alt="Banner preview"
+        @if($form->pictureUpload)
+            <img src="{{$form->pictureUpload->temporaryUrl()}}"
+                 alt="Picture preview"
                  class="h-48 object-cover">
-        @endif
-    </div>
-    <div class="flex gap-8 flex-wrap">
-        <flux:input
-            type="file"
-            wire:model="form.iconUpload"
-            label="Icon"
-            description="A small square picture for the event calendar"
-        />
-        @if($form->iconUpload)
-            <img src="{{$form->iconUpload->temporaryUrl()}}"
-                 alt="Icon preview"
-                 class="rounded-lg h-16 w-16 object-contain">
         @endif
     </div>
 </div>

@@ -27,10 +27,7 @@ class EventFactory extends Factory
 
         $users = \App\Models\User::all();
 
-        $banner = app(LoremPicsumService::class)->getBanner();
-        $icon = app(LoremPicsumService::class)->getIcon();
-        // $banner = '';
-        // $icon = '';
+        $picture = app(LoremPicsumService::class)->getPicture();
 
         return [
             'name' => $name,
@@ -39,8 +36,7 @@ class EventFactory extends Factory
             'start_date' => $startDate->format('Y-m-d'),
             'end_date' => $endDate->format('Y-m-d'),
             'location' => fake()->city(),
-            'banner' => $banner,
-            'icon' => $icon,
+            'picture' => $picture,
         ];
     }
 }
