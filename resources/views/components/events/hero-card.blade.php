@@ -22,10 +22,12 @@
                 </flux:text>
             </header>
         </div>
-        <img
-            src="{{ $event->picture_url }}"
-            alt="{{ $event->name }}"
-            class="md:max-w-1/2 object-contain rounded-sm"
-        />
+        @if($event->picture_url)
+            <img
+                src="{{ $event->picture_url }}"
+                alt="{{ $event->name }}"
+                class="md:max-w-1/2 object-contain rounded-sm"
+            />
+        @endif
     </x-ui.card>
 </a>
