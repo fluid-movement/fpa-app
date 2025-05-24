@@ -33,17 +33,17 @@ class Division extends Model
         'type' => DivisionType::class,
     ];
 
-    public function event(): belongsTo
+    public function event(): BelongsTo
     {
         return $this->belongsTo(Event::class);
     }
 
-    public function rounds(): hasMany
+    public function rounds(): HasMany
     {
         return $this->hasMany(Round::class);
     }
 
-    public function teams(): hasMany
+    public function teams(): HasMany
     {
         return $this->hasMany(Team::class);
     }
