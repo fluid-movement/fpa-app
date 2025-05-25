@@ -23,6 +23,10 @@ jobs:
       - name: Add Flux Credentials Loaded From ENV
         run: composer config http-basic.composer.fluxui.dev "${{ secrets.FLUX_USERNAME }}" "${{ secrets.FLUX_LICENSE_KEY }}"
 
+      - name: Install PHP dependencies
+        run: |
+          composer install --no-dev --optimize-autoloader --no-interaction
+
       - name: Set up Node.js
         uses: actions/setup-node@v3
         with:
@@ -33,10 +37,6 @@ jobs:
         run: |
           npm ci
           npm run build
-
-      - name: Install PHP dependencies
-        run: |
-          composer install --no-dev --optimize-autoloader --no-interaction
 
       - name: Deploy via rsync
         uses: burnett01/rsync-deployments@7.0.2
