@@ -66,5 +66,5 @@ jobs:
             php artisan route:cache
             php artisan view:cache
             php artisan icons:cache
-            php artisan storage:link
+            php artisan storage:link --relative
             chmod -R 775 storage bootstrap/cache
