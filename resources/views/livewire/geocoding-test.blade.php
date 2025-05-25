@@ -93,7 +93,7 @@ new class extends Component
             }));
         d[l] ? console.warn(p + " only loads once. Ignoring:", g) : d[l] = (f, ...n) => r.add(f) && u().then(() => d[l](f, ...n))
     })({
-        key: "AIzaSyBfbUqKPiBBM2tMLa4a-Gu9lGAFVVJ34Jg",
+        key: "load me", // todo load key here
         v: "weekly",
     });
 
