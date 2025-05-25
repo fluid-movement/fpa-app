@@ -58,7 +58,7 @@ jobs:
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           script: |
             cp ${{ vars.ENVIRONMENT_PATH }}/.env ${{ vars.DEPLOY_PATH }}/.env
-            cd ${{ secrets.DEPLOY_PATH }}
+            cd ${{ vars.DEPLOY_PATH }}
             php artisan migrate
             php artisan cache:clear
             php artisan config:clear
