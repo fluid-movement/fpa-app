@@ -1,10 +1,13 @@
 <?php
 
+use App\Http\Middleware\IsAdmin;
 use Illuminate\Support\Facades\Route;
 use Livewire\Volt\Volt;
 
 Volt::route('/', 'home')->name('home');
 Volt::route('/rankings', 'rankings')->name('rankings');
+Volt::route('imprint', 'imprint')->name('imprint');
+Volt::route('contact', 'contact')->name('contact');
 
 // Events
 Route::middleware(['auth'])->group(function () {
@@ -40,13 +43,17 @@ Route::middleware(['auth'])->group(function () {
         ->name('events.division.judge');
 
     // Admin
-    Volt::route('admin/members', 'admin.index')
-        ->name('admin.index');
-    Volt::route('admin/members/{player}', 'admin.members.edit')
-        ->whereUlid('player')
-        ->name('admin.members.edit');
-    Volt::route('admin/dashboard', 'admin.dashboard')
-        ->name('admin.dashboard');
+    Route::middleware(IsAdmin::class)->group(function () {
+        Route::redirect('admin', 'dashboard');
+        Volt::route('admin/members', 'admin.index')
+            ->name('admin.index');
+        Volt::route('admin/members/{player}', 'admin.members.edit')
+            ->whereUlid('player')
+            ->name('admin.members.edit');
+        Volt::route('admin/dashboard', 'admin.dashboard')
+            ->name('admin.dashboard');
+    }
+    );
 });
 
 // event calendar
@@ -71,9 +78,6 @@ Route::middleware(['auth'])->group(function () {
     Volt::route('user/attending', 'user.attending')->name('user.attending');
     Volt::route('user/organizing', 'user.organizing')->name('user.organizing');
 });
-
-Volt::route('imprint', 'imprint')->name('imprint');
-Volt::route('contact', 'contact')->name('contact');
 
 // User settings
 Route::middleware(['auth'])->group(function () {

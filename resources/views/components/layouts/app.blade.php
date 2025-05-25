@@ -47,18 +47,22 @@
                 wire:navigate>{{ __('Attending') }}
             </flux:navlist.item>
         </flux:navlist.group>
-        <flux:navlist.group heading="Admin" class="grid">
-            <flux:navlist.item
-                icon="chart-pie" :href="route('admin.dashboard')"
-                :current="request()->routeIs('admin.dashboard')"
-                wire:navigate>{{ __('Dashboard') }}
-            </flux:navlist.item>
-            <flux:navlist.item
-                icon="bars-3-bottom-left" :href="route('admin.index')"
-                :current="request()->routeIs('admin.index', 'admin.members.edit')"
-                wire:navigate>{{ __('FPA Members') }}
-            </flux:navlist.item>
-        </flux:navlist.group>
+        @auth
+            @if(\Illuminate\Support\Facades\Auth::user()->isAdmin())
+                <flux:navlist.group heading="Admin" class="grid">
+                    <flux:navlist.item
+                        icon="chart-pie" :href="route('admin.dashboard')"
+                        :current="request()->routeIs('admin.dashboard')"
+                        wire:navigate>{{ __('Dashboard') }}
+                    </flux:navlist.item>
+                    <flux:navlist.item
+                        icon="bars-3-bottom-left" :href="route('admin.index')"
+                        :current="request()->routeIs('admin.index', 'admin.members.edit')"
+                        wire:navigate>{{ __('FPA Members') }}
+                    </flux:navlist.item>
+                </flux:navlist.group>
+            @endif
+        @endauth
     </flux:navlist>
     <flux:spacer/>
     <div class="flex justify-between">
