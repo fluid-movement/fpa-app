@@ -72,15 +72,12 @@ Volt::route('geocoding', 'geocoding-test')
 Volt::route('maps-integration', 'maps-integration')
     ->name('maps-integration');
 
-// User pages
+// User settings
 Route::middleware(['auth'])->group(function () {
     Volt::route('user/profile', 'user.profile')->name('user.profile');
     Volt::route('user/attending', 'user.attending')->name('user.attending');
     Volt::route('user/organizing', 'user.organizing')->name('user.organizing');
-});
 
-// User settings
-Route::middleware(['auth'])->group(function () {
     Route::redirect('settings', 'settings/profile');
 
     Volt::route('settings/profile', 'settings.profile')->name('settings.profile');

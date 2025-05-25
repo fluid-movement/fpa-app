@@ -47,7 +47,9 @@ new class extends Component {
         <h1>{{$event->name}}</h1>
         <p class="flex gap-2 items-center">
             <flux:icon name="calendar-days"/>
-            @if($event->start_date->format('m') == $event->end_date->format('m'))
+            @if($event->start_date->is($event->end_date))
+                {{ $event->start_date->format('d F Y') }}
+            @elseif($event->start_date->format('m') == $event->end_date->format('m'))
                 {{ $event->start_date->format('d') }} - {{ $event->end_date->format('d F Y') }}
             @else
                 {{ $event->start_date->format('d F') }} - {{ $event->end_date->format('d F Y') }}

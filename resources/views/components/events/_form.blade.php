@@ -1,11 +1,15 @@
 <div class="flex flex-col gap-8 mb-8">
     <div class="flex flex-col gap-8 md:w-1/2">
-        <flux:input label="Event name" wire:model.blur="form.name"/>
+        <flux:input label="Event name" wire:model="form.name"/>
         <div class="flex gap-8 flex-wrap md:flex-nowrap">
-            <flux:input label="Location" wire:model="form.location"/>
+            <flux:input
+                label="Location"
+                description="Where will the event take place?"
+                wire:model="form.location"
+            />
             <flux:date-picker
-                with-confirmation="true"
                 label="Date"
+                description="Select start and end date of the event."
                 mode="range"
                 wire:model="form.dateRange"
             />

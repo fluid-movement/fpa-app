@@ -6,7 +6,11 @@
             {{-- Date Column --}}
             <div class="flex flex-col">
                 <div class="tracking-tight text-4xl font-bold text-slate-700 whitespace-nowrap">
-                    {{ $event->start_date->format('d') }}–{{ $event->end_date->format('d') }}
+                    @if($event->start_date->is($event->end_date))
+                        {{ $event->start_date->format('d') }}
+                    @else
+                        {{ $event->start_date->format('d') }}–{{ $event->end_date->format('d') }}
+                    @endif
                 </div>
                 <div class="text-slate-500 text-sm">
                     @if($event->start_date->format('m') === $event->end_date->format('m'))

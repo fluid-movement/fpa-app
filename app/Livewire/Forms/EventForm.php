@@ -7,6 +7,7 @@ use App\Models\Event;
 use Flux\DateRange;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Validation\ValidationException;
 use Livewire\Attributes\Validate;
 use Livewire\Features\SupportFileUploads\TemporaryUploadedFile;
 use Livewire\Form;
@@ -15,24 +16,25 @@ class EventForm extends Form
 {
     public Event $event;
 
+    #[Validate('required')]
     public DateRange $dateRange;
 
-    #[Validate('required|string|max:50')]
+    #[Validate('required|string|max:50', message: 'Your event needs a name.')]
     public string $name = '';
 
-    #[Validate('required|date|after_or_equal:today')]
+    #[Validate('nullable|date')]
     public string $start_date = '';
 
-    #[Validate('required|date|after_or_equal:start_date')]
+    #[Validate('nullable|date')]
     public string $end_date = '';
 
-    #[Validate('required|string|max:255')]
+    #[Validate('required|string|max:255', message: 'Where is the event taking place?')]
     public string $location = '';
 
     #[Validate('required|string')]
     public string $description = '';
 
-    #[Validate('image')]
+    #[Validate('nullable|image')]
     public $pictureUpload;
 
     public ?string $picture = '';
@@ -52,7 +54,10 @@ class EventForm extends Form
 
     public function store(): Event
     {
+        $this->validate();
+
         $this->setDatesFromRange();
+
         $this->uploadImages();
 
         $event = Auth::user()->events()->create($this->only([
@@ -71,6 +76,8 @@ class EventForm extends Form
 
     public function update(): void
     {
+        $this->validate();
+
         $this->setDatesFromRange();
         $this->uploadImages();
 
@@ -99,7 +106,13 @@ class EventForm extends Form
 
     public function setDatesFromRange(): void
     {
-        $this->start_date = $this->dateRange->start->format('Y-m-d');
-        $this->end_date = $this->dateRange->end->format('Y-m-d');
+        if (! isset($this->dateRange)) {
+            throw ValidationException::withMessages([
+                'form.dateRange' => 'When is your event taking place?',
+            ]);
+        }
+
+        $this->start_date = $this->dateRange->start?->format('Y-m-d');
+        $this->end_date = $this->dateRange->end?->format('Y-m-d');
     }
 }
