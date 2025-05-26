@@ -1,13 +1,14 @@
 <?php
 
+use Illuminate\Support\Collection;
 use Livewire\Volt\Component;
 use App\Models\Event;
 
 new class extends Component {
     public Event $heroEvent;
-    public \Illuminate\Support\Collection $events;
+    public Collection $events;
 
-    public function mount()
+    public function mount(): void
     {
         $events = Event::query()
             ->where('start_date', '>=', now())

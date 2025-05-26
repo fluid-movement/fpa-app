@@ -1,6 +1,6 @@
 @props(['event', 'badges' => []])
 
-<a class="size-full" href="{{route('events.show', ['event' => $event])}}">
+<a class="size-full" href="{{route('events.show', ['event' => $event])}}" wire:navigate>
     <x-ui.card class="p-6 flex gap-6 flex-col md:flex-row">
         <div class="grow">
             <div class="flex items-baseline gap-6 mb-2">

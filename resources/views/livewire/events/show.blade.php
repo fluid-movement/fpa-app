@@ -11,11 +11,6 @@ new class extends Component {
 
     public bool $showButtons = false;
 
-    public function rendering(Illuminate\View\View $view): void
-    {
-        $view->title($this->event->name);
-    }
-
     public function mount(Event $event): void
     {
         $this->event = $event;
@@ -43,7 +38,7 @@ new class extends Component {
 }; ?>
 
 <div class="grid grid-cols-2 gap-4">
-    <div class="prose prose-invert {{ !$event->picture ? 'col-span-2' : '' }}">
+    <div class="prose prose-invert col-span-2 {{ $event->picture ? 'md:col-span-1' : '' }}">
         <h1>{{$event->name}}</h1>
         <p class="flex gap-2 items-center">
             <flux:icon name="calendar-days"/>
@@ -59,7 +54,7 @@ new class extends Component {
             <flux:icon name="map-pin"/>{{ $event->location }}
         </p>
         <p class="flex gap-2 items-center ">
-            <flux:icon name="heart"/>{{ $event->attending->count() }} attending
+            <flux:icon name="heart"/>{{ $event->attending_count }} attending
         </p>
         <flux:spacer/>
         @if($showButtons)

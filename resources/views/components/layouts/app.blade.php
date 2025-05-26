@@ -65,6 +65,13 @@
         @endauth
     </flux:navlist>
     <flux:spacer/>
+    <flux:button
+        class="mb-4 md:hidden"
+        icon="plus"
+        href="{{ route('events.create') }}"
+        wire:navigate>
+        {{ __('Create Event') }}
+    </flux:button>
     <div class="flex justify-between">
         <flux:link href="{{route('imprint')}}" class="text-xs text-gray-400">Imprint</flux:link>
         <flux:link href="{{route('contact')}}" class="text-xs text-gray-400">Contact</flux:link>

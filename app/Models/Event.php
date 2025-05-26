@@ -41,6 +41,7 @@ use Illuminate\Support\Carbon;
  * @property-read Division[] $divisions
  * @property-read User[] $users
  * @property-read User[] $attending
+ * @property-read int $attending_count
  * @property-read User[] $organizers
  * @property Carbon $created_at
  * @property Carbon $updated_at
@@ -122,6 +123,12 @@ class Event extends Model
             ->wherePivotIn('status', [EventUserStatus::Attending, EventUserStatus::Organizing])
             ->withTimestamps()
             ->orderByDesc('event_user.updated_at');
+    }
+
+    public function getAttendingCountAttribute(): int
+    {
+        return $this->belongsToMany(User::class)
+            ->wherePivotIn('status', [EventUserStatus::Attending, EventUserStatus::Organizing])->count();
     }
 
     public function organizers(): BelongsToMany

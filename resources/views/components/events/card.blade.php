@@ -1,6 +1,6 @@
 @props(['event', 'badges' => []])
 
-<a href="{{ route('events.show', ['event' => $event]) }}">
+<a href="{{ route('events.show', ['event' => $event]) }}" wire:navigate>
     <div class="relative">
         <x-ui.card class="flex gap-4 relative z-0">
             {{-- Date Column --}}
@@ -12,7 +12,7 @@
                         {{ $event->start_date->format('d') }}–{{ $event->end_date->format('d') }}
                     @endif
                 </div>
-                <div class="text-slate-500 text-sm">
+                <div class="text-slate-700 text-sm">
                     @if($event->start_date->format('m') === $event->end_date->format('m'))
                         {{ $event->start_date->format('F') }}
                     @else
@@ -26,13 +26,10 @@
             {{-- Event Info --}}
             <div class="flex flex-col justify-center">
                 <h2 class="text-xl font-bold text-slate-700">{{ $event->name }}</h2>
-                <flux:text class="flex items-center gap-2 text-slate-500">
+                <flux:text class="flex items-center gap-2 text-slate-700">
                     <flux:icon variant="micro" name="map-pin" />
                     {{ $event->location }}
                 </flux:text>
-                @if($event->additional_info)
-                    <p class="text-sm text-slate-400">{{ $event->additional_info }}</p>
-                @endif
             </div>
         </x-ui.card>
 

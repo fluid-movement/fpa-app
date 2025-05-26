@@ -23,10 +23,10 @@ class EventForm extends Form
     public string $name = '';
 
     #[Validate('nullable|date')]
-    public string $start_date = '';
+    public string $start_date = ''; // don't need to validate this, as it is set from the dateRange
 
     #[Validate('nullable|date')]
-    public string $end_date = '';
+    public string $end_date = ''; // don't need to validate this, as it is set from the dateRange
 
     #[Validate('required|string|max:255', message: 'Where is the event taking place?')]
     public string $location = '';

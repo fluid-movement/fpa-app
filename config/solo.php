@@ -32,7 +32,7 @@ return [
     | Keybindings
     |--------------------------------------------------------------------------
     */
-    'keybinding' => env('SOLO_KEYBINDING', 'default'),
+    'keybinding' => env('SOLO_KEYBINDING', 'vim'),
 
     'keybindings' => [
         'default' => Hotkeys\DefaultHotkeys::class,
