@@ -6,7 +6,7 @@ use Livewire\Volt\Volt;
 
 Volt::route('/', 'home')->name('home');
 Volt::route('/rankings', 'rankings')->name('rankings');
-Volt::route('imprint', 'imprint')->name('imprint');
+Volt::route('legal-notice', 'legal-notice')->name('legal-notice');
 Volt::route('contact', 'contact')->name('contact');
 
 // Events

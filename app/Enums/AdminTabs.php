@@ -7,7 +7,7 @@ enum AdminTabs: string
     // The order of cases here will determine the order of tabs in the UI
     case Attending = 'attending';
     case Schedule = 'schedule';
-    case Divisions = 'divisions';
+    // case Divisions = 'divisions'; // Uncomment when divisions are implemented
     case Organizers = 'organizers';
 
     public static function getTabs(): array

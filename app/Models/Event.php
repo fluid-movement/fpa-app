@@ -60,33 +60,33 @@ class Event extends Model
         'end_date' => 'datetime:Y-m-d',
     ];
 
-    public function getPictureUrlAttribute(): ?string
-    {
-        return $this->picture
-            ? app(AssetManagerService::class)
-                ->url(AssetType::Picture, $this->picture)
+    public int $attending_count {
+        get => $this->belongsToMany(User::class)
+            ->wherePivotIn('status', [EventUserStatus::Attending, EventUserStatus::Organizing])
+            ->count();
+    }
+
+    public ?string $picture_url {
+        get => $this->picture
+            ? app(AssetManagerService::class)->url(AssetType::Picture, $this->picture)
             : null;
+    }
+
+    public string $day {
+        get => date('j', strtotime($this->start_date));
+    }
+
+    public string $month {
+        get => date('F', strtotime($this->start_date));
+    }
+
+    public string $year {
+        get => date('Y', strtotime($this->start_date));
     }
 
     public function getPictureWidthHeight(): array
     {
-        return app(AssetManagerService::class)
-            ->dimensions(AssetType::Picture, $this->picture);
-    }
-
-    public function getDayAttribute(): string
-    {
-        return date('j', strtotime($this->start_date));
-    }
-
-    public function getMonthAttribute(): string
-    {
-        return date('F', strtotime($this->start_date));
-    }
-
-    public function getYearAttribute(): string
-    {
-        return date('Y', strtotime($this->start_date));
+        return app(AssetManagerService::class)->dimensions(AssetType::Picture, $this->picture);
     }
 
     public function user(): BelongsTo
@@ -123,12 +123,6 @@ class Event extends Model
             ->wherePivotIn('status', [EventUserStatus::Attending, EventUserStatus::Organizing])
             ->withTimestamps()
             ->orderByDesc('event_user.updated_at');
-    }
-
-    public function getAttendingCountAttribute(): int
-    {
-        return $this->belongsToMany(User::class)
-            ->wherePivotIn('status', [EventUserStatus::Attending, EventUserStatus::Organizing])->count();
     }
 
     public function organizers(): BelongsToMany

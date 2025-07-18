@@ -38,9 +38,8 @@ class Schedule extends Model
         'end_date' => 'datetime:Y-m-d H:i',
     ];
 
-    public function getTimeAttribute(): string
-    {
-        return $this->start_date->format('H:i').' - '.$this->end_date->format('H:i');
+    public string $time {
+        get => $this->start_date->format('H:i').' - '.$this->end_date->format('H:i');
     }
 
     public function event(): BelongsTo
