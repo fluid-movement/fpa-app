@@ -46,12 +46,6 @@
         }
     },
     "scripts": {
-        "pre-install-cmd": [
-            "composer config http-basic.composer.fluxui.dev $FLUX_AUTH_USER $FLUX_AUTH_TOKEN"
-        ],
-        "pre-update-cmd": [
-            "composer config http-basic.composer.fluxui.dev $FLUX_AUTH_USER $FLUX_AUTH_TOKEN"
-        ],
         "post-autoload-dump": [
             "Illuminate\\Foundation\\ComposerScripts::postAutoloadDump",
             "@php artisan package:discover --ansi"
