@@ -39,7 +39,7 @@ new #[Layout('components.layouts.app')] class extends Component
     }
 }; ?>
 
-<div class="flex flex-col gap-6">
+<div class="flex flex-col gap-6 max-w-md mx-auto">
     <x-auth-header title="Create an account" description="Enter your details below to create your account" />
 
     <!-- Session Status -->
@@ -94,6 +94,8 @@ new #[Layout('components.layouts.app')] class extends Component
             autocomplete="new-password"
             placeholder="Confirm password"
         />
+
+        <x-turnstile />
 
         <div class="flex items-center justify-end">
             <flux:button type="submit" variant="primary" class="w-full">

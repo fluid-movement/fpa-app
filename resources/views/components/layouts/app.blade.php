@@ -11,6 +11,7 @@
 
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     @cookieconsentscripts
+    @turnstileScripts()
 </head>
 <body class="max-w-7xl mx-auto min-h-screen bg-[url(../images/background.jpg)] bg-no-repeat bg-right-bottom bg-fixed bg-cover">
 <flux:sidebar sticky stashable class="bg-zinc-700/80 backdrop-blur-lg md:bg-zinc-700/70 md:backdrop-blur-xs">
@@ -79,7 +80,6 @@
     </flux:button>
     <div class="flex justify-between">
         <flux:link href="{{route('legal-notice')}}" class="text-xs text-gray-400">Legal Notice</flux:link>
-        <flux:link href="{{route('contact')}}" class="text-xs text-gray-400">Contact</flux:link>
     </div>
 </flux:sidebar>
 <!-- Desktop Header -->
