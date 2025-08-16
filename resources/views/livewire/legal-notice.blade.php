@@ -46,12 +46,6 @@ new #[\Livewire\Attributes\Title('Legal Notice')]  class extends Component
     </div>
 
     <div class="section">
-        <h2 class="font-bold">Contact for Legal Matters</h2>
-        <p>For any legal inquiries or concerns regarding this website or our services, please contact us at the address provided above or via email at [INSERT LEGAL CONTACT EMAIL].</p>
-    </div>
-
-    <div class="section">
         <p><em>Last updated: 18-07-2025</em></p>
     </div>
-
 </flux:card>
