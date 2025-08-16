@@ -1,9 +1,14 @@
 [phases.setup]
 nixPkgs = ["...", "python311Packages.supervisor"]
 
-[phases.build]
+[phases.install]
 cmds = [
     "composer config http-basic.composer.fluxui.dev $FLUX_AUTH_USER $FLUX_AUTH_TOKEN",
+    "composer install --no-dev --optimize-autoloader"
+]
+
+[phases.build]
+cmds = [
     "mkdir -p /etc/supervisor/conf.d/",
     "cp /assets/worker-*.conf /etc/supervisor/conf.d/",
     "cp /assets/supervisord.conf /etc/supervisord.conf",
