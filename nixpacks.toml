@@ -6,7 +6,8 @@ cmds = [
     "echo 'FLUX_AUTH_USER=' ${FLUX_AUTH_USER}",
     "echo 'FLUX_AUTH_TOKEN=' ${FLUX_AUTH_TOKEN}",
     "composer config http-basic.composer.fluxui.dev ${FLUX_AUTH_USER} ${FLUX_AUTH_TOKEN}",
-    "composer install --no-dev --optimize-autoloader"
+    "composer install --no-dev --optimize-autoloader",
+    "npm ci",
 ]
 
 [phases.build]
