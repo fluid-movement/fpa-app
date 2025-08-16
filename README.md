@@ -20,3 +20,33 @@ todo: add a description
 -
 
 ## Documentation
+
+## Dev Setup
+
+Install dependencies,
+```shell
+composer install
+npm install
+```
+Create env file, generate key and run migrations with seeders
+```shell
+cp .env.example .env
+php artisan key:generate
+php artisan migrate --seed
+```
+
+### While developing
+Run the local development server and the frontend build process
+```shell
+php artisan serve
+npm run dev
+```
+Or use the solo package
+```shell
+php artisan solo
+```
+
+Refresh the database and run seeders again
+```shell
+php artisan migrate:fresh --seed
+```

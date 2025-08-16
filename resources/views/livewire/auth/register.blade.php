@@ -6,32 +6,39 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rules;
 use Livewire\Attributes\Layout;
+use Livewire\Attributes\Validate;
 use Livewire\Volt\Component;
 
 new #[Layout('components.layouts.app')] class extends Component
 {
+    #[Validate('required|string|max:255')]
     public string $name = '';
 
+    #[Validate('required|string|lowercase|email|max:255|unique:App\\Models\\User,email')]
     public string $email = '';
 
+    #[Validate('required|string|confirmed')]
     public string $password = '';
 
     public string $password_confirmation = '';
+
+    #[Validate('required|turnstile')]
+    public string $turnstile = '';
 
     /**
      * Handle an incoming registration request.
      */
     public function register(): void
     {
-        $validated = $this->validate([
-            'name' => ['required', 'string', 'max:255'],
-            'email' => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:'.User::class],
-            'password' => ['required', 'string', 'confirmed', Rules\Password::defaults()],
+        $this->validate();
+
+        $user = User::create([
+            'name' => $this->name,
+            'email' => $this->email,
+            'password' => Hash::make($this->password),
         ]);
 
-        $validated['password'] = Hash::make($validated['password']);
-
-        event(new Registered(($user = User::create($validated))));
+        event(new Registered($user));
 
         Auth::login($user);
 
@@ -39,7 +46,7 @@ new #[Layout('components.layouts.app')] class extends Component
     }
 }; ?>
 
-<div class="flex flex-col gap-6">
+<div class="flex flex-col gap-6 max-w-md mx-auto">
     <x-auth-header title="Create an account" description="Enter your details below to create your account" />
 
     <!-- Session Status -->
@@ -94,6 +101,11 @@ new #[Layout('components.layouts.app')] class extends Component
             autocomplete="new-password"
             placeholder="Confirm password"
         />
+
+        <x-turnstile wire:model="turnstile"/>
+        @error('turnstile')
+            <div class="text-red-600 text-sm mt-1">{{ __('Captcha failed') }}</div>
+        @enderror
 
         <div class="flex items-center justify-end">
             <flux:button type="submit" variant="primary" class="w-full">

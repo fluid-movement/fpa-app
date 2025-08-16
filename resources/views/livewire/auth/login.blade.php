@@ -20,6 +20,9 @@ new #[Layout('components.layouts.app')] class extends Component
 
     public bool $remember = false;
 
+    #[Validate('required|turnstile')]
+    public string $turnstile = '';
+
     /**
      * Handle an incoming authentication request.
      */
@@ -73,7 +76,7 @@ new #[Layout('components.layouts.app')] class extends Component
     }
 }; ?>
 
-<div class="flex flex-col gap-6">
+<div class="flex flex-col gap-6 max-w-md mx-auto">
     <x-auth-header title="Log in to your account" description="Enter your email and password below to log in" />
 
     <!-- Session Status -->
@@ -113,6 +116,11 @@ new #[Layout('components.layouts.app')] class extends Component
 
         <!-- Remember Me -->
         <flux:checkbox wire:model="remember" label="{{ __('Remember me') }}" />
+
+        <x-turnstile wire:model="turnstile"/>
+        @error('turnstile')
+            <div class="text-red-600 text-sm mt-1">{{ __('Captcha failed') }}</div>
+        @enderror
 
         <div class="flex items-center justify-end">
             <flux:button variant="primary" type="submit" class="w-full">{{ __('Log in') }}</flux:button>
