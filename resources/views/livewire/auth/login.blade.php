@@ -118,6 +118,9 @@ new #[Layout('components.layouts.app')] class extends Component
         <flux:checkbox wire:model="remember" label="{{ __('Remember me') }}" />
 
         <x-turnstile wire:model="turnstile"/>
+        @error('turnstile')
+            <div class="text-red-600 text-sm mt-1">{{ __('Captcha failed') }}</div>
+        @enderror
 
         <div class="flex items-center justify-end">
             <flux:button variant="primary" type="submit" class="w-full">{{ __('Log in') }}</flux:button>
