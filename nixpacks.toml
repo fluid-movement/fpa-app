@@ -3,9 +3,9 @@ nixPkgs = ["...", "python311Packages.supervisor"]
 
 [phases.install]
 cmds = [
-    "echo 'FLUX_AUTH_USER=' $FLUX_AUTH_USER",
-    "echo 'FLUX_AUTH_TOKEN=' $FLUX_AUTH_TOKEN",
-    "composer config http-basic.composer.fluxui.dev $FLUX_AUTH_USER $FLUX_AUTH_TOKEN",
+    "echo 'FLUX_AUTH_USER=' ${FLUX_AUTH_USER}",
+    "echo 'FLUX_AUTH_TOKEN=' ${FLUX_AUTH_TOKEN}",
+    "composer config http-basic.composer.fluxui.dev ${FLUX_AUTH_USER} ${FLUX_AUTH_TOKEN}",
     "composer install --no-dev --optimize-autoloader"
 ]
 
