@@ -11,7 +11,6 @@
 
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     @cookieconsentscripts
-    @turnstileScripts()
 </head>
 <body class="max-w-7xl mx-auto min-h-screen bg-[url(../images/background.jpg)] bg-no-repeat bg-right-bottom bg-fixed bg-cover">
 <flux:sidebar sticky stashable class="bg-zinc-700/80 backdrop-blur-lg md:bg-zinc-700/70 md:backdrop-blur-xs">
