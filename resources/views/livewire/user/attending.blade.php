@@ -9,7 +9,7 @@ new #[\Livewire\Attributes\Title('Attending Events')] class extends Component
     /** @var Collection<Event> */
     public Collection $events;
 
-    public ?Event $nextEvent;
+    public ?Event $nextEvent = null;
 
     public function mount(): void
     {
