@@ -5,6 +5,7 @@ namespace App\Livewire\Forms;
 use App\Enums\AssetType;
 use App\Models\Event;
 use App\Services\AssetManagerService;
+use Exception;
 use Flux\DateRange;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
@@ -85,7 +86,20 @@ class EventForm extends Form
 
     public function update(): void
     {
-        $this->validate();
+        \Log::info('EventForm: Starting update process', [
+            'event_id' => $this->event->id,
+            'has_picture_upload' => $this->pictureUpload instanceof TemporaryUploadedFile,
+        ]);
+
+        try {
+            $this->validate();
+            \Log::info('EventForm: Validation passed');
+        } catch (ValidationException $e) {
+            \Log::error('EventForm: Validation failed', [
+                'errors' => $e->errors()
+            ]);
+            throw $e;
+        }
 
         $this->setDatesFromRange();
         $this->uploadImages();
@@ -100,24 +114,75 @@ class EventForm extends Form
             'picture_width',
             'picture_height',
         ]));
+
+        \Log::info('EventForm: Update completed successfully', [
+            'event_id' => $this->event->id,
+            'final_picture' => $this->picture
+        ]);
     }
 
+    /**
+     * @throws Exception
+     */
     public function uploadImages(): void
     {
         if ($this->pictureUpload instanceof TemporaryUploadedFile) {
+            \Log::info('EventForm: Starting picture upload', [
+                'original_name' => $this->pictureUpload->getClientOriginalName(),
+                'size' => $this->pictureUpload->getSize(),
+                'mime_type' => $this->pictureUpload->getMimeType(),
+                'temp_path' => $this->pictureUpload->getRealPath(),
+            ]);
+
             // Get image dimensions before uploading
             $imagePath = $this->pictureUpload->getRealPath();
-            [$width, $height] = getimagesize($imagePath);
+
+            try {
+                [$width, $height] = getimagesize($imagePath);
+                \Log::info('EventForm: Image dimensions obtained', [
+                    'width' => $width,
+                    'height' => $height
+                ]);
+            } catch (Exception $e) {
+                \Log::error('EventForm: Failed to get image dimensions', [
+                    'error' => $e->getMessage(),
+                    'file_path' => $imagePath
+                ]);
+                throw $e;
+            }
 
             $assetManager = app(AssetManagerService::class);
-            if ($newPicture = $assetManager->storeTemporary(AssetType::Picture, $this->pictureUpload)) {
-                if ($this->picture) {
-                    $assetManager->delete(AssetType::Picture, $this->picture);
+
+            try {
+                $newPicture = $assetManager->storeTemporary(AssetType::Picture, $this->pictureUpload);
+
+                if ($newPicture) {
+                    \Log::info('EventForm: Picture upload successful', [
+                        'new_picture_path' => $newPicture
+                    ]);
+
+                    if ($this->picture) {
+                        \Log::info('EventForm: Deleting old picture', [
+                            'old_picture' => $this->picture
+                        ]);
+                        $assetManager->delete(AssetType::Picture, $this->picture);
+                    }
+
+                    $this->picture = $newPicture;
+                    $this->picture_width = $width;
+                    $this->picture_height = $height;
+                } else {
+                    \Log::error('EventForm: Picture upload failed - storeTemporary returned false');
                 }
-                $this->picture = $newPicture;
-                $this->picture_width = $width;
-                $this->picture_height = $height;
+            } catch (Exception $e) {
+                \Log::error('EventForm: Exception during picture upload', [
+                    'error' => $e->getMessage(),
+                    'trace' => $e->getTraceAsString()
+                ]);
+                throw $e;
             }
+        } else {
+            \Log::debug('EventForm: No picture upload or invalid file type');
         }
     }
 
