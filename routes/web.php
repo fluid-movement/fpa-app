@@ -84,4 +84,15 @@ Route::middleware(['auth'])->group(function () {
     Volt::route('settings/password', 'settings.password')->name('settings.password');
 });
 
+Route::get('/debug-headers', function() {
+    return response()->json([
+        'all_headers' => request()->headers->all(),
+        'server_vars' => [
+            'HTTPS' => $_SERVER['HTTPS'] ?? 'not set',
+            'HTTP_X_FORWARDED_PROTO' => $_SERVER['HTTP_X_FORWARDED_PROTO'] ?? 'not set',
+            'HTTP_X_FORWARDED_HOST' => $_SERVER['HTTP_X_FORWARDED_HOST'] ?? 'not set',
+        ]
+    ]);
+});
+
 require __DIR__.'/auth.php';
