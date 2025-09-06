@@ -84,13 +84,4 @@ Route::middleware(['auth'])->group(function () {
     Volt::route('settings/password', 'settings.password')->name('settings.password');
 });
 
-Route::get('/debug-remote-addr', function() {
-    return response()->json([
-        'remote_addr' => $_SERVER['REMOTE_ADDR'] ?? 'not set',
-        'server_addr' => $_SERVER['SERVER_ADDR'] ?? 'not set',
-        'request_ip' => request()->ip(),
-        'client_ips' => request()->ips(),
-    ]);
-});
-
 require __DIR__.'/auth.php';

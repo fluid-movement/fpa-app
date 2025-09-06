@@ -13,19 +13,6 @@ return Application::configure(basePath: dirname(__DIR__))
         health: '/up',
     )
     ->withMiddleware(function (Middleware $middleware) {
-        $middleware->trustProxies(
-            at: [
-                '172.16.0.0/12',    // Docker networks
-                '10.0.0.0/8',       // Private networks
-                '192.168.0.0/16',   // Private networks
-            ]
-        );
-        $middleware->trustProxies(
-            headers: Request::HEADER_X_FORWARDED_FOR |
-            Request::HEADER_X_FORWARDED_HOST |
-            Request::HEADER_X_FORWARDED_PORT |
-            Request::HEADER_X_FORWARDED_PROTO
-        );
     })
     ->withExceptions(function (Exceptions $exceptions) {
         Integration::handles($exceptions);
