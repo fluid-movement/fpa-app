@@ -1,15 +1,10 @@
 <?php
 
+use App\Enums\EventListType;
 use App\Models\Event;
 use App\Services\EventCalendarService;
 use Illuminate\Support\Carbon;
 use Livewire\Volt\Component;
-
-enum EventListType: string
-{
-    case Upcoming = 'upcoming';
-    case Past = 'past';
-}
 
 new class extends Component
 {

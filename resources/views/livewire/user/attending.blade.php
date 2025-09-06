@@ -9,12 +9,14 @@ new #[\Livewire\Attributes\Title('Attending Events')] class extends Component
     /** @var Collection<Event> */
     public Collection $events;
 
-    public Event $nextEvent;
+    public ?Event $nextEvent;
 
-    public function mount()
+    public function mount(): void
     {
         $this->events = auth()->user()->attendingEvents()->get();
-        $this->nextEvent = $this->events->shift();
+        if (count($this->events)) {
+            $this->nextEvent = $this->events->shift();
+        }
     }
 
     #[\Livewire\Attributes\Computed]
