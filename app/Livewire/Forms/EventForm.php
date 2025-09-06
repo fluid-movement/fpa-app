@@ -4,6 +4,7 @@ namespace App\Livewire\Forms;
 
 use App\Enums\AssetType;
 use App\Models\Event;
+use App\Services\AssetManagerService;
 use Flux\DateRange;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
@@ -39,6 +40,10 @@ class EventForm extends Form
 
     public ?string $picture = '';
 
+    public ?int $picture_width = null;
+
+    public ?int $picture_height = null;
+
     public function setEvent(Event $event): void
     {
         $this->event = $event;
@@ -50,6 +55,8 @@ class EventForm extends Form
         $this->location = $event->location;
         $this->description = $event->description;
         $this->picture = $event->picture;
+        $this->picture_width = $event->picture_width;
+        $this->picture_height = $event->picture_height;
     }
 
     public function store(): Event
@@ -67,6 +74,8 @@ class EventForm extends Form
             'location',
             'description',
             'picture',
+            'picture_width',
+            'picture_height',
         ]));
 
         $event->users()->attach(Auth::id(), ['status' => 'organizing']);
@@ -88,18 +97,26 @@ class EventForm extends Form
             'location',
             'description',
             'picture',
+            'picture_width',
+            'picture_height',
         ]));
     }
 
     public function uploadImages(): void
     {
         if ($this->pictureUpload instanceof TemporaryUploadedFile) {
-            $path = AssetType::Picture->getPath();
-            if ($newPicture = basename($this->pictureUpload->store($path, 'public'))) {
+            // Get image dimensions before uploading
+            $imagePath = $this->pictureUpload->getRealPath();
+            [$width, $height] = getimagesize($imagePath);
+
+            $assetManager = app(AssetManagerService::class);
+            if ($newPicture = $assetManager->storeTemporary(AssetType::Picture, $this->pictureUpload)) {
                 if ($this->picture) {
-                    Storage::disk('public')->delete($path.'/'.$this->picture);
+                    $assetManager->delete(AssetType::Picture, $this->picture);
                 }
                 $this->picture = $newPicture;
+                $this->picture_width = $width;
+                $this->picture_height = $height;
             }
         }
     }

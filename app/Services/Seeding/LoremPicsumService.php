@@ -12,21 +12,35 @@ class LoremPicsumService
 {
     const string URL = 'https://picsum.photos/';
 
+    const int WIDTH = 1920;
+    const int HEIGHT = 600;
+
     public function __construct(
         private readonly AssetManagerService $assetManagerService
-    ) {}
+    ) {
+    }
 
     public function getPicture(): string
     {
         return self::process(AssetType::Picture);
     }
 
+    public function getWidth(): int
+    {
+        return self::WIDTH;
+    }
+
+    public function getHeight(): int
+    {
+        return self::HEIGHT;
+    }
+
     private function process(AssetType $type): string
     {
-        $fileName = Str::random(40).'.jpg';
-        $size = $type === AssetType::Picture ? '1920/600' : '200';
-        $url = self::URL.$size;
-        if (! $image = self::getImage($url)) {
+        $fileName = Str::random(40) . '.jpg';
+        $size = $type === AssetType::Picture ? self::WIDTH . '/' . self::HEIGHT : '200';
+        $url = self::URL . $size;
+        if (!$image = self::getImage($url)) {
             return '';
         }
 

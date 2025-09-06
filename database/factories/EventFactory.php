@@ -27,7 +27,8 @@ class EventFactory extends Factory
 
         $users = \App\Models\User::all();
 
-        $picture = app(LoremPicsumService::class)->getPicture();
+        $pictureService = app(LoremPicsumService::class);
+        $picture = $pictureService->getPicture();
 
         return [
             'name' => $name,
@@ -37,6 +38,8 @@ class EventFactory extends Factory
             'end_date' => $endDate->format('Y-m-d'),
             'location' => fake()->city(),
             'picture' => $picture,
+            'picture_width' => $pictureService->getWidth(),
+            'picture_height' => $pictureService->getHeight(),
         ];
     }
 }

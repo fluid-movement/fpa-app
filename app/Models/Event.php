@@ -31,6 +31,8 @@ use Illuminate\Support\Carbon;
  * @property string $location
  * @property string $description
  * @property string $picture
+ * @property int|null $picture_width
+ * @property int|null $picture_height
  * @property-read string $picture_url
  * @property-read array $picture_width_height
  * @property-read string $day
@@ -68,7 +70,7 @@ class Event extends Model
 
     public ?string $picture_url {
         get => $this->picture
-            ? app(AssetManagerService::class)->url(AssetType::Picture, $this->picture)
+            ? app(AssetManagerService::class)->url($this->picture)
             : null;
     }
 
@@ -86,7 +88,7 @@ class Event extends Model
 
     public function getPictureWidthHeight(): array
     {
-        return app(AssetManagerService::class)->dimensions(AssetType::Picture, $this->picture);
+        return [$this->picture_width ?? 0, $this->picture_height ?? 0];
     }
 
     public function user(): BelongsTo
