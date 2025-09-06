@@ -84,14 +84,12 @@ Route::middleware(['auth'])->group(function () {
     Volt::route('settings/password', 'settings.password')->name('settings.password');
 });
 
-Route::get('/debug-headers', function() {
+Route::get('/debug-remote-addr', function() {
     return response()->json([
-        'all_headers' => request()->headers->all(),
-        'server_vars' => [
-            'HTTPS' => $_SERVER['HTTPS'] ?? 'not set',
-            'HTTP_X_FORWARDED_PROTO' => $_SERVER['HTTP_X_FORWARDED_PROTO'] ?? 'not set',
-            'HTTP_X_FORWARDED_HOST' => $_SERVER['HTTP_X_FORWARDED_HOST'] ?? 'not set',
-        ]
+        'remote_addr' => $_SERVER['REMOTE_ADDR'] ?? 'not set',
+        'server_addr' => $_SERVER['SERVER_ADDR'] ?? 'not set',
+        'request_ip' => request()->ip(),
+        'client_ips' => request()->ips(),
     ]);
 });
 
