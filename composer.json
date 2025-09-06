@@ -21,6 +21,7 @@
         "livewire/flux": "^2.0",
         "livewire/flux-pro": "^2.0",
         "livewire/volt": "1.7.0.0",
+        "sentry/sentry-laravel": "^4.15",
         "spatie/geocoder": "^3.16",
         "symfony/filesystem": "^7.2",
         "whitecube/laravel-cookie-consent": "^1.3"
