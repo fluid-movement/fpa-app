@@ -4,23 +4,20 @@ use Illuminate\Support\Collection;
 use Livewire\Volt\Component;
 use App\Models\Event;
 
-new class extends Component {
+new class extends Component 
+{
     public Event $heroEvent;
     public Collection $events;
 
     public function mount(): void
     {
-        $events = Event::query()
-            ->where('start_date', '>=', now())
-            ->orderBy('start_date')
-            ->limit(5)
-            ->get();
+        $upcomingEvents = Event::query()->where('start_date', '>=', now())->orderBy('start_date')->limit(5)->get();
 
-        if ($events->count()) {
-            $this->heroEvent = $events->shift();
+        if ($upcomingEvents->count()) {
+            $this->heroEvent = $upcomingEvents->shift();
         }
 
-        $this->events = $events;
+        $this->events = $upcomingEvents;
     }
 }; ?>
 

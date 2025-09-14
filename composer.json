@@ -24,6 +24,8 @@
         "sentry/sentry-laravel": "^4.15",
         "spatie/geocoder": "^3.16",
         "symfony/filesystem": "^7.2",
+        "symfony/http-client": "^7.3",
+        "symfony/mailgun-mailer": "^7.3",
         "whitecube/laravel-cookie-consent": "^1.3"
     },
     "require-dev": {
