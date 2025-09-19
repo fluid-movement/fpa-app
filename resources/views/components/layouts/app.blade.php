@@ -19,7 +19,7 @@
         <x-app-logo/>
     </a>
     <flux:navlist variant="outline" class="flex flex-col">
-        <flux:navlist.group heading="Events" class="grid">
+        <flux:navlist.group class="grid">
             <flux:navlist.item
                 icon="home" :href="route('home')" :current="request()->routeIs('home')"
                 wire:navigate>{{ __('Home') }}
@@ -35,7 +35,7 @@
             </flux:navlist.item>
             -->
         </flux:navlist.group>
-        <flux:navlist.group heading="User" class="grid">
+        <flux:navlist.group heading="My Events" class="grid">
             <!--
             <flux:navlist.item
                 icon="user" :href="route('user.profile')" :current="request()->routeIs('user.profile', 'settings.profile')"
@@ -43,13 +43,13 @@
             </flux:navlist.item>
             -->
             <flux:navlist.item
-                icon="bell" :href="route('user.organizing')"
-                :current="request()->routeIs('user.organizing', 'events.create', 'events.edit', 'events.admin', 'events.schedule.edit')"
-                wire:navigate>{{ __('Event Organizer') }}
-            </flux:navlist.item>
-            <flux:navlist.item
                 icon="heart" :href="route('user.attending')" :current="request()->routeIs('user.attending')"
                 wire:navigate>{{ __('Attending') }}
+            </flux:navlist.item>
+            <flux:navlist.item
+                icon="pencil-square" :href="route('user.organizing')"
+                :current="request()->routeIs('user.organizing', 'events.create', 'events.edit', 'events.admin', 'events.schedule.edit')"
+                wire:navigate>{{ __('Organizing') }}
             </flux:navlist.item>
         </flux:navlist.group>
         @auth
