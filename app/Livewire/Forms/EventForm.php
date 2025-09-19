@@ -21,7 +21,7 @@ class EventForm extends Form
     #[Validate('required')]
     public DateRange $dateRange;
 
-    #[Validate('required|string|max:50', message: 'Your event needs a name.')]
+    #[Validate('required|string|max:80', message: 'Your event needs a name.')]
     public string $name = '';
 
     #[Validate('nullable|date')]
@@ -30,7 +30,7 @@ class EventForm extends Form
     #[Validate('nullable|date')]
     public string $end_date = ''; // don't need to validate this, as it is set from the dateRange
 
-    #[Validate('required|string|max:255', message: 'Where is the event taking place?')]
+    #[Validate('required|string|max:30', message: 'Where is the event taking place?')]
     public string $location = '';
 
     #[Validate('required|string')]
