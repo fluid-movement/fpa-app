@@ -1,30 +1,25 @@
 <?php
 
 use App\Livewire\Forms\PlayerForm;
-use App\Models\Player;
+use Livewire\Attributes\Title;
 use Livewire\Volt\Component;
 
-new class extends Component
+new #[Title('Add a new FPA member')]  class extends Component
 {
     public PlayerForm $form;
 
-    public function mount(Player $player): void
+    public function store()
     {
-        $this->form->setPlayer($player);
-    }
-
-    public function update()
-    {
-        $this->form->update();
-
+        $this->form->store();
         return $this->redirect(route('admin.index'));
     }
 }; ?>
 
 <div>
     <x-back-button href="{{ route('admin.index') }}"/>
-    <form method="post" wire:submit="update">
+    <form method="post" wire:submit="store">
         <x-players._form :form="$form"/>
         <flux:button variant="primary" type="submit">Create</flux:button>
     </form>
+
 </div>

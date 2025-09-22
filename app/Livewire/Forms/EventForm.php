@@ -8,7 +8,6 @@ use App\Services\AssetManagerService;
 use Exception;
 use Flux\DateRange;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Storage;
 use Illuminate\Validation\ValidationException;
 use Livewire\Attributes\Validate;
 use Livewire\Features\SupportFileUploads\TemporaryUploadedFile;
@@ -16,6 +15,17 @@ use Livewire\Form;
 
 class EventForm extends Form
 {
+    private array $fields = [
+        'name',
+        'start_date',
+        'end_date',
+        'location',
+        'description',
+        'picture',
+        'picture_width',
+        'picture_height',
+    ];
+
     public Event $event;
 
     #[Validate('required')]
@@ -48,77 +58,39 @@ class EventForm extends Form
     public function setEvent(Event $event): void
     {
         $this->event = $event;
-        $this->name = $event->name;
-        $this->start_date = $event->start_date;
-        $this->end_date = $event->end_date;
         $this->dateRange = new DateRange($event->start_date, $event->end_date);
-
-        $this->location = $event->location;
-        $this->description = $event->description;
-        $this->picture = $event->picture;
-        $this->picture_width = $event->picture_width;
-        $this->picture_height = $event->picture_height;
+        foreach ($this->fields as $field) {
+            $this->$field = $event->$field;
+        }
     }
 
+    /**
+     * @throws Exception
+     */
     public function store(): Event
     {
         $this->validate();
 
         $this->setDatesFromRange();
-
         $this->uploadImages();
 
-        $event = Auth::user()->events()->create($this->only([
-            'name',
-            'start_date',
-            'end_date',
-            'location',
-            'description',
-            'picture',
-            'picture_width',
-            'picture_height',
-        ]));
-
+        $event = Auth::user()->events()->create($this->only($this->fields));
         $event->users()->attach(Auth::id(), ['status' => 'organizing']);
 
         return $event;
     }
 
+    /**
+     * @throws Exception
+     */
     public function update(): void
     {
-        \Log::info('EventForm: Starting update process', [
-            'event_id' => $this->event->id,
-            'has_picture_upload' => $this->pictureUpload instanceof TemporaryUploadedFile,
-        ]);
-
-        try {
-            $this->validate();
-            \Log::info('EventForm: Validation passed');
-        } catch (ValidationException $e) {
-            \Log::error('EventForm: Validation failed', [
-                'errors' => $e->errors()
-            ]);
-            throw $e;
-        }
+        $this->validate();
 
         $this->setDatesFromRange();
         $this->uploadImages();
 
-        $this->event->update($this->only([
-            'name',
-            'start_date',
-            'end_date',
-            'location',
-            'description',
-            'picture',
-            'picture_width',
-            'picture_height',
-        ]));
-
-        \Log::info('EventForm: Update completed successfully', [
-            'event_id' => $this->event->id,
-            'final_picture' => $this->picture
-        ]);
+        $this->event->update($this->only($this->fields));
     }
 
     /**
@@ -126,69 +98,44 @@ class EventForm extends Form
      */
     public function uploadImages(): void
     {
-        if ($this->pictureUpload instanceof TemporaryUploadedFile) {
-            \Log::info('EventForm: Starting picture upload', [
-                'original_name' => $this->pictureUpload->getClientOriginalName(),
-                'size' => $this->pictureUpload->getSize(),
-                'mime_type' => $this->pictureUpload->getMimeType(),
-                'temp_path' => $this->pictureUpload->getRealPath(),
-            ]);
-
-            // Get image dimensions before uploading
-            $imagePath = $this->pictureUpload->getRealPath();
-
-            try {
-                [$width, $height] = getimagesize($imagePath);
-                \Log::info('EventForm: Image dimensions obtained', [
-                    'width' => $width,
-                    'height' => $height
-                ]);
-            } catch (Exception $e) {
-                \Log::error('EventForm: Failed to get image dimensions', [
-                    'error' => $e->getMessage(),
-                    'file_path' => $imagePath
-                ]);
-                throw $e;
-            }
-
-            $assetManager = app(AssetManagerService::class);
-
-            try {
-                $newPicture = $assetManager->storeTemporary(AssetType::Picture, $this->pictureUpload);
-
-                if ($newPicture) {
-                    \Log::info('EventForm: Picture upload successful', [
-                        'new_picture_path' => $newPicture
-                    ]);
-
-                    if ($this->picture) {
-                        \Log::info('EventForm: Deleting old picture', [
-                            'old_picture' => $this->picture
-                        ]);
-                        $assetManager->delete(AssetType::Picture, $this->picture);
-                    }
-
-                    $this->picture = $newPicture;
-                    $this->picture_width = $width;
-                    $this->picture_height = $height;
-                } else {
-                    \Log::error('EventForm: Picture upload failed - storeTemporary returned false');
-                }
-            } catch (Exception $e) {
-                \Log::error('EventForm: Exception during picture upload', [
-                    'error' => $e->getMessage(),
-                    'trace' => $e->getTraceAsString()
-                ]);
-                throw $e;
-            }
-        } else {
+        if (!($this->pictureUpload instanceof TemporaryUploadedFile)) {
             \Log::debug('EventForm: No picture upload or invalid file type');
+            return;
+        }
+
+        // Get image dimensions before uploading
+        $imagePath = $this->pictureUpload->getRealPath();
+
+        [$width, $height] = getimagesize($imagePath);
+
+        $assetManager = app(AssetManagerService::class);
+
+        try {
+            $newPicture = $assetManager->storeTemporary(AssetType::Picture, $this->pictureUpload);
+
+            if ($newPicture) {
+                if ($this->picture) {
+                    $assetManager->delete(AssetType::Picture, $this->picture);
+                }
+
+                $this->picture = $newPicture;
+                $this->picture_width = $width;
+                $this->picture_height = $height;
+            } else {
+                \Log::error('EventForm: Picture upload failed - storeTemporary returned false');
+            }
+        } catch (Exception $e) {
+            \Log::error('EventForm: Exception during picture upload', [
+                'error' => $e->getMessage(),
+                'trace' => $e->getTraceAsString()
+            ]);
+            throw $e;
         }
     }
 
     public function setDatesFromRange(): void
     {
-        if (! isset($this->dateRange)) {
+        if (!isset($this->dateRange)) {
             throw ValidationException::withMessages([
                 'form.dateRange' => 'When is your event taking place?',
             ]);

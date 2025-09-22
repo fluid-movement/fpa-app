@@ -4,8 +4,7 @@ use App\Models\Event;
 use App\Models\EventMagicLink;
 use Livewire\Volt\Component;
 
-new class extends Component
-{
+new class extends Component {
     public Event $event;
 
     public ?EventMagicLink $magicLink;
@@ -22,20 +21,33 @@ new class extends Component
             'expires_at' => now()->addDays(2),
         ]);
     }
+
+    public function regenerateMagicLink(): void
+    {
+        $this->magicLink->delete();
+        $this->generateMagicLink();
+    }
 }; ?>
 
 <div>
     @if(Auth::user()->id === $event->user_id)
-        <flux:heading class="mb-4">Invite other Organizers</flux:heading>
-        @if($magicLink)
-            <flux:input class="mb-4" icon="key" value="{{ route('events.admin.magic-link', $magicLink) }}"
-                        readonly="true"
-                        copyable="true"/>
+    <flux:heading class="mb-4">Invite other Organizers</flux:heading>
+    @if($magicLink)
+    <flux:input class="mb-4" icon="key" value="{{ route('events.admin.magic-link', $magicLink) }}"
+                readonly="true"
+                copyable="true"/>
+    <div class="md:flex md:justify-between">
+        @if($magicLink->isActive())
             <flux:text>Link valid till {{$magicLink->expires_at->diffForHumans()}}</flux:text>
         @else
-            <flux:button class="mb-4" wire:click="generateMagicLink">Generate Magic Link</flux:button>
+            <flux:text>Link has expired</flux:text>
         @endif
-        <flux:separator class="mb-8"/>
+        <flux:button class="mb-4" wire:click="regenerateMagicLink">Refresh Magic Link</flux:button>
+    </div>
+    @else
+    <flux:button class="mb-4" wire:click="generateMagicLink">Generate Magic Link</flux:button>
+    @endif
+    <flux:separator class="mb-8"/>
     @endif
     <flux:table>
         <flux:table.columns>
@@ -44,18 +56,18 @@ new class extends Component
         </flux:table.columns>
         <flux:table.rows>
             @foreach ($event->organizers as $user)
-                <flux:table.row :key="$user->id">
-                    <flux:table.cell>
-                        {{ $user->name }}
-                    </flux:table.cell>
-                    <flux:table.cell>
-                        @if($event->user_id === $user->id)
-                            <flux:badge variant="primary">Creator</flux:badge>
-                        @else
-                            <flux:badge variant="primary">Organizer</flux:badge>
-                        @endif
-                    </flux:table.cell>
-                </flux:table.row>
+            <flux:table.row :key="$user->id">
+                <flux:table.cell>
+                    {{ $user->name }}
+                </flux:table.cell>
+                <flux:table.cell>
+                    @if($event->user_id === $user->id)
+                    <flux:badge variant="primary">Creator</flux:badge>
+                    @else
+                    <flux:badge variant="primary">Organizer</flux:badge>
+                    @endif
+                </flux:table.cell>
+            </flux:table.row>
             @endforeach
         </flux:table.rows>
     </flux:table>

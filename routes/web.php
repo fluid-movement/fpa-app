@@ -50,6 +50,8 @@ Route::middleware(['auth'])->group(function () {
         Volt::route('admin/members/{player}', 'admin.members.edit')
             ->whereUlid('player')
             ->name('admin.members.edit');
+        Volt::route('admin/members/create', 'admin.members.create')
+            ->name('admin.members.create');
         Volt::route('admin/dashboard', 'admin.dashboard')
             ->name('admin.dashboard');
     }

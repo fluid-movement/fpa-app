@@ -55,7 +55,7 @@ new #[Title('Dashboard')] class extends Component
             fn ($entry) => $entry['year'] === now()->year
         ) ?? [];
 
-        return reset($current); // return first element
+        return count($current) ? reset($current) : []; // return first element
     }
 }; ?>
 <div class="flex flex-col gap-8">

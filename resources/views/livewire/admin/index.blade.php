@@ -57,6 +57,9 @@ new #[\Livewire\Attributes\Title('FPA Members')] class extends Component
 }; ?>
 
 <div class="flex flex-col gap-8">
+    <flux:button class="self-center w-1/2" icon="plus" href="{{ route('admin.members.create') }}">
+        Add new member
+    </flux:button>
     <flux:input wire:model.live="search" placeholder="Search members..."/>
     <flux:radio.group wire:model.live="filter" label="Status" variant="segmented">
         <flux:radio value="" label="All"/>
