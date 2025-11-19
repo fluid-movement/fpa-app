@@ -1,6 +1,9 @@
 <?php
 
 use Illuminate\Support\Facades\Password;
+use Illuminate\Support\Facades\RateLimiter;
+use Illuminate\Support\Str;
+use Illuminate\Validation\ValidationException;
 use Livewire\Attributes\Layout;
 use Livewire\Volt\Component;
 
@@ -16,9 +19,38 @@ new #[Layout('components.layouts.app')] class extends Component {
             'email' => ['required', 'string', 'email'],
         ]);
 
+        $this->ensureIsNotRateLimited();
+
         Password::sendResetLink($this->only('email'));
 
         session()->flash('status', __('A reset link will be sent if the account exists.'));
+    }
+
+    /**
+     * Ensure the password reset request is not rate limited.
+     */
+    protected function ensureIsNotRateLimited(): void
+    {
+        if (! RateLimiter::tooManyAttempts($this->throttleKey(), 3)) {
+            RateLimiter::hit($this->throttleKey(), 3600); // 1 hour decay
+            return;
+        }
+
+        $seconds = RateLimiter::availableIn($this->throttleKey());
+
+        throw ValidationException::withMessages([
+            'email' => __('Too many password reset attempts. Please try again in :minutes minutes.', [
+                'minutes' => ceil($seconds / 60),
+            ]),
+        ]);
+    }
+
+    /**
+     * Get the rate limiting throttle key.
+     */
+    protected function throttleKey(): string
+    {
+        return Str::transliterate(Str::lower($this->email).'|'.request()->ip());
     }
 }; ?>
 
