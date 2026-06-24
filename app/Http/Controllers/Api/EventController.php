@@ -1,10 +1,10 @@
 <?php
 
-namespace AppHttpControllersApi;
+namespace App\Http\Controllers\Api;
 
-use AppHttpControllersController;
-use AppModelsEvent;
-use IlluminateHttpJsonResponse;
+use App\Http\Controllers\Controller;
+use App\Models\Event;
+use Illuminate\Http\JsonResponse;
 
 class EventController extends Controller
 {
