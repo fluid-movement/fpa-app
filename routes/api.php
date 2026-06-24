@@ -1,5 +1,5 @@
 <?php
 
-use IlluminateSupportFacadesRoute;
+use Illuminate\Support\Facades\Route;
 
-Route::get('/events/upcoming', [AppHttpControllersApiEventController::class, 'upcoming']);
+Route::get('/events/upcoming', [\App\Http\Controllers\Api\EventController::class, 'upcoming']);
