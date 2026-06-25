@@ -30,13 +30,6 @@ class EventController extends Controller
                 'description' => $event->description,
                 'image_url' => $event->picture_url,
                 'detail_page_url' => route('events.show', ['event' => $event->id]),
-                'attending_players' => $event->attending->map(function ($user) {
-                    return [
-                        'id' => $user->id,
-                        'name' => $user->name,
-                        'email' => $user->email,
-                    ];
-                })->toArray(),
                 'attending_count' => $event->attending_count,
                 'schedule' => $event->schedule->map(function ($schedule) {
                     return [
