@@ -67,7 +67,7 @@ new class extends Component
             $this->updateCalendarData();
         } else {
             $this->calendarData = EventCalendarService::getFormattedCalendar(
-                Event::whereFuture('end_date')->get()
+                Event::whereNowOrFuture('end_date')->get()
             );
         }
 
