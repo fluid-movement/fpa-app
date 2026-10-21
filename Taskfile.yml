@@ -1,0 +1,118 @@
+version: '3'
+
+vars:
+  APP_NAME: fpa-app
+  DB_NAME: fpa-db
+
+tasks:
+  default:
+    cmds:
+      - task: help
+
+  up:
+    desc: Start the Docker containers
+    cmds:
+      - docker-compose up -d --build
+      - echo "Containers started. Waiting for database to be ready..."
+      - sleep 10
+
+  down:
+    desc: Stop and remove the Docker containers
+    cmds:
+      - docker-compose down
+
+  setup:
+    desc: Full setup - start containers, install dependencies, and configure
+    cmds:
+      - task: up
+      - task: install
+      - task: keygen
+      - task: migrate
+      - task: permissions
+      - task: build-assets
+
+  install:
+    desc: Install PHP dependencies
+    cmds:
+      - docker-compose exec app composer install --ignore-platform-reqs --no-interaction
+
+  keygen:
+    desc: Generate application key
+    cmds:
+      - docker-compose exec app php artisan key:generate --force
+
+  migrate:
+    desc: Run database migrations
+    cmds:
+      - docker-compose exec app php artisan migrate --force
+
+  migrate-fresh:
+    desc: Fresh migrations with seed
+    cmds:
+      - docker-compose exec app php artisan migrate:fresh --seed
+
+  build-assets:
+    desc: Build Vite assets
+    cmds:
+      - docker-compose exec app npm install
+      - docker-compose exec app npm run build
+
+  permissions:
+    desc: Set proper file permissions
+    cmds:
+      - docker-compose exec app chown -R www-data:www-data storage bootstrap/cache
+
+  artisan:
+    desc: Run artisan commands
+    cmds:
+      - docker-compose exec app php artisan {{.CLI_ARGS}}
+
+  composer:
+    desc: Run composer commands
+    cmds:
+      - docker-compose exec app composer {{.CLI_ARGS}}
+
+  bash:
+    desc: Access the application container shell
+    cmds:
+      - docker-compose exec app bash
+
+  db:
+    desc: Access the database container
+    cmds:
+      - docker-compose exec db psql -U fpa_user -d fpa_db
+
+  logs:
+    desc: View container logs
+    cmds:
+      - docker-compose logs -f
+
+  rebuild:
+    desc: Rebuild containers
+    cmds:
+      - docker-compose down
+      - docker-compose up -d --build
+
+  help:
+    desc: Show available tasks
+    cmds:
+      - echo "Available tasks:"
+      - echo "  up                  - Start the Docker containers"
+      - echo "  down                - Stop and remove the Docker containers"
+      - echo "  setup               - Full setup (up + install + keygen + migrate + permissions)"
+      - echo "  install             - Install PHP dependencies"
+      - echo "  keygen              - Generate application key"
+      - echo "  migrate             - Run database migrations"
+      - echo "  migrate-fresh       - Fresh migrations with seed"
+      - echo "  permissions         - Set proper file permissions"
+      - echo "  artisan [args]      - Run artisan commands"
+      - echo "  composer [args]    - Run composer commands"
+      - echo "  bash                - Access the application container shell"
+      - echo "  db                  - Access the database container"
+      - echo "  logs                - View container logs"
+      - echo "  rebuild             - Rebuild containers"
+      - echo ""
+      - echo "Examples:"
+      - echo "  task setup          - Complete setup"
+      - echo "  task artisan tinker - Run artisan tinker"
+      - echo "  task composer update - Update composer dependencies"

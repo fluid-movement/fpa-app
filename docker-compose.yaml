@@ -1,0 +1,62 @@
+services:
+  # Laravel Application Service
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: fpa-app
+    restart: unless-stopped
+    working_dir: /var/www/html
+    volumes:
+      - .:/var/www/html
+    environment:
+      - APP_ENV=local
+      - APP_DEBUG=true
+      - APP_URL=http://localhost:8000
+      - DB_CONNECTION=pgsql
+      - DB_HOST=db
+      - DB_PORT=5432
+      - DB_DATABASE=fpa_db
+      - DB_USERNAME=fpa_user
+      - DB_PASSWORD=fpa_password
+    depends_on:
+      - db
+    networks:
+      - fpa-network
+
+  # Web Server (Nginx)
+  web:
+    image: nginx:alpine
+    container_name: fpa-web
+    restart: unless-stopped
+    ports:
+      - "8000:80"
+    volumes:
+      - .:/var/www/html
+      - ./docker/nginx.conf:/etc/nginx/conf.d/default.conf
+    depends_on:
+      - app
+    networks:
+      - fpa-network
+
+  # Database (PostgreSQL)
+  db:
+    image: postgres:15-alpine
+    container_name: fpa-db
+    restart: unless-stopped
+    environment:
+      - POSTGRES_DB=fpa_db
+      - POSTGRES_USER=fpa_user
+      - POSTGRES_PASSWORD=fpa_password
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - fpa-network
+
+volumes:
+  postgres_data:
+    driver: local
+
+networks:
+  fpa-network:
+    driver: bridge

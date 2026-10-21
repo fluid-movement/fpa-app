@@ -19,7 +19,7 @@
         "laravel/tinker": "^2.10.1",
         "league/flysystem-aws-s3-v3": "^3.0",
         "livewire/flux": "^2.0",
-        "livewire/flux-pro": "^2.0",
+        "livewire/flux-pro": "^2.2",
         "livewire/volt": "1.7.0.0",
         "sentry/sentry-laravel": "^4.15",
         "spatie/geocoder": "^3.16",
@@ -88,10 +88,11 @@
     },
     "minimum-stability": "stable",
     "prefer-stable": true,
-    "repositories": {
-        "flux-pro": {
+    "repositories": [
+        {
+            "name": "flux-pro",
             "type": "composer",
             "url": "https://composer.fluxui.dev"
         }
-    }
+    ]
 }
